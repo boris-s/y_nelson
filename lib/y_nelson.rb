@@ -70,7 +70,7 @@ module YNelson
 
   require_relative 'y_nelson/place'
   require_relative 'y_nelson/transition'
-  require_relative 'y_nelson/petri_net'
+  require_relative 'y_nelson/net'
   require_relative 'y_nelson/manipulator'
 
   # Methods inherited from YPetri::Workspace::InstanceMethods expect instance

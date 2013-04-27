@@ -2,7 +2,7 @@
 
 # A pointer to a Zz object. A glorified variable, basically.
 # 
-class YNelson::Point
+class YNelson::ZzPoint
   attr_accessor :zz
 
   # Initialization has one optional argument :zz -- zz object at which the
@@ -133,4 +133,4 @@ class YNelson::Point
   def rewind_negward!( along: default_dimension )
     rewind_negward( along: along ) {}
   end
-end # class YNelson::Point
+end # class YNelson::ZzPoint
