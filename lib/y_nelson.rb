@@ -68,10 +68,10 @@ module YNelson
     end
   end # class << self
 
-  require_relative 'nelson/place'
-  require_relative 'nelson/transition'
-  require_relative 'nelson/petri_net'
-  require_relative 'nelson/manipulator'
+  require_relative 'y_nelson/place'
+  require_relative 'y_nelson/transition'
+  require_relative 'y_nelson/petri_net'
+  require_relative 'y_nelson/manipulator'
 
   # Methods inherited from YPetri::Workspace::InstanceMethods expect instance
   # variables @Place, @Transition and @Net to refer to the appropriate classes
