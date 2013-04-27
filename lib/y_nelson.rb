@@ -1,8 +1,17 @@
 # -*- coding: utf-8 -*-
-require "y_nelson/version"
 
 require 'y_ted'
 require 'y_petri'
+
+require_relative 'y_nelson/version'
+require_relative 'y_nelson/place'
+require_relative 'y_nelson/transition'
+require_relative 'y_nelson/net'
+require_relative 'y_nelson/zz_point'
+require_relative 'y_nelson/dimension_point'
+require_relative 'y_nelson/manipulator'
+
+
 
 # Spreadsheet software, which we all know, is based on a data structure, which
 # can be formalized a combination of 2 aspects:
@@ -66,19 +75,19 @@ module YNelson
         end
       }
     end
-  end # class << self
 
-  require_relative 'y_nelson/place'
-  require_relative 'y_nelson/transition'
-  require_relative 'y_nelson/net'
-  require_relative 'y_nelson/manipulator'
+    def dimensions; @dimensions end
+    def default_dimension; @default_dimension end
+    def primary_point; @primary_point end
+    def secondary_point; @secondary_point end
+    def primary_dimension_point; @primary_dimension_point end
+    def secondary_dimension_point; @secondary_dimension_point end
+  end # class << self
 
   # Methods inherited from YPetri::Workspace::InstanceMethods expect instance
   # variables @Place, @Transition and @Net to refer to the appropriate classes
   # or parametrized subclasses:
   @Place, @Transition, @Net = self::Place, self::Transition, self::Net
-
-  initialize # normally, an instance method, called here in module execution
 
   # Zz objects exist in multiple dimensions. Known from spreadsheets are:
   @dimensions = :row, :column, :sheet
@@ -88,14 +97,7 @@ module YNelson
   @primary_dimension_point = self::DimensionPoint.new
   @secondary_dimension_point = self::DimensionPoint.new
 
-  class << self
-    def dimensions; @dimensions end
-    def default_dimension; @default_dimension end
-    def primary_point; @primary_point end
-    def secondary_point; @secondary_point end
-    def primary_dimension_point; @primary_dimension_point end
-    def secondary_dimension_point; @secondary_dimension_point end
-  end
+  initialize # normally, an instance method, called here in module execution
 
   delegate( :primary_point,
             :secondary_point,
