@@ -5,15 +5,15 @@
 require 'minitest/spec'
 require 'minitest/autorun'
 # tested component itself
-require './../lib/y_ted/nelson'
+require './../lib/y_nelson'
 
 # **************************************************************************
 # Nelson net test
 # **************************************************************************
 #
-describe YTed::Nelson do
+describe YNelson do
   before do
-    @m = YTed::Nelson::Manipulator.new
+    @m = YNelson::Manipulator.new
   end
 
   it "should work" do
@@ -40,13 +40,13 @@ describe YTed::Nelson do
   end
 end
 
-describe YTed::Point do
+describe YNelson::Point do
   it "should work" do
     # TODO
   end
 end
 
-describe YTed::DimensionPoint do
+describe YNelson::DimensionPoint do
   it "should work" do
     # TODO
   end
