@@ -1,12 +1,15 @@
 # Let's see whether just subclassing YPetri::Place will do the job, or module
 # shuffling will be required...
 # 
-class YTed::Nelson::Place < YPetri::Place
+class YNelson::Place < YPetri::Place
   include YTed::Zz
 
   class << self
   end
 
+  # Subclass of Side provided by YTed::Zz - I wonder whether this is a good
+  # approach.
+  # 
   class Side < Side
     # "Budding": creation of new cells from the cell sides
     def bud( value: L!, f: nil )
@@ -19,7 +22,7 @@ class YTed::Nelson::Place < YPetri::Place
 
   # Place, Transition, Net class
   # 
-  def Place; ::YTed::Nelson::Place end
-  def Transition; ::YTed::Nelson::Transition end
-  def Net; ::YTed::Nelson::Net end
+  def Place; ::YNelson::Place end
+  def Transition; ::YNelson::Transition end
+  def Net; ::YNelson::Net end
 end

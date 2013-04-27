@@ -3,7 +3,7 @@
 # counterpart of YPetri::Workspace, it admits existence of one or even more
 # than one manipulator instance, representing user interface.
 # 
-class YTed::Nelson::Manipulator
+class YNelson::Manipulator
 
   def initialize
     # SELECTION is a pointer to a collection of cells.
@@ -35,7 +35,7 @@ class YTed::Nelson::Manipulator
   delegate( :workspace_method_1,
             :workspace_method_2,
             :etc,
-            to: YTed::Nelson )
+            to: YNelson )
   
   # Stand-in replacement for creation of a single-output formula, known so
   # well from existing spreadseet software. The method creates a new empty
@@ -43,8 +43,8 @@ class YTed::Nelson::Manipulator
   # towards the created place. Pair [new_place, new_transition] is returned.
   # 
   def ϝ &block
-    new_place = Place.new
-    new_transition = Transition.new assignment: true,
+    new_place = YNelson::Place.new
+    new_transition = YNelson::Transition.new assignment: true,
                                     codomain: new_place,
                                     action: block
     return new_place, new_transition

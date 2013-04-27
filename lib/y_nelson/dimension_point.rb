@@ -2,7 +2,7 @@
 
 # A pointer to a zz dimension.
 # 
-class YTed::DimensionPoint
+class YNelson::DimensionPoint
   attr_accessor :dimension
 
   def initialize( dimension: default_dimension )
@@ -10,6 +10,6 @@ class YTed::DimensionPoint
   end
 
   def default_dimension
-    YTed::Nelson.default_dimension
+    YNelson.default_dimension
   end
 end # class YTed::DimensionPoint

@@ -1,12 +1,12 @@
 # Represents Petri nets inside the Nelson net.
 # 
-class YTed::Nelson::PetriNet < YPetri::Net
+class YNelson::Net < YPetri::Net
 
   private
 
   # Place, Transition, Net class
   # 
-  def Place; ::YTed::Nelson::Place end
-  def Transition; ::YTed::Nelson::Transition end
-  def Net; ::YTed::Nelson::PetriNet end
-end
+  def Place; ::YNelson::Place end
+  def Transition; ::YNelson::Transition end
+  def Net; ::YNelson::Net end
+end # class YNelson::Net

@@ -2,7 +2,7 @@
 
 # A pointer to a Zz object. A glorified variable, basically.
 # 
-class YTed::Point
+class YNelson::Point
   attr_accessor :zz
 
   # Initialization has one optional argument :zz -- zz object at which the
@@ -22,7 +22,7 @@ class YTed::Point
            to: :zz
   alias :v :value
 
-  def default_dimension; YTed::Nelson.primary_dimension end
+  def default_dimension; YNelson.primary_dimension end
 
   # Quasi-delegation to zz
 
@@ -133,4 +133,4 @@ class YTed::Point
   def rewind_negward!( along: default_dimension )
     rewind_negward( along: along ) {}
   end
-end # class YTed::Point
+end # class YNelson::Point
