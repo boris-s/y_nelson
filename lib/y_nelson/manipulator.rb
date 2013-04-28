@@ -50,6 +50,29 @@ class YNelson::Manipulator
     return new_place, new_transition
   end
 
+  # TODO:
+  # try to say that @workspace = YNelson
+  # and reuse the manipulator methods from YPetri
+
+  # TODO: include YPetri::Manipulator::SomeInstanceMethods
+
+  # Place constructor: Creates a new place in the current workspace.
+  # 
+  def Place *args, &block
+    YNelson.Place.new *args, &block
+  end
+
+  # Transiton constructor: Creates a new transition in the current workspace.
+  # 
+  def Transition *args, &block
+    YNelson.Transition.new *args, &block
+  end
+
+  # Net constructor: Creates a new Net instance in the current workspace.
+  # 
+  def Net *args, &block
+    YNelson.Net.new *args, &block
+  end
 
   # Cell side referencers with r. to primary and secondary point
   def ξ_posward_side dim=nil; ::YTed::POINT.posward_side dim end

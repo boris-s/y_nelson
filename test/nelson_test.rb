@@ -14,6 +14,16 @@ require './../lib/y_nelson'
 describe YNelson do
   before do
     @m = YNelson::Manipulator.new
+    @p = @m.Place default_marking: 3.2,
+                  marking: 1.1,
+                  quantum: 0.1
+  end
+
+  describe "transition linking to a place creates a zz connection" do
+    it "should work as expected" do
+      t = @m.Transition codomain: @p, action: lambda { 0.1 }, assignment: true
+      assert t.neighbors == [ @p ]
+    end
   end
 
   it "should work" do
@@ -21,6 +31,7 @@ describe YNelson do
     # has point
     # has dimension point
     # can create places
+    @m.Place
     # can remove places
   end
 
@@ -40,7 +51,7 @@ describe YNelson do
   end
 end
 
-describe YNelson::Point do
+describe YNelson::ZzPoint do
   it "should work" do
     # TODO
   end
