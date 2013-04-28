@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["boris"]
   spec.email         = ["\"boris@iis.sinica.edu.tw\""]
   spec.description   = %q{Formalization and generalization of a spreadsheet.}
-  spec.summary       = %q{A better spreadsheet driven by Ruby DSL}
+  spec.summary       = %q{A fusion of functional Petri net with a zz structure.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'y_ted'
+  spec.add_dependency 'yzz'
   spec.add_dependency 'y_petri'
 
   spec.add_development_dependency "bundler", "~> 1.3"
