@@ -19,10 +19,18 @@ describe YNelson do
                   quantum: 0.1
   end
 
-  describe "transition linking to a place creates a zz connection" do
+  describe "new transition form correct zz connections with places" do
     it "should work as expected" do
+      assert_equal [], @p.neighbors
+      assert_equal [], @p.connectivity # TODO: This means, that "connectivity"
+      # keyword is no longer going to be used in the Petri net context, only in
+      # the zz context, and will be replaced only by 'arcs' in the Petri net context.
       t = @m.Transition codomain: @p, action: lambda { 0.1 }, assignment: true
       assert t.neighbors == [ @p ]
+      dim = @m.Dimension( zz: t, type: :codomain, id: 0 )
+      assert_equal @p, t.along( dim ).posward.neighbor
+      # And then, it would be the job of dimension reduction to determine if
+      # some dimensions should be visualized or otherwise used together.
     end
   end
 
