@@ -2,7 +2,7 @@
 # shuffling will be required...
 # 
 class YNelson::Place < YPetri::Place
-  include YTed::Zz
+  include Yzz
 
   class << self
   end

@@ -1,7 +1,7 @@
 # Let's see whether just subclassing YPetri::Transition will do...
 # 
 class YNelson::Transition < YPetri::Transition
-  include YTed::Zz
+  include Yzz
 
   private
 

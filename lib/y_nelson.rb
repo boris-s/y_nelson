@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-require 'y_ted'
+require 'yzz'
 require 'y_petri'
 
 require_relative 'y_nelson/version'
