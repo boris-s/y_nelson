@@ -3,6 +3,8 @@
 class YNelson::Transition < YPetri::Transition
   include Yzz
 
+  alias call along # .( :dimension ) instead of .along( :dimension )
+
   private
 
   # Place, Transition, Net class

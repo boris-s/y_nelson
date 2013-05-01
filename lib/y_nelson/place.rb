@@ -4,6 +4,8 @@
 class YNelson::Place < YPetri::Place
   include Yzz
 
+  alias call along # .( :dimension ) instead of .along( :dimension )
+
   class << self
   end
 

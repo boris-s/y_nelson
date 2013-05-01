@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
 #! /usr/bin/ruby
-#coding: utf-8
+# -*- coding: utf-8 -*-
 
 require 'minitest/spec'
 require 'minitest/autorun'
@@ -22,9 +21,7 @@ describe YNelson do
   describe "new transition form correct zz connections with places" do
     it "should work as expected" do
       assert_equal [], @p.neighbors
-      assert_equal [], @p.connectivity # TODO: This means, that "connectivity"
-      # keyword is no longer going to be used in the Petri net context, only in
-      # the zz context, and will be replaced only by 'arcs' in the Petri net context.
+      assert_equal [], @p.connectivity # 'connectivity' now exclusively a zz keyword
       t = @m.Transition codomain: @p, action: lambda { 0.1 }, assignment: true
       assert t.neighbors == [ @p ]
       dim = @m.Dimension( zz: t, type: :codomain, id: 0 )
