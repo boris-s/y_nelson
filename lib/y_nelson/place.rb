@@ -2,7 +2,7 @@
 # shuffling will be required...
 # 
 class YNelson::Place < YPetri::Place
-  include Yzz
+  include YNelson::Yzz
 
   alias call along # .( :dimension ) instead of .along( :dimension )
 

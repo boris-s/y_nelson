@@ -1,7 +1,7 @@
 # Let's see whether just subclassing YPetri::Transition will do...
 # 
 class YNelson::Transition < YPetri::Transition
-  include Yzz
+  include YNelson::Yzz
 
   alias call along # .( :dimension ) instead of .along( :dimension )
 
