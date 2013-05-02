@@ -145,7 +145,7 @@ def graphviz dim1, dim2
   # γ.edge[:arrowsize] = "0.5"
 
   nodes = Hash[ places.map { |pɴ, label|         # make nodes
-                  [ pɴ, γ.add_nodes( label ) ]
+                  [ pɴ, γ.add_nodes( label.to_s ) ]
                 } ]
 
   places.each { |pɴ, label|                      # add edges
