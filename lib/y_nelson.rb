@@ -109,3 +109,51 @@ module YNelson
             to: :nelson_manipulator )
   # TODO: Placing of Nelson manipulator instance is not completely correct.
 end
+
+# Now let's look into the graph visualization.
+
+# Define function to display it with kioclient
+
+# Define graphviz places
+def graphviz dim1, dim2
+
+  places = Hash[ ( [ YNelson::Place.instance_names ] * 2 ).transpose ]
+
+  require 'graphviz'
+  γ = GraphViz.new :G, type: :digraph  # Create a new graph
+
+  # # set global node options
+  # γ.node[:color] = "#ddaa66"
+  # γ.node[:style] = "filled"
+  # γ.node[:shape] = "box"
+  # γ.node[:penwidth] = "1"
+  # γ.node[:fontname] = "Trebuchet MS"
+  # γ.node[:fontsize] = "8"
+  # γ.node[:fillcolor] = "#ffeecc"
+  # γ.node[:fontcolor] = "#775500"
+  # γ.node[:margin] = "0.0"
+
+  # # set global edge options
+  # γ.edge[:color] = "#999999"
+  # γ.edge[:weight] = "1"
+  # γ.edge[:fontsize] = "6"
+  # γ.edge[:fontcolor] = "#444444"
+  # γ.edge[:fontname] = "Verdana"
+  # γ.edge[:dir] = "forward"
+  # γ.edge[:arrowsize] = "0.5"
+
+  nodes = Hash[ places.map { |pɴ, label|         # make nodes
+                  [ pɴ, γ.add_nodes( label ) ]
+                } ]
+
+  places.each { |pɴ, label|                      # add edges
+    p = place pɴ
+    nodes[ p.( dim1 ).negward.neighbor.name ] << nodes[ pɴ ] # color 1
+    nodes[ p.( dim2 ).negward.neighbor.name ] << nodes[ pɴ ] # color 2
+  }
+
+  γ.output png: "zz.png"        # Generate output image
+  YSupport::KDE.show_file_with_kioclient File.expand_path( '.', "zz.png" )
+end
+
+# graphviz [:domain, 0 ], [:codomain, 0]
