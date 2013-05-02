@@ -12,7 +12,6 @@ class YNelson::Transition < YPetri::Transition
   # place of the transition.
   # 
   def inform_upstream_places
-    puts "#{upstream_places.size} upstream places}"
     upstream_places.each_with_index { |p, i|
       along( YNelson.Dimension :domain, i ) >> p
     }
@@ -24,7 +23,6 @@ class YNelson::Transition < YPetri::Transition
   # codomain place of the transition.
   # 
   def inform_downstream_places
-    puts "#{downstream_places.size} upstream places}"
     downstream_places.each_with_index { |p, i|
       along( YNelson.Dimension :codomain, i ) >> p
     }
