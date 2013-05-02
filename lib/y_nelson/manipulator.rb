@@ -32,9 +32,7 @@ class YNelson::Manipulator
   end
 
   # Delegation of "workspace methods" directly to ... YTed::Nelson singleton class?
-  delegate( :workspace_method_1,
-            :workspace_method_2,
-            :etc,
+  delegate( :Dimension,
             to: YNelson )
   
   # Stand-in replacement for creation of a single-output formula, known so

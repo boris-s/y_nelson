@@ -4,6 +4,7 @@ require 'yzz'
 require 'y_petri'
 
 require_relative 'y_nelson/version'
+require_relative 'y_nelson/dimension'
 require_relative 'y_nelson/place'
 require_relative 'y_nelson/transition'
 require_relative 'y_nelson/net'

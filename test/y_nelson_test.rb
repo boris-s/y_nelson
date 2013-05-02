@@ -18,13 +18,19 @@ describe YNelson do
                   quantum: 0.1
   end
 
+  describe YNelson::Dimension do
+    it "should give same instance for same object" do
+      assert_equal YNelson.Dimension( :xxx ), @m.Dimension( :xxx )
+    end
+  end
+
   describe "new transition form correct zz connections with places" do
     it "should work as expected" do
       assert_equal [], @p.neighbors
       assert_equal [], @p.connectivity # 'connectivity' now exclusively a zz keyword
       t = @m.Transition codomain: @p, action: lambda { 0.1 }, assignment: true
-      assert t.neighbors == [ @p ]
-      dim = @m.Dimension( zz: t, type: :codomain, id: 0 )
+      assert_equal [ @p ], t.neighbors
+      dim = @m.Dimension( :codomain, 0 )
       assert_equal @p, t.along( dim ).posward.neighbor
       # And then, it would be the job of dimension reduction to determine if
       # some dimensions should be visualized or otherwise used together.
