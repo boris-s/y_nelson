@@ -150,8 +150,11 @@ def graphviz dim1, dim2
 
   places.each { |pɴ, label|                      # add edges
     p = place pɴ
-    nodes[ p.( dim1 ).negward.neighbor.name ] << nodes[ pɴ ] # color 1
-    nodes[ p.( dim2 ).negward.neighbor.name ] << nodes[ pɴ ] # color 2
+    nn = lambda { |dim| p.( dim ).negward.neighbor }
+    nN = nn.( dim1 )
+    nN.name << nodes[ pɴ ] if nN # color 1
+    nN = nn.( dim2 )
+    nN.name << nodes[ pɴ ] if nN # color 2
   }
 
   γ.output png: "zz.png"        # Generate output image
