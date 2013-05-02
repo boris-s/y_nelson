@@ -2,6 +2,7 @@
 
 require 'yzz'
 require 'y_petri'
+require 'y_support/kde'
 
 require_relative 'y_nelson/version'
 require_relative 'y_nelson/yzz'
@@ -103,6 +104,7 @@ module YNelson
             :secondary_point,
             :primary_dimension_point,
             :secondary_dimension_point,
+            :place, :transition, :net,
             :α, :β,
             :א, :ב,
             :ϝ,
