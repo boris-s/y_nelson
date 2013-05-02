@@ -71,7 +71,7 @@ module YNelson
       receiver.module_exec {
         define_method :nelson_manipulator do
           singleton_class.instance_variable_get :@NelsonManipulator or
-            ( puts "defining Manipulator for #{self} singleton class" if YTed::DEBUG
+            ( puts "defining Manipulator for #{self} singleton class" if YNelson::DEBUG
               singleton_class.instance_variable_set :@NelsonManipulator, Manipulator.new )
         end
       }
