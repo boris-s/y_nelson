@@ -320,6 +320,7 @@ class YNelson::Manipulator
   # Define graphviz places
   def graphviz dim1=primary_dimension_point, dim2=secondary_dimension_point
     places = Hash[ ( [ YNelson::Place.instance_names ] * 2 ).transpose ]
+    transitions = Hash[ ( [ YNelson::Transition.instance_names ] * 2 ).transpose ]
     γ = GraphViz.new :G, type: :digraph  # Create a new graph
 
     # set global node options
@@ -343,7 +344,8 @@ class YNelson::Manipulator
     γ.edge[:arrowsize] = "0.5"
 
     # add zz objects
-    nodes = Hash[ places.map { |pɴ, lbl| [ pɴ, γ.add_nodes( lbl.to_s ) ] } ]
+    nodes = Hash[ ( places + transitions )
+                    .map { |pɴ, lbl| [ pɴ, γ.add_nodes( lbl.to_s ) ] } ]
     # add edges for selected dimensions
     places.each { |pɴ, label|
       p = place pɴ
