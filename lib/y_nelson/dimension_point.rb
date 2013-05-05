@@ -5,7 +5,7 @@
 class YNelson::DimensionPoint
   attr_accessor :dimension
 
-  def initialize( dimension: default_dimension )
+  def initialize dimension
     @dimension = dimension
   end
 

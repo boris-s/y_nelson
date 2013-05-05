@@ -1,16 +1,14 @@
-# Let's see whether just subclassing YPetri::Place will do the job, or module
-# shuffling will be required...
+# YNelson::Place is analogical to a spreadsheet cell. It is based on
+# YPetri::Place and offers simlar interace.
 # 
 class YNelson::Place < YPetri::Place
   include YNelson::Yzz
-
-  alias call along # .( :dimension ) instead of .along( :dimension )
+  alias call along # .( :dim ) instead of .along( :dim )
 
   class << self
   end
 
-  # Subclass of Side provided by YTed::Zz - I wonder whether this is a good
-  # approach.
+  # Subclass of YTed::Zz::Side.
   # 
   class Side < Side
     # "Budding": creation of new cells from the cell sides

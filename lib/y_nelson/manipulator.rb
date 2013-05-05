@@ -1,34 +1,34 @@
 # -*- coding: utf-8 -*-
-# Although Nelson net itself is a singleton workspace, and thus has no
-# counterpart of YPetri::Workspace, it admits existence of one or even more
-# than one manipulator instance, representing user interface.
-# 
+
+# YNelson user inteface. Ted Nelson, in his introduction of zz structures, has
+# remarks regarding such UI, too:
+#
+# SELECTION is a pointer to a collection of cells.
+# VIEW consists of SELECTION and a COORDINATE SYSTEM
+# FIELD is a connected (contiguous) selection.
+# COORDINATE SYSTEM is a collection of dimensions and their orientation.
+#
 class YNelson::Manipulator
+  attr_reader :sheets
 
   def initialize
-    # SELECTION is a pointer to a collection of cells.
-    # 
-    # FIELD is a connected (contiguous) selection.
-    # 
-    # VIEW consists of SELECTION and a COORDINATE SYSTEM
-    # 
-    # COORDINATE SYSTEM is a collection of dimensions and their orientation
-    # in a view (eg. 3-axis view we are used to from spreadsheets).
-    # 
-    # At the same time, each cell is a PLACE of a functional Petri net, and
-    # thus has MARKING (=VALUE).
-    # 
-    # In a Petri net, PLACES are connected by arcs to TRANSITIONS, which can
-    # change marking of the PLACES when they FIRE (#fire method).
-    # 
-    # Both places and transitions have DOMAIN (UPSTREAM objects) and CODOMAIN
-    # (DOWNSTREAM objects). For transitions, TEST ARCS point upstream (to
-    # input places) and ACTION ARCS point downstream (to output places).
-    # 
-    # A hash of sheets. (ZzCells have no problem to be a Zz structure and at
-    # the same time members of standard Ruby data structures.)
+    # A hash of sheets. For the moment being, YNelson is a spreadsheet
+    # replacement, and zz objects have no problem with being assigned to
+    # any data structures of Ruby.
     # 
     @sheets = {}
+
+    # Spreadsheet users may expect:
+    @dimensions = :row, :column, :sheet
+    @default_dimension = :row
+
+    # Zz object pointer.
+    @primary_point = YNelson::ZzPoint.new
+    @secondary_point = YNelson::ZzPoint.new
+
+    # Zz dimension pointer.
+    @primary_dimension_point = YNelson::DimensionPoint.new :row
+    @secondary_dimension_point = YNelson::DimensionPoint.new :column
   end
 
   # Delegation of "workspace methods" directly to ... YTed::Nelson singleton class?
@@ -38,10 +38,8 @@ class YNelson::Manipulator
             :net,
             to: YNelson )
   
-  # Stand-in replacement for creation of a single-output formula, known so
-  # well from existing spreadseet software. The method creates a new empty
-  # place, and a new assignment transition whose single codomain arc extends
-  # towards the created place. Pair [new_place, new_transition] is returned.
+  # Creates a single-output formula, known so well from spreadseets. Given a
+  # place, it creates a new assignment transition.
   # 
   def ϝ &block
     new_place = YNelson::Place.new
@@ -271,6 +269,7 @@ class YNelson::Manipulator
 
   # Places an order for a spreadsheet-like assignment transition. The order
   # will be fullfilled later when #make_transitions method is called.
+  # 
   def new_downstream_cell &block
     # The place can be instatiated right away
     place = ZzCell( nil )
@@ -286,6 +285,7 @@ class YNelson::Manipulator
   alias :ϝ :new_downstream_cell
 
   # Places an order for a spreadsheet-lie pure reference to another cell.
+  # 
   def new_downstream_copy( cell )
     # Again, the place can be instantiated immediately
     p = ZzCell( nil )
@@ -297,4 +297,66 @@ class YNelson::Manipulator
     return p
   end
   alias :↱ :new_downstream_copy
+
+  # Now let's look into the graph visualization.
+
+  def default_dimension; @default_dimension end
+
+  def primary_point; @primary_point end
+  alias p1 primary_point
+
+  def secondary_point; @secondary_point end
+  alias p2 secondary_point
+
+  def primary_dimension_point; @primary_dimension_point end
+  alias d1 primary_dimension_point
+
+  def secondary_dimension_point; @secondary_dimension_point end
+  alias d2 secondary_dimension_point
+
+  # Define function to display it with kioclient
+  def visualize; graphviz end
+
+  # Define graphviz places
+  def graphviz dim1=primary_dimension_point, dim2=secondary_dimension_point
+    places = Hash[ ( [ YNelson::Place.instance_names ] * 2 ).transpose ]
+    γ = GraphViz.new :G, type: :digraph  # Create a new graph
+
+    # set global node options
+    γ.node[:color] = "#ddaa66"
+    γ.node[:style] = "filled"
+    γ.node[:shape] = "box"
+    γ.node[:penwidth] = "1"
+    γ.node[:fontname] = "Trebuchet MS"
+    γ.node[:fontsize] = "8"
+    γ.node[:fillcolor] = "#ffeecc"
+    γ.node[:fontcolor] = "#775500"
+    γ.node[:margin] = "0.0"
+
+    # set global edge options
+    γ.edge[:color] = "#999999"
+    γ.edge[:weight] = "1"
+    γ.edge[:fontsize] = "6"
+    γ.edge[:fontcolor] = "#444444"
+    γ.edge[:fontname] = "Verdana"
+    γ.edge[:dir] = "forward"
+    γ.edge[:arrowsize] = "0.5"
+
+    # add zz objects
+    nodes = Hash[ places.map { |pɴ, lbl| [ pɴ, γ.add_nodes( lbl.to_s ) ] } ]
+    # add edges for selected dimensions
+    places.each { |pɴ, label|
+      p = place pɴ
+      nn = lambda { |dim| p.( dim ).negward.neighbor }
+      nN = nn.( dim1 )
+      nN.name << nodes[ pɴ ] if nN # color 1
+      nN = nn.( dim2 )
+      nN.name << nodes[ pɴ ] if nN # color 2
+    }
+
+    γ.output png: "zz.png"        # Generate output image
+    YSupport::KDE.show_file_with_kioclient File.expand_path( '.', "zz.png" )
+  end
+
+  # graphviz [:domain, 0 ], [:codomain, 0]
 end
