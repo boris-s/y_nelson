@@ -13,10 +13,8 @@ class YNelson::Transition < YPetri::Transition
   # i-th domain place of the transition.
   # 
   def inform_upstream_places
-    puts "upstream places:"
-    puts upstream_places
     upstream_places.each_with_index { |p, i|
-      along( YNelson.Dimension :domain, i ) >> p
+      along( YNelson.Dimension self, :domain, i ) >> p
     }
     super
   end
@@ -26,10 +24,8 @@ class YNelson::Transition < YPetri::Transition
   # for i-th codomain place of the transition.
   # 
   def inform_downstream_places
-    puts "downstream places:"
-    puts downstream_places
     downstream_places.each_with_index { |p, i|
-      along( YNelson.Dimension :codomain, i ) >> p
+      along( YNelson.Dimension self, :codomain, i ) >> p
     }
     super
   end
