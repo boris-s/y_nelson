@@ -17,6 +17,7 @@ class YNelson::Manipulator
   def initialize
     # For YNelson manipulators, the workspace is always YNelson itself.
     @workspace = ::YNelson
+    super
     # A hash of sheets. For the moment being, YNelson acts as a spreadsheet.
     @sheets = {}
     # Default dimension of this manipulator.
