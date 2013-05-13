@@ -82,7 +82,7 @@ module YNelson
   # Atypical call to #initialize in the course of module execution.
   initialize
   
-  delegate( :workspace, to: :y_nelson_manipulator )
+  delegate( :workspace, to: :nelson_manipulator )
 
   # Petri net aspect.
   delegate( :Place, :Transition, :Net,
@@ -94,7 +94,7 @@ module YNelson
             :net, :ne,
             :net_point_reset,
             :net_point_set,
-            to: :y_nelson_manipulator )
+            to: :nelson_manipulator )
 
   # Simulation aspect.
   delegate( :simulation_point, :ssc_point, :cc_point, :imc_point,
@@ -130,7 +130,7 @@ module YNelson
             :plot_selected,
             :plot_state,
             :plot_flux,
-            to: :y_nelson_manipulator )
+            to: :nelson_manipulator )
 
   # Zz aspect.
   delegate( :Dimension,
