@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # YNelson user inteface. Ted Nelson, in his introduction of zz structures, has
 # remarks regarding such UI, too:
 #
@@ -9,69 +8,120 @@
 # COORDINATE SYSTEM is a collection of dimensions and their orientation.
 #
 class YNelson::Manipulator
+  attr_reader :workspace
   attr_reader :sheets
 
+  include YPetri::Manipulator::PetriNetRelatedMethods
+  include YPetri::Manipulator::SimulationRelatedMethods
+
   def initialize
-    # A hash of sheets. For the moment being, YNelson is a spreadsheet
-    # replacement, and zz objects have no problem with being assigned to
-    # any data structures of Ruby.
-    # 
+    # For YNelson manipulators, the workspace is always YNelson itself.
+    @workspace = ::YNelson
+    # A hash of sheets. For the moment being, YNelson acts as a spreadsheet.
     @sheets = {}
-
-    # Spreadsheet users may expect:
-    @dimensions = :row, :column, :sheet
-    @default_dimension = :row
-
-    # Zz object pointer.
+    # Default dimension of this manipulator.
+    @default_dimension = YNelson.Dimension :row
+    # Zz object pointers of this manipulator.
     @primary_point = YNelson::ZzPoint.new
     @secondary_point = YNelson::ZzPoint.new
-
-    # Zz dimension pointer.
-    @primary_dimension_point = YNelson::DimensionPoint.new :row
-    @secondary_dimension_point = YNelson::DimensionPoint.new :column
+    # Zz dimension pointers of this manipulator.
+    @primary_dimension_point =
+      YNelson::DimensionPoint.new YNelson.Dimension( :row )
+    @secondary_dimension_point =
+      YNelson::DimensionPoint.new YNelson.Dimension( :column )
   end
 
-  # Delegation of "workspace methods" directly to ... YTed::Nelson singleton class?
+  # Now the part related to the zz structure itself.
+
+  # Dimension convenience constructor from 
   delegate( :Dimension,
-            :place,
-            :transition,
-            :net,
-            to: YNelson )
+            to: :workspace )
   
-  # Creates a single-output formula, known so well from spreadseets. Given a
+  # Creation of a single-output formula known well from spreadseets. Given a
   # place, it creates a new assignment transition.
   # 
   def ϝ &block
     new_place = YNelson::Place.new
     new_transition = YNelson::Transition.new assignment: true,
-                                    codomain: new_place,
-                                    action: block
+                                             codomain: new_place,
+                                             action: block
     return new_place, new_transition
   end
 
-  # TODO:
-  # try to say that @workspace = YNelson
-  # and reuse the manipulator methods from YPetri
+  # Now let's look into the graph visualization.
 
-  # TODO: include YPetri::Manipulator::SomeInstanceMethods
+  def default_dimension; @default_dimension end
 
-  # Place constructor: Creates a new place in the current workspace.
-  # 
-  def Place *args, &block
-    YNelson.Place.new *args, &block
+  def primary_point; @primary_point end
+  alias p1 primary_point
+
+  def secondary_point; @secondary_point end
+  alias p2 secondary_point
+
+  def primary_dimension_point; @primary_dimension_point end
+  alias d1 primary_dimension_point
+
+  def secondary_dimension_point; @secondary_dimension_point end
+  alias d2 secondary_dimension_point
+
+  # Define function to display it with kioclient
+  def visualize *args, &block; graphviz *args, &block end
+
+  # Define graphviz places
+  def graphviz dim1=primary_dimension_point, dim2=secondary_dimension_point
+    γ = GraphViz.new :G, type: :digraph  # Create a new graph
+
+    # main        = γ.add_nodes( "main", shape: "box" )
+    # parse       = γ.add_nodes( "parse", fillcolor: "yellow", style: "rounded,filled", shape: "diamond" )
+    # execute     = γ.add_nodes( "execute", shape: "record", label: "{ a | b | c }", style: "rounded" )
+    # init        = γ.add_nodes( "init", fillcolor: "yellow", style: "filled" )
+
+    # set global node options
+    γ.node[:color] = "#ddaa66"
+    γ.node[:style] = "filled"
+    γ.node[:shape] = "box"
+    γ.node[:penwidth] = "1"
+    γ.node[:fontname] = "Trebuchet MS"
+    γ.node[:fontsize] = "8"
+    γ.node[:fillcolor] = "#ffeecc"
+    γ.node[:fontcolor] = "#775500"
+    γ.node[:margin] = "0.0"
+
+    # set global edge options
+    γ.edge[:color] = "#999999"
+    γ.edge[:weight] = "1"
+    γ.edge[:fontsize] = "6"
+    γ.edge[:fontcolor] = "#444444"
+    γ.edge[:fontname] = "Verdana"
+    γ.edge[:dir] = "forward"
+    γ.edge[:arrowsize] = "0.5"
+
+    # add zz objects
+    place_nodes = places.map.with_object Hash.new do |place, ꜧ|
+      ꜧ[place] = γ.add_nodes place.name.to_s
+    end
+    transition_nodes = transitions.map.with_object Hash.new do |transition, ꜧ|
+      ꜧ[transition] = γ.add_nodes transition.name.to_s
+    end
+    nodes = place_nodes.merge transition_nodes
+    # add edges for selected dimensions
+    nodes.each { |instance, node|
+      negward_neighbor = instance.( dim1 ).negward.neighbor
+      nodes[ negward_neighbor ] << node if negward_neighbor # color 1
+      negward_neighbor = instance.( dim2 ).negward.neighbor
+      nodes[ negward_neighbor ] << node if negward_neighbor # color 2
+    }
+
+    γ.output png: "zz.png"        # Generate output image
+    YSupport::KDE.show_file_with_kioclient File.expand_path( '.', "zz.png" )
+
+    # main        = γ.add_nodes( "main", shape: "box" )
+    # parse       = γ.add_nodes( "parse", fillcolor: "yellow", style: "rounded,filled", shape: "diamond" )
+    # execute     = γ.add_nodes( "execute", shape: "record", label: "{ a | b | c }", style: "rounded" )
+    # init        = γ.add_nodes( "init", fillcolor: "yellow", style: "filled" )
   end
 
-  # Transiton constructor: Creates a new transition in the current workspace.
-  # 
-  def Transition *args, &block
-    YNelson.Transition.new *args, &block
-  end
-
-  # Net constructor: Creates a new Net instance in the current workspace.
-  # 
-  def Net *args, &block
-    YNelson.Net.new *args, &block
-  end
+  # graphviz [:domain, 0 ], [:codomain, 0]
 
   # Cell side referencers with r. to primary and secondary point
   def ξ_posward_side dim=nil; ::YTed::POINT.posward_side dim end
@@ -297,68 +347,4 @@ class YNelson::Manipulator
     return p
   end
   alias :↱ :new_downstream_copy
-
-  # Now let's look into the graph visualization.
-
-  def default_dimension; @default_dimension end
-
-  def primary_point; @primary_point end
-  alias p1 primary_point
-
-  def secondary_point; @secondary_point end
-  alias p2 secondary_point
-
-  def primary_dimension_point; @primary_dimension_point end
-  alias d1 primary_dimension_point
-
-  def secondary_dimension_point; @secondary_dimension_point end
-  alias d2 secondary_dimension_point
-
-  # Define function to display it with kioclient
-  def visualize; graphviz end
-
-  # Define graphviz places
-  def graphviz dim1=primary_dimension_point, dim2=secondary_dimension_point
-    places = Hash[ ( [ YNelson::Place.instance_names ] * 2 ).transpose ]
-    transitions = Hash[ ( [ YNelson::Transition.instance_names ] * 2 ).transpose ]
-    γ = GraphViz.new :G, type: :digraph  # Create a new graph
-
-    # set global node options
-    γ.node[:color] = "#ddaa66"
-    γ.node[:style] = "filled"
-    γ.node[:shape] = "box"
-    γ.node[:penwidth] = "1"
-    γ.node[:fontname] = "Trebuchet MS"
-    γ.node[:fontsize] = "8"
-    γ.node[:fillcolor] = "#ffeecc"
-    γ.node[:fontcolor] = "#775500"
-    γ.node[:margin] = "0.0"
-
-    # set global edge options
-    γ.edge[:color] = "#999999"
-    γ.edge[:weight] = "1"
-    γ.edge[:fontsize] = "6"
-    γ.edge[:fontcolor] = "#444444"
-    γ.edge[:fontname] = "Verdana"
-    γ.edge[:dir] = "forward"
-    γ.edge[:arrowsize] = "0.5"
-
-    # add zz objects
-    nodes = Hash[ ( places + transitions )
-                    .map { |pɴ, lbl| [ pɴ, γ.add_nodes( lbl.to_s ) ] } ]
-    # add edges for selected dimensions
-    places.each { |pɴ, label|
-      p = place pɴ
-      nn = lambda { |dim| p.( dim ).negward.neighbor }
-      nN = nn.( dim1 )
-      nN.name << nodes[ pɴ ] if nN # color 1
-      nN = nn.( dim2 )
-      nN.name << nodes[ pɴ ] if nN # color 2
-    }
-
-    γ.output png: "zz.png"        # Generate output image
-    YSupport::KDE.show_file_with_kioclient File.expand_path( '.', "zz.png" )
-  end
-
-  # graphviz [:domain, 0 ], [:codomain, 0]
 end

@@ -12,6 +12,7 @@ require './../lib/y_nelson'
 #
 describe YNelson do
   before do
+    skip
     @m = YNelson::Manipulator.new
     @p = @m.Place default_marking: 3.2,
                   marking: 1.1,
@@ -71,6 +72,23 @@ end
 describe YNelson::DimensionPoint do
   it "should work" do
     # TODO
+  end
+end
+
+describe "visualization" do
+  before do
+    @m = YNelson::Manipulator.new
+    @m.Place name: :A, m!: 3.2
+    @m.Place name: :B, m!: 5
+    @m.Transition name: :T1, s: { A: -1, B: 1 }, rate: 1
+    @m.Place name: :C, m!: 7.0
+    @m.Transition name: :T2, s: { B: -1, C: 1 }, rate: 1
+  end
+
+  it "should work" do
+    dim1 = YNelson::Dimension( :domain, 0 )
+    dim2 = YNelson::Dimension( :codomain, 1 )
+    @m.visualize dim1, dim2
   end
 end
 

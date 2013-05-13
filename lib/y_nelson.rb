@@ -15,50 +15,48 @@ require_relative 'y_nelson/zz_point'
 require_relative 'y_nelson/dimension_point'
 require_relative 'y_nelson/manipulator'
 
-# Spreadsheet software, which we all know, is based on a data structure, which
-# can be formalized a combination of 2 aspects:
+# YNelson is an implementation of a cross between Ted Nelson's Zz structure, and
+# a functional Petri net (FPN). The resulting data structure, which combines
+# qualities of FPNs with those of relational databases, I refer to as Nelson net
+# throughout this text.
+# 
+# One way to understand Nelson nets is as a genralization of a spreadsheet. In
+# his explanations of Zz structures, Ted Nelson makes wide use of spreadsheet
+# metaphors: cells, ranks, rows, columns, cursors, selections... Nelson net
+# implemented here adds "formulas" to the mix, represented by FPN transitions.
+# 
+# Nelson net disposes of the arbitrary constraints on FPNs as well as the
+# orthogonal structure of "cells" seen in most practical spreadsheet
+# implementations:
+# 
+# 1. Both places and transitions of the FPN take part in zz structure.
+# 2. Formula-based transitions are upgraded to standalone FPN transitions.
+# 
+# The implications of the zz structure differences from ordinary hyperorthogonal
+# structures hav been, to a degree, explained by Ted Nelson himself. There is a
+# growing body of literature on zz structure applications, including in
+# bioinformatics.
 #
-# 1. Orthogonal structure
-# 2. Network of cell formulas and their mutual connections
-# 
-# The orthogonal structure has dimensions (horizontal rows, vertical columns,
-# sheets, files...) The network of cell formulas, in most spreadsheets, bears
-# semblance to a functional Petri net (FPN). 
-# 
-# Here, I formalize and generalize the spreadsheet idea as follows:
-# 
-# 1. Spreadsheet orthogonal structure is upgraded to Ted Nelson's Zz structure
-# 2. Network of cell formulas is upgraded to a genuine FPN.
-# 
-# The resulting FPN whose places and transitions form a Zz structure, I call
-# Nelson net. Zz structure makes Nelson net considerably different from
-# conventional orthogonal structures seen in spreadsheets, databases and such.
-# The implications of these differences have been, to a degree, explained by
-# Ted Nelson, and the growing body of literature on Zz structures. In his
-# discussion of Zz structures, Ted Nelson himself already introduces the concepts
-# related to not only the data structure, but also to its presentation in a
-# user interface.
-#
-# As for the Petri net aspect, formula network of arbitrary spreadsheet can be
-# described by a suitable FPN. The opposite, however, does not hold -- current
-# spreadsheet implementations (that I know of), have implementation details, that
-# prevent them from directly representing full-fledged FPNs. Although
-# special-purpose Petri net software exists, spreadsheet developers seem to
-# proceed intuitively, without active efforts towards explicit, full fledged
-# FPN implementation. Nelson net described here is an attempt to formalize these
-# engineering efforts.
+# As for functional Petri nets, their power in computing is well recognized (eg.
+# Funnel, Odersky 2000). FPNs are sometimes just called functional nets, because
+# Petri originally described his nets as timeless and functionless. However, in
+# special-purpose applications, such as biochemical applications, to which I
+# incline, it is appropriate to honor Petri, who designed his nets specifically
+# with chemical modeling in mind as one of their main applications. In
+# biochemistry, it is common to call functional nets Petri nets (Miyano, 200?).
 # 
 module YNelson
-  # YNelson is a singleton partial descendant of YPetri::Workspace. More
-  # specifically, its singleton class mixes in most instance methods of
-  # YPetri::Workspace and provides interface, which is a superset of
-  # YPetri::Workspace. While YPetri::Workspace can have multiple instances,
+  # Singleton class of YNelson is partial descendant of YPetri::Workspace. More
+  # specifically, it mixes in most YPetri::Workspace instance methods and
+  # provides interface, which should be a superset of YPetri::Workspace. The
+  # difference is, that while YPetri::Workspace can have multiple instances,
   # representing workdesks, YNelson is a singleton representing relational
   # database.
   # 
   class << self
     # YNelson metaclass includes instance methods of YPetri::Workspace.
-    include YPetri::Workspace::InstanceMethods
+    include YPetri::Workspace::PetriNetRelatedMethods
+    include YPetri::Workspace::SimulationRelatedMethods
 
     # Allows summoning DSL by 'include YNelson' (like YPetri does).
     # 
@@ -81,16 +79,68 @@ module YNelson
   # YPetri::Workspace module.
   @Place, @Transition, @Net = self::Place, self::Transition, self::Net
 
-  initialize # Atypical call to #initialize in the course of module execution.
+  # Atypical call to #initialize in the course of module execution.
+  initialize
+  
+  delegate( :workspace, to: :y_nelson_manipulator )
 
-  delegate( :primary_point,
-            :secondary_point,
-            :primary_dimension_point,
-            :secondary_dimension_point,
-            :place, :transition, :net,
-            :α, :β,
-            :א, :ב,
+  # Petri net aspect.
+  delegate( :Place, :Transition, :Net,
+            :place, :transition, :pl, :tr
+            :places, :transitions, :nets,
+            :pp, :tt, :nn,
+            :net_point,
+            :net_selection,
+            :net, :ne,
+            :net_point_reset,
+            :net_point_set,
+            to: :y_nelson_manipulator )
+
+  # Simulation aspect.
+  delegate( :simulation_point, :ssc_point, :cc_point, :imc_point,
+            :simulation_selection, :ssc_selection,
+            :cc_selection, :imc_selection,
+            :simulations,
+            :clamp_collections,
+            :initial_marking_collections,
+            :simulation_settings_collections,
+            :clamp_collection_names, :cc_names,
+            :initial_marking_collection_names, :imc_names,
+            :simulation_settings_collection_names, :ssc_names,
+            :set_clamp_collection, :set_cc,
+            :set_initial_marking_collection, :set_imc,
+            :set_simulation_settings_collection, :set_ssc,
+            :new_timed_simulation,
+            :clamp_cc, :initial_marking_cc, :simulation_settings_cc,
+            :simulation_point_position,
+            :simulation,
+            :clamp_collection, :cc,
+            :initial_marking_collection, :imc,
+            :simulation_settings_collection, :ssc,
+            :clamp,
+            :initial_marking,
+            :set_step, :set_step_size,
+            :set_time, :set_target_time,
+            :set_sampling,
+            :set_simulation_method,
+            :new_timed_simulation,
+            :run!,
+            :print_recording,
+            :plot,
+            :plot_selected,
+            :plot_state,
+            :plot_flux,
+            to: :y_nelson_manipulator )
+
+  # Zz aspect.
+  delegate( :Dimension,
             :ϝ,
+            :default_dimension,
+            :primary_point, :p1,
+            :secondary_point, :p2,
+            :primary_dimension_point, :d1,
+            :secondary_dimension_point, :d2,
             :visualize,
+            :graphviz,
             to: :nelson_manipulator )
 end

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# Represents Petri nets inside the Nelson net.
+# Zz dimension can in principle be any object, in YNelson, special class
+# Dimension is used.
 # 
 class YNelson::Dimension
   class << self
@@ -12,7 +13,7 @@ class YNelson::Dimension
     end
 
     # The #new constructor is changed, so that same instance is returned for
-    # equal arguments.
+    # same constructor arguments.
     # 
     def new *args
       instances.find { |ɪ| ɪ.object == args } or
@@ -22,18 +23,21 @@ class YNelson::Dimension
 
   attr_reader :object
 
+  # Simply assigns array of arguments to @object atrribute.
   # 
   def initialize *args
     @object = args
   end
 
-  # Produces 
+  # Short instance description string.
   # 
   def to_s
     "#<YNelson::Dimension [#{object.join ', '}]>"
   end
-end # class YNelson::Net
+end # class YNelson::Dimension
 
 # Convenience constructor.
 # 
-def YNelson.Dimension *args; YNelson::Dimension.new *args end
+def YNelson.Dimension *args
+  YNelson::Dimension.new *args
+end
