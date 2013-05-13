@@ -86,7 +86,7 @@ module YNelson
 
   # Petri net aspect.
   delegate( :Place, :Transition, :Net,
-            :place, :transition, :pl, :tr
+            :place, :transition, :pl, :tr,
             :places, :transitions, :nets,
             :pp, :tt, :nn,
             :net_point,
