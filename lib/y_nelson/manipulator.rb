@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 # YNelson user inteface. Ted Nelson, in his introduction of zz structures, has
-# remarks regarding such UI, too:
+# remarks regarding a desired UI, such as:
 #
-# SELECTION is a pointer to a collection of cells.
-# VIEW consists of SELECTION and a COORDINATE SYSTEM
-# FIELD is a connected (contiguous) selection.
-# COORDINATE SYSTEM is a collection of dimensions and their orientation.
+# <em>Selection</em> is a pointer to a collection of cells.
+# <em>View</em> consists of selection and a coordinate system.
+# <em>Field<em> is a connected (contiguous) selection.
+# <em>Coordinate system</em> is a collection of oriented dimensions.
+#
+# Apart from that, this manipulator should offer similar functionality as
+# YPetri::Manipulator - that is, should allow constructing a Petri net
+# without much ado about zz aspect, just like YPetri does.
 #
 class YNelson::Manipulator
   attr_reader :workspace
-  attr_reader :sheets
 
   include YPetri::Manipulator::PetriNetRelatedMethods
   include YPetri::Manipulator::SimulationRelatedMethods
@@ -32,7 +35,13 @@ class YNelson::Manipulator
       YNelson::DimensionPoint.new YNelson.Dimension( :column )
   end
 
-  # Now the part related to the zz structure itself.
+  # Now the part related to the zz structure itself, like in
+  # module YNelson::Manipulator::ZzRelatedMethods
+  #   blah blah
+  # end
+  # include YNelson::Manipulator::ZzRelatedMethods
+
+  attr_reader :sheets
 
   # Dimension convenience constructor from 
   delegate( :Dimension,
