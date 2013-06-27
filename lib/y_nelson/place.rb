@@ -3,9 +3,17 @@
 # 
 class YNelson::Place < YPetri::Place
   include YNelson::Yzz
+  # include Mongoid::Document
+  # store_in collection: "places", database: "y_nelson"
+
   alias call along # .( :dim ) instead of .along( :dim )
 
   class << self
+  end
+
+  def initialize( *args )
+    super
+    
   end
 
   # Subclass of YTed::Zz::Side.
