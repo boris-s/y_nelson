@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# encoding: utf-8
+
 # YNelson user inteface. Ted Nelson, in his introduction of zz structures, has
 # remarks regarding a desired UI, such as:
 #
@@ -17,8 +18,10 @@ class YNelson::Manipulator
   include YPetri::Manipulator::PetriNetRelatedMethods
   include YPetri::Manipulator::SimulationRelatedMethods
 
+  # Initialization of a YNelson::Manipulator instance. For YNelson manipulators,
+  # the workspace is always YNelson itself.
+  # 
   def initialize
-    # For YNelson manipulators, the workspace is always YNelson itself.
     @workspace = ::YNelson
     super
     # A hash of sheets. For the moment being, YNelson acts as a spreadsheet.

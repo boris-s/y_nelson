@@ -8,4 +8,4 @@ module YNelson::Yzz
       args.size == 1 && args[0].is_a?( ::YNelson::Dimension )
     super( ::YNelson.Dimension *args )
   end
-end # module YzzPrepend
+end # module Yzz

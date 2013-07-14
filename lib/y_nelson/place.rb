@@ -19,7 +19,8 @@ class YNelson::Place < YPetri::Place
   # Subclass of YTed::Zz::Side.
   # 
   class Side < Side
-    # "Budding": creation of new cells from the cell sides
+    # "Budding": creation of new cells from the cell sides.
+    # 
     def bud( value: L!, f: nil )
       # FIXME
     end
