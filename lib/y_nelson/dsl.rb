@@ -1,4 +1,5 @@
-# -*- coding: undecided -*-
+# encoding: utf-8
+
 module YNelson
   # YNelson DSL.
   # 
@@ -73,4 +74,4 @@ module YNelson
             :visualize,
             :graphviz,
             to: :nelson_manipulator )
-end
+end # module YNelson

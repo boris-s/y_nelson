@@ -11,7 +11,6 @@ require './../lib/y_nelson'
 #
 describe YNelson do
   before do
-    skip
     @m = YNelson::Manipulator.new
     @p = @m.Place default_marking: 3.2,
                   marking: 1.1,
