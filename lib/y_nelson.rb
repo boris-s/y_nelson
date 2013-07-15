@@ -63,7 +63,7 @@ module YNelson
     # Allows summoning YNelson::DSL by 'include YNelson' (like YPetri does).
     # 
     def included( receiver )
-      receiver.extend YPetri::DSL
+      receiver.extend YNelson::DSL
       receiver.delegate :y_nelson_manipulator, to: :class
     end
 
