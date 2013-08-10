@@ -30,7 +30,7 @@ describe YNelson do
                         action: -> { 0.1 },
                         assignment: true
       assert_equal [ @p ], t.neighbors
-      dim = @m.Dimension( :codomain, 0 )
+      dim = @m.Dimension( t, :codomain, 0 )
       assert_equal @p, t.along( dim ).posward.neighbor
       # And then, it would be the job of dimension reduction to determine if
       # some dimensions should be visualized or otherwise used together.
@@ -87,7 +87,7 @@ describe "visualization" do
   it "should work" do
     dim1 = YNelson::Dimension( :domain, 0 )
     dim2 = YNelson::Dimension( :codomain, 1 )
-    skip "temporary problem with graphviz"
+    # skip "temporary problem with graphviz"
     @m.visualize dim1, dim2
   end
 end

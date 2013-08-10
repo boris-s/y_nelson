@@ -10,6 +10,7 @@ class YNelson::Place < YPetri::Place
   alias call along # .( :dim ) instead of .along( :dim )
 
   class << self
+    private :new
   end
 
   def initialize( *args )
