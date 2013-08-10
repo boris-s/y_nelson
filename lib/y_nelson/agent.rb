@@ -64,24 +64,38 @@ class YNelson::Agent
 
   # Now let's look into the graph visualization.
 
-  def default_dimension; @default_dimension end
+  def default_dimension
+    @default_dimension
+  end
 
-  def primary_point; @primary_point end
+  def primary_point
+    @primary_point
+  end
   alias p1 primary_point
 
-  def secondary_point; @secondary_point end
+  def secondary_point
+    @secondary_point
+  end
   alias p2 secondary_point
 
-  def primary_dimension_point; @primary_dimension_point end
+  def primary_dimension_point
+    @primary_dimension_point
+  end
   alias d1 primary_dimension_point
 
-  def secondary_dimension_point; @secondary_dimension_point end
+  def secondary_dimension_point
+    @secondary_dimension_point
+  end
   alias d2 secondary_dimension_point
 
-  # Define function to display it with kioclient
-  def visualize *args, &block; graphviz *args, &block end
+  # Define function to display it with kioclient.
+  # 
+  def visualize *args, &block
+    graphviz *args, &block
+  end
 
-  # Define graphviz places
+  # Define graphviz places.
+  # 
   def graphviz dim1=primary_dimension_point, dim2=secondary_dimension_point
     γ = GraphViz.new :G, type: :digraph  # Create a new graph
 

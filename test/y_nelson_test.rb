@@ -85,9 +85,11 @@ describe "visualization" do
   end
 
   it "should work" do
-    dim1 = YNelson::Dimension( :domain, 0 )
-    dim2 = YNelson::Dimension( :codomain, 1 )
-    # skip "temporary problem with graphviz"
+    dim1 = YNelson::Dimension( @m.transition( :T1 ), :domain, 0 )
+    dim2 = YNelson::Dimension( @m.transition( :T2 ), :domain, 0 )
+    @m.visualize dim1, dim2
+    dim1 = YNelson::Dimension( @m.transition( :T1 ), :codomain, 0 )
+    dim2 = YNelson::Dimension( @m.transition( :T2 ), :codomain, 0 )
     @m.visualize dim1, dim2
   end
 end
