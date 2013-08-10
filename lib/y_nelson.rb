@@ -70,21 +70,16 @@ module YNelson
       receiver.extend YNelson::DSL
       receiver.delegate :y_nelson_agent, to: "self.class"
     end
-
-    # Atypical initialize method.
-    # 
-    def initialize
-      # Parametrize the Place / Transition / Net classes.
-      param_class!( { Place: YNelson::Place,
-                      Transition: YNelson::Transition,
-                      Net: YNelson::Net },
-                    with: { world: self } )
-      # Make them their own namespaces.
-      [ Place(), Transition(), Net() ].each &:namespace!
-      # And proceed as usual.
-      super
-    end
   end # class << self
+
+  # Parametrize the Place / Transition / Net classes.
+  param_class!( { Place: YNelson::Place,
+                  Transition: YNelson::Transition,
+                  Net: YNelson::Net },
+                with: { world: self } )
+
+  # Make them their own namespaces.
+  [ Place(), Transition(), Net() ].each &:namespace!
 
   # Atypical initialize call.
   initialize

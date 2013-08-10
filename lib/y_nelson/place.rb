@@ -27,12 +27,4 @@ class YNelson::Place < YPetri::Place
     end
     alias :>> :bud
   end
-
-  private
-
-  # Place, Transition, Net class
-  # 
-  def Place; ::YNelson::Place end
-  def Transition; ::YNelson::Transition end
-  def Net; ::YNelson::Net end
 end

@@ -29,10 +29,4 @@ class YNelson::Transition < YPetri::Transition
     }
     super
   end
-
-  # Place, Transition, Net class.
-  # 
-  def Place; ::YNelson::Place end
-  def Transition; ::YNelson::Transition end
-  def Net; ::YNelson::Net end
 end
