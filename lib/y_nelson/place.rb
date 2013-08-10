@@ -3,6 +3,7 @@
 # 
 class YNelson::Place < YPetri::Place
   include YNelson::Yzz
+
   # include Mongoid::Document
   # store_in collection: "places", database: "y_nelson"
 

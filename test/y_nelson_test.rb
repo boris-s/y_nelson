@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
+# encoding: utf-8
 
-require 'minitest/spec'
 require 'minitest/autorun'
 # tested component itself
 require './../lib/y_nelson'
@@ -11,7 +10,7 @@ require './../lib/y_nelson'
 #
 describe YNelson do
   before do
-    @m = YNelson::Manipulator.new
+    @m = YNelson::Agent.new
     @p = @m.Place default_marking: 3.2,
                   marking: 1.1,
                   quantum: 0.1
@@ -75,7 +74,7 @@ end
 
 describe "visualization" do
   before do
-    @m = YNelson::Manipulator.new
+    @m = YNelson::Agent.new
     @m.Place name: :A, m!: 3.2
     @m.Place name: :B, m!: 5
     @m.Transition name: :T1, s: { A: -1, B: 1 }, rate: 1

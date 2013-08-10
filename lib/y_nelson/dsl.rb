@@ -4,13 +4,13 @@ module YNelson
   # YNelson DSL.
   # 
   module DSL
-    def y_nelson_manipulator
-      @y_nelson_manipulator ||= Manipulator.new
-        .tap { puts "Defining Manipulator for #{self}" if YNelson::DEBUG }
+    def y_nelson_agent
+      @y_nelson_agent ||= Agent.new
+        .tap { puts "Defining YNelson agent for #{self}" if YNelson::DEBUG }
     end
   end
 
-  delegate :workspace, to: :y_nelson_manipulator
+  delegate :world, to: :y_nelson_agent
 
   # Petri net aspect.
   delegate( :Place,
@@ -24,7 +24,7 @@ module YNelson
             :net, :nnet,
             :net_point_reset,
             :net_point=,
-            to: :y_nelson_manipulator )
+            to: :y_nelson_agent )
 
   # Simulation aspect.
   delegate( :simulation_point, :ssc_point, :cc_point, :imc_point,
@@ -60,7 +60,7 @@ module YNelson
             :plot_selected,
             :plot_state,
             :plot_flux,
-            to: :y_nelson_manipulator )
+            to: :y_nelson_agent )
 
 
   # Zz aspect.
@@ -73,5 +73,5 @@ module YNelson
             :secondary_dimension_point, :d2,
             :visualize,
             :graphviz,
-            to: :nelson_manipulator )
+            to: :y_nelson_agent )
 end # module YNelson

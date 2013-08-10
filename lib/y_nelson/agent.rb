@@ -1,33 +1,34 @@
 # encoding: utf-8
 
-# YNelson user inteface. Ted Nelson, in his introduction of zz structures, has
-# remarks regarding a desired UI, such as:
+# YNelson's user inteface. As the name suggests, represents an agent that
+# manipulates the YNelson world. In his introduction to zz structures,
+# Ted Nelson has remarks regarding the desired UI, such as:
 #
 # <em>Selection</em> is a pointer to a collection of cells.
 # <em>View</em> consists of selection and a coordinate system.
 # <em>Field<em> is a connected (contiguous) selection.
 # <em>Coordinate system</em> is a collection of oriented dimensions.
 #
-# Apart from that, this manipulator should offer similar functionality as
-# YPetri::Manipulator - that is, should allow constructing a Petri net
-# without much ado about zz aspect, just like YPetri does.
+# Apart from these author's suggestions, the interface should offer similar
+# functionality as YPetri::Agent – that is, should allow constructing a Petri
+# net with the same commands as YPetri does.
 #
-class YNelson::Manipulator
-  attr_reader :workspace
+class YNelson::Agent
+  attr_reader :world
 
-  include YPetri::Manipulator::PetriNetRelatedMethods
-  include YPetri::Manipulator::SimulationRelatedMethods
+  include YPetri::Agent::PetriNetRelated
+  include YPetri::Agent::SimulationRelated
 
-  # Initialization of a YNelson::Manipulator instance. For YNelson manipulators,
-  # the workspace is always YNelson itself.
+  # Initialization of a YNelson::Agent instance. For YNelson manipulators, the
+  # world is always YNelson itself.
   # 
   def initialize
-    @workspace = ::YNelson
+    @world = ::YNelson
     super
-    # A hash of sheets. For the moment being, YNelson acts as a spreadsheet.
+    # A hash of sheets. (For the moment being, YNelson acts like a spreadsheet.)
     @sheets = {}
     # Default dimension of this manipulator.
-    @default_dimension = YNelson.Dimension :row
+    @default_dimension = YNelson.Dimension( :row )
     # Zz object pointers of this manipulator.
     @primary_point = YNelson::ZzPoint.new
     @secondary_point = YNelson::ZzPoint.new
@@ -48,7 +49,7 @@ class YNelson::Manipulator
 
   # Dimension convenience constructor from 
   delegate( :Dimension,
-            to: :workspace )
+            to: :world )
   
   # Creation of a single-output formula known well from spreadseets. Given a
   # place, it creates a new assignment transition.
