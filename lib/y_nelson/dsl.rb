@@ -60,6 +60,9 @@ module YNelson
             :plot_selected,
             :plot_state,
             :plot_flux,
+            :plot_firing,
+            :plot_gradient,
+            :plot_delta,
             to: :y_nelson_agent )
 
 
