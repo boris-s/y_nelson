@@ -19,8 +19,8 @@ abilities as `YPetri`. See `YPetri` gem
 
 `YNelson` places and transtitions are both objects (or "cells", using Ted
 Nelson's terminology) of a Zz structure. They exist in a multidimensional space,
-where they can have at most 2 sides (_posward_ and _negward_) in each dimension.
-Zz structure aspect in general is defined in
+where they can have at most 2 sides -- _posward_ and _negward_ -- in each
+dimension. Zz structure aspect in general is defined in
 [yzz gem](https://github.com/boris-s/y_petri). In addition to this, `YNelson`
 automatically creates Zz connections in parallel to arcs of a Petri net. This
 way, places and transtions of a Petri net, whose relations are normally captured
