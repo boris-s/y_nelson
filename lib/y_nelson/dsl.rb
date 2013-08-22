@@ -44,6 +44,8 @@ module YNelson
             :clamp_cc, :initial_marking_cc, :simulation_settings_cc,
             :simulation_point_position,
             :simulation,
+            :pm,
+            :recording,
             :clamp_collection, :cc,
             :initial_marking_collection, :imc,
             :simulation_settings_collection, :ssc,
