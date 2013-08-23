@@ -29,4 +29,17 @@ class YNelson::Transition < YPetri::Transition
     }
     super
   end
+
+  # Produces the inspect string of the place.
+  # 
+  def inspect
+    # Calling the ancestor's #inspect.
+    YPetri::Transition.instance_method( :inspect ).bind( self ).call
+  end
+
+  # Returns a string briefly describing the place.
+  # 
+  def to_s
+    YPetri::Transition.instance_method( :to_s ).bind( self ).call
+  end
 end
