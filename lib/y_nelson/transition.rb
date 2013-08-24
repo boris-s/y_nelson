@@ -6,6 +6,19 @@ class YNelson::Transition < YPetri::Transition
   include YNelson::Yzz
   alias call along # .( :dim ) rather than .along( :dim )
 
+  # Produces the inspect string of the place.
+  # 
+  def inspect
+    # Calling the ancestor's #inspect.
+    YPetri::Transition.instance_method( :inspect ).bind( self ).call
+  end
+
+  # Returns a string briefly describing the place.
+  # 
+  def to_s
+    YPetri::Transition.instance_method( :to_s ).bind( self ).call
+  end
+
   private
 
   # YNelson extends this YPetri::Transition private method, so that a zz
@@ -28,18 +41,5 @@ class YNelson::Transition < YPetri::Transition
       along( YNelson.Dimension self, :codomain, i ) >> p
     }
     super
-  end
-
-  # Produces the inspect string of the place.
-  # 
-  def inspect
-    # Calling the ancestor's #inspect.
-    YPetri::Transition.instance_method( :inspect ).bind( self ).call
-  end
-
-  # Returns a string briefly describing the place.
-  # 
-  def to_s
-    YPetri::Transition.instance_method( :to_s ).bind( self ).call
   end
 end
