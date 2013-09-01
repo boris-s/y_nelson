@@ -11,8 +11,8 @@ the aspect of cells of the Zz structures described by Ted Nelson.
   require 'y_nelson'
   include YNelson
 ```
-`YNelson` DSL includes aspects of `YPetri`. It means, that it has the same
-abilities as `YPetri`. See `YPetri` gem
+`YNelson` DSL includes aspects of `YPetri`. It means, that it has compatible
+interface with `YPetri` DSL. See `YPetri` gem
 [for Petri net aspect usage examples](https://github.com/boris-s/y_petri).
 
 ## Zz structure aspect
@@ -25,7 +25,7 @@ dimension. Zz structure aspect in general is defined in
 automatically creates Zz connections in parallel to arcs of a Petri net. This
 way, places and transtions of a Petri net, whose relations are normally captured
 by arcs, can also have other relations defined, captured by Zz dimensions. Zz
-structure aspect is still in alpha stage at present.
+structure aspect is still under development.
 
 ## Contributing
 

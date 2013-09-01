@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Formalization and generalization of a spreadsheet.}
   spec.summary       = %q{A fusion of functional Petri net with a zz structure.}
   spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.license       = "GPLv3"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

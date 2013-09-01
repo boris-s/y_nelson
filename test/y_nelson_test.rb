@@ -26,9 +26,7 @@ describe YNelson do
     it "should work as expected" do
       assert_equal [], @p.neighbors
       assert_equal [], @p.connectivity # 'connectivity' now exclusively a zz keyword
-      t = @m.Transition codomain: @p,
-                        action: -> { 0.1 },
-                        assignment: true
+      t = @m.Transition codomain: @p, assignment: -> { 0.1 }
       assert_equal [ @p ], t.neighbors
       dim = @m.Dimension( t, :codomain, 0 )
       assert_equal @p, t.along( dim ).posward.neighbor

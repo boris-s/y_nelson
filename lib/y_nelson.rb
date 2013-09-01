@@ -84,3 +84,5 @@ module YNelson
   # Atypical initialize call.
   initialize
 end
+
+puts "YNelson: Nelson net domain model and simulator. ⓒ 2013 Boris Stitnicky"
