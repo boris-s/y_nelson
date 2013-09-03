@@ -65,7 +65,7 @@
 \begin_body
 
 \begin_layout Title
-Hands-on Guide to YPetri
+Hands-on Guide to YNelson
 \end_layout
 
 \begin_layout Part*
@@ -76,24 +76,43 @@ Introduction
 This document is a hands-on guide to 
 \family typewriter
 \color blue
-YPetri
+YNelson
 \family default
 \color inherit
 , 
 \emph on
 \color green
-Petri nets
+Nelson nets
 \emph default
 \color inherit
- and 
+ and, partially, 
 \color red
 Ruby
 \color inherit
-.
+ language.
  It is not assumed that the reader is familiar with any of these, though
- such familiarity would be an advantage.
+ familiarity with Ruby syntax would be an advantage.
+ If you have never heard about Nelson nets, do not wonder: it is a semi-novel
+ concept based on 
+\emph on
+\color green
+Petri nets
+\emph default
+\color inherit
+ crossed with Ted Nelson's 
+\emph on
+\color green
+ZZ structures
+\emph default
+\color inherit
+.
  If you follow this guide closely, you will receive a concise and efficient
- introduction to each of these three.
+ introduction to each of these three (remark:
+\emph on
+ only the Petri net aspect is covered in this version of this guide.
+ ZZ structure aspect will be covered in the future versions of this manual)
+\emph default
+.
  Newly introduced 
 \color red
 Ruby keywords and terms
@@ -104,7 +123,7 @@ Petri net terms
 \color inherit
  in green, and 
 \color blue
-YPetri keywords and terms
+YNelson keywords and terms
 \color inherit
  in blue throughout this document.
 \end_layout
@@ -113,7 +132,7 @@ YPetri keywords and terms
 
 \family typewriter
 \color blue
-YPetri
+YNelson
 \family default
 \color inherit
  is a domain model and a simulator of 
@@ -126,7 +145,18 @@ functional
 Petri nets
 \emph default
 \color inherit
- similar, but not identical with 
+ living in the 
+\emph on
+\color green
+ZZ space
+\emph default
+\color inherit
+.
+ The Petri net flavor used in 
+\family typewriter
+YNelson
+\family default
+ is similar, but not identical with 
 \emph on
 \color green
 hybrid functional Petri nets
@@ -152,7 +182,7 @@ key "Bos2008mbs"
 .
  
 \family typewriter
-YPetri
+YNelson
 \family default
  is implemented in 
 \emph on
@@ -161,21 +191,51 @@ Ruby programming language
 \emph default
 \color inherit
 .
- It will be publicly available as 
+ It is publicly available as 
 \emph on
 \color blue
-y_petri
+
+\begin_inset CommandInset href
+LatexCommand href
+name "y_nelson gem"
+target "https://rubygems.org/gems/y_nelson"
+
+\end_inset
+
+
 \emph default
 \color inherit
- gem.
+ (
+\emph on
+\color red
+gem
+\emph default
+\color inherit
+ = Ruby library).
  
 \family typewriter
-YPetri
+YNelson
 \family default
- is the first in the series of Ruby gems (
+ is one of the series of Ruby gems (
 \family typewriter
-YPetri
+\color blue
+
+\begin_inset CommandInset href
+LatexCommand href
+name "YPetri"
+target "https://rubygems.org/gems/y_petri"
+
+\end_inset
+
+
 \family default
+\color inherit
+, 
+\family typewriter
+\color blue
+YChem
+\family default
+\color inherit
 , 
 \family typewriter
 \color blue
@@ -185,36 +245,61 @@ YCell
 , 
 \family typewriter
 \color blue
-YChem
+
+\begin_inset CommandInset href
+LatexCommand href
+name "Yzz"
+target "https://rubygems.org/gems/yzz"
+
+\end_inset
+
+
 \family default
 \color inherit
 , metrology library 
 \family typewriter
 \color blue
-SY
+
+\begin_inset CommandInset href
+LatexCommand href
+name "SY"
+target "https://rubygems.org/gems/sy"
+
+\end_inset
+
+
 \family default
 \color inherit
-) intended to bring ergonomy to biochemical modeling.
+...), whose design intent is to bring ergonomy to biochemical modeling.
  Note that 
+\family typewriter
+YNelson
+\family default
+ depends on 
 \family typewriter
 YPetri
 \family default
- does not depend on these, though it can be used together with 
+ and 
+\family typewriter
+Yzz
+\family default
+ gems, its usage together with 
 \family typewriter
 SY
 \family default
- if desired.
+ might be desirable if you are dealing with physical units.
  Also, 
 \family typewriter
-YPetri
+YNelson
 \family default
- is a general purpose simulator not limited to biochemistry.
+ use is not limited to biochemistry, but for all the applications where
+ Petri nets and/or relational databases are used.
 \end_layout
 
 \begin_layout Standard
 
 \family typewriter
-YPetri
+YNelson
 \family default
  provides a 
 \emph on
@@ -223,8 +308,7 @@ domain-specific language
 \emph default
  (DSL)
 \color inherit
-, which you can access eg.
- from 
+, which you can use in scripts, or access interactively from 
 \color red
 inferior Ruby interpreter (
 \emph on
@@ -233,7 +317,7 @@ irb
 )
 \color inherit
 .
- DSLs can be thought of as APIs with user-friendly syntax.
+ A DSLs can be thought of as APIs with user-friendly syntax.
  As a believer in robot equality, I dislike the distinction between API
  and UI (user interface), and prefer common textual command interface (CI)
  for humanoid as well as cybernetic users.
@@ -242,11 +326,11 @@ irb
 \begin_layout Standard
 And why bother learning Ruby syntax and 
 \family typewriter
-YPetri
+YNelson
 \family default
 ? Half-jokingly, 
 \family typewriter
-YPetri
+YNelson
 \family default
  is 
 \emph on
@@ -256,26 +340,16 @@ The Simplest Way To Work With Complicated Petri Nets
  Petri net software at higher development stage, or written for a different
  purpose than 
 \family typewriter
-YPetri
+YNelson
 \family default
 , does exist.
  But none of the programs written for the same purpose as 
 \family typewriter
-YPetri
+YNelson
 \family default
- can avoid taking the user through the same learning process as 
-\family typewriter
-YPetri
-\family default
- does.
- There are programs, that make handling of very simple Petri nets seem easier
- than learning 
-\family typewriter
-YPetri
-\family default
-, but this ease is skin-deep, and you will realize it once your models get
- less simple.
- And if you are serious about modelling, you can bet they will.
+ can avoid taking the user through the process of learning the interface.
+ Advantages of using textual DSL become apparent as soon as the user's models
+ become less simple.
 \end_layout
 
 \begin_layout Part*
@@ -292,18 +366,28 @@ The Hard Way Is Easier
 
 \begin_layout Standard
 The phrase above is borrowed from the textbook by Zed Shaw named 
-\begin_inset Quotes erd
-\end_inset
-
-
-\emph on
-Learn Ruby the Hard Way
-\emph default
-
 \begin_inset Quotes eld
 \end_inset
 
-.
+Learn Ruby the Hard Way
+\begin_inset Quotes erd
+\end_inset
+
+ (highly recommended, 
+\emph on
+\color magenta
+
+\begin_inset CommandInset href
+LatexCommand href
+name "hyperlink here"
+target "http://ruby.learncodethehardway.org/"
+
+\end_inset
+
+
+\emph default
+\color inherit
+).
  Apart from being a great shark-jumper, Zed is a great teacher familiar
  with many programming languages, and I will borrow his teaching method
  here.
@@ -331,7 +415,7 @@ used
  to teach things.
  
 \family typewriter
-YPetri
+YNelson
 \family default
  is a language.
  To learn it and see its usefulness, you will still need to do the incredibly
@@ -360,7 +444,7 @@ very
  difficult at first, but stick with it.
  It seems stupidly obvious, but, if you have a problem installing 
 \family typewriter
-YPetri
+YNelson
 \family default
 , running 
 \emph on
@@ -384,7 +468,7 @@ exactly
  The point is to train your hands, your brain, and your mind in how to read,
  write and see Ruby and 
 \family typewriter
-YPetri
+YNelson
 \family default
  code.
  If you skip, skim and copy-paste, you are cheating yourself out of the
@@ -396,27 +480,40 @@ Prerequisites
 \end_layout
 
 \begin_layout Standard
+Most importantly, you will need a working installation of Ruby 1.9 on your
+ computer.
+ Once this condition is met, basic 
+\family typewriter
+YNelson
+\family default
+ installation is as simple as typing 
+\begin_inset Quotes eld
+\end_inset
+
 
 \family typewriter
-YPetri
+gem install y_nelson
 \family default
- is currently in alpha stage and its installation is not covered in this
- document.
- As a prerequisite, you will need a working installation of Ruby 1.9 on your
- computer.
- If you have installed 
+
+\begin_inset Quotes erd
+\end_inset
+
+ in the command prompt.
+ However, 
 \family typewriter
-YPetri
+YNelson
 \family default
- as 
-\emph on
-y_petri
-\emph default
- gem, then simply run 
+ currently uses dependencies (gnuplot gem, graphviz gem...), whose installation
+ may pose challenges.
+ Once
+\family typewriter
+ YNelson
+\family default
+ is installed, run 
 \emph on
 irb
 \emph default
- and once inside, type:
+ command interpreter, and type:
 \end_layout
 
 \begin_layout LyX-Code
@@ -424,7 +521,7 @@ irb
 \color red
 require
 \color inherit
- 'y_petri'
+ 'y_nelson'
 \end_layout
 
 \begin_layout Standard
@@ -440,17 +537,17 @@ require
 \color red
 include
 \color inherit
- YPetri
+ YNelson
 \end_layout
 
 \begin_layout Standard
 This will augment your irb command session with interactive 
 \family typewriter
-YPetri
+YNelson
 \family default
  command interface (
 \family typewriter
-YPetri
+YNelson
 \family default
  DSL CI).
  You have to re-run 
@@ -469,7 +566,7 @@ include
  Please, also notice that this guide itself is alpha stage, so the actual
  
 \family typewriter
-YPetri
+YNelson
 \family default
  version you will be using may somewhat differ from this guide.
  Also, the nucleotide metabolism model in Example 3 is yet to be tuned to
@@ -479,20 +576,20 @@ YPetri
 \end_layout
 
 \begin_layout Part*
-Example I
+Example I: Basics
 \end_layout
 
 \begin_layout Standard
 This example is a gentle introduction to Petri net terminology, 
 \family typewriter
-YPetri
+YNelson
 \family default
  DSL terminology, and Ruby syntax.
- The most basic capability that 
+ The most basic capability, that 
 \family typewriter
-YPetri
+YNelson
 \family default
- offers is that of user-driven 
+ offers, is that of user-driven 
 \emph on
 \color green
 token game
@@ -537,7 +634,7 @@ Place
 \family default
 ' of 
 \family typewriter
-YPetri
+YNelson
 \family default
  DSL and assign its 
 \emph on
@@ -571,7 +668,7 @@ instance
  of 
 \family typewriter
 \color blue
-YPetri::Place
+YNelson::Place
 \family default
 \color inherit
  
@@ -583,7 +680,7 @@ class
 .
  We say that 
 \family typewriter
-YPetri::Place
+YNelson::Place
 \family default
  class 
 \emph on
@@ -593,7 +690,7 @@ represents
 \color inherit
  the concept of Petri net places in 
 \family typewriter
-YPetri
+YNelson
 \family default
  
 \emph on
@@ -611,7 +708,7 @@ constructor
 \color inherit
  of 
 \family typewriter
-YPetri::Place
+YNelson::Place
 \family default
 , which is not important.).
  Whole this object has now been assigned to 
@@ -632,7 +729,7 @@ inspect string
 \color inherit
  of the object, created by 
 \family typewriter
-YPetri::Place#
+YNelson::Place#
 \color red
 inspect
 \family default
@@ -698,7 +795,7 @@ name
 These have automatically become part of a default Petri net instance (of
  
 \family typewriter
-YPetri::Net
+YNelson::Net
 \family default
  class; object id may vary):
 \end_layout
@@ -889,7 +986,7 @@ Transition
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: A2B (tS) >
+#=> #<Transition: A2B (tS)>
 \end_layout
 
 \begin_layout Standard
@@ -1025,7 +1122,7 @@ B
 .
  In 
 \family typewriter
-YPetri
+YNelson
 \family default
  domain model, 'arcs' are not first-class citizens.
  The word is understood simply as a synonym for transitions' connectivity
@@ -1278,7 +1375,7 @@ Functional transitions and non-integer marking
 So far, all the examples were compatible with classical Petri nets.
  But 
 \family typewriter
-YPetri
+YNelson
 \family default
  goes beyond – it represents 
 \emph on
@@ -1294,10 +1391,14 @@ key "Matsuno2011brs"
 , which was already mentioned in the introduction.
  
 \family typewriter
-YPetri
+YNelson
 \family default
  domain model is similar, but not identical.
- On the side of similarities, YPetri allows non-integer marking of places:
+ On the side of similarities, 
+\family typewriter
+YNelson
+\family default
+ allows non-integer marking of places:
 \end_layout
 
 \begin_layout LyX-Code
@@ -1404,7 +1505,7 @@ rate:
 \family default
 ' named argument, and have 
 \family typewriter
-YPetri
+YNelson
 \family default
  create default mass action equation, using the supplied number as its rate
  constant.
@@ -1557,19 +1658,706 @@ C.marking
 #=> 0.00024457517215434527
 \end_layout
 
-\begin_layout Part*
-Example II
+\begin_layout Subsection*
+Four transition types
 \end_layout
 
 \begin_layout Standard
-Instead of manually playing the token game using 
+Thus far, we have demonstrated transitions with stoichiometry, which were
+ either 
+\emph on
+timed
+\emph default
+ or not timed (
+\emph on
+timeless
+\emph default
+).
+ Timed transitions are denoted by capital 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+T
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+, timeless transitions by small 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+t
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Similarly, stoichiometric transitions are denoted by capital 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+S
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+, while transitions without stoichiometry (
+\emph on
+non-stoichiometric
+\emph default
+ transitions) by small 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+s
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Together, this gives 4 basic types of transitions: 
+\family typewriter
+TS
+\family default
+, 
+\family typewriter
+tS
+\family default
+, 
+\family typewriter
+Ts
+\family default
+, and 
+\family typewriter
+ts
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The user can ask the type of a transition by calling the 
+\family typewriter
+\color blue
+type
+\family default
+\color inherit
+ method:
+\end_layout
+
+\begin_layout LyX-Code
+A2B.type
+\end_layout
+
+\begin_layout LyX-Code
+#=> :tS
+\end_layout
+
+\begin_layout Standard
+Or investigate the type with inquirer methods:
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+t?
+\end_layout
+
+\begin_layout LyX-Code
+#=> true
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+T?
+\end_layout
+
+\begin_layout LyX-Code
+#=> false
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+s?
+\end_layout
+
+\begin_layout LyX-Code
+#=> false
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+S?
+\end_layout
+
+\begin_layout LyX-Code
+#=> true
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+TS?
+\end_layout
+
+\begin_layout LyX-Code
+#=> false
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+tS?
+\end_layout
+
+\begin_layout LyX-Code
+#=> true
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+Ts?
+\end_layout
+
+\begin_layout LyX-Code
+#=> false
+\end_layout
+
+\begin_layout LyX-Code
+A2B.
+\color blue
+ts?
+\end_layout
+
+\begin_layout LyX-Code
+#=> false
+\end_layout
+
+\begin_layout Subsection*
+Assignment transitions
+\end_layout
+
+\begin_layout Standard
+In 
+\family typewriter
+YNelson
+\family default
+, there is one more transition type: an assignment transition, denoted by
+ 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+A
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Assignment transitions do not add or subtract tokens from their target,
+ but completely replace the codomain marking with their output.
+ (Again, in 
+\family typewriter
+YNelson
+\family default
+ transitions, 
+\emph on
+domain
+\emph default
+ and 
+\emph on
+codomain
+\emph default
+ mean respectively upstream and downstream places.) Transitions other than
+ 
+\family typewriter
+A
+\family default
+ transitions can be collectively called non-assignment transitions, denoted
+ by small 
+\begin_inset Quotes eld
+\end_inset
+
+
+\family typewriter
+a
+\family default
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Note that assignment action is already achievable with plain 
+\family typewriter
+ts
+\family default
+ transitions (by subtracting away the previous codomain marking), so 
+\family typewriter
+A
+\family default
+ transitions are not strictly needed – their separate existence is just
+ a syntactic convenience.
+\end_layout
+
+\begin_layout Standard
+One way to construct assignment transitions is by setting 
+\family typewriter
+:assignment
+\family default
+ named argument to 
+\emph on
+true
+\emph default
+:
+\end_layout
+
+\begin_layout LyX-Code
+A_to_42 = Transition codomain: A, assignment: lambda { 42 }
+\end_layout
+
+\begin_layout LyX-Code
+#=> #<Transition: A_to_42 (A Assign.)>
+\end_layout
+
+\begin_layout Standard
+Firing this transition results in marking of 
+\family typewriter
+A
+\family default
+ being set to 42:
+\end_layout
+
+\begin_layout LyX-Code
+A_to_42.fire!
+\end_layout
+
+\begin_layout LyX-Code
+#=> nil
+\end_layout
+
+\begin_layout LyX-Code
+A.marking
+\end_layout
+
+\begin_layout LyX-Code
+#=> 42
+\end_layout
+
+\begin_layout Standard
+Assignment transitions are of special type 
+\family typewriter
+A
+\family default
+:
+\end_layout
+
+\begin_layout LyX-Code
+A_to_42.type
+\end_layout
+
+\begin_layout LyX-Code
+#=> :A
+\end_layout
+
+\begin_layout LyX-Code
+A_to_42.A?
+\end_layout
+
+\begin_layout LyX-Code
+#=> true
+\end_layout
+
+\begin_layout LyX-Code
+A_to_42.a?
+\end_layout
+
+\begin_layout LyX-Code
+#=> false
+\end_layout
+
+\begin_layout Part*
+Example II: Convenience
+\end_layout
+
+\begin_layout Standard
+So far, we have seen only one 
+\emph on
+constructor method
+\emph default
+ for transitions: 
+\family typewriter
+Transition()
+\family default
+.
+ 
+\family typewriter
+Transition()
+\family default
+ method accepts several different named arguments (
+\family typewriter
+:domain
+\family default
+, 
+\family typewriter
+:codomain
+\family default
+, 
+\family typewriter
+:stoichiometry
+\family default
+ 
+\family typewriter
+:assignment
+\family default
+, 
+\family typewriter
+:rate
+\family default
+, 
+\family typewriter
+:action
+\family default
+, 
+\family typewriter
+:name
+\family default
+...) and depending on their values, returns a 
+\family typewriter
+YNelson::Transition
+\family default
+ class object of required type and properties.
+\end_layout
+
+\begin_layout Standard
+Use of whole words in the constructor method makes the 
+\family typewriter
+YNelson
+\family default
+ DSL very explicit.
+ But for the cases, where trading readability for brevity is desirable,
+ these syntactic constructs can be shortened.
+ Actually, we have already used this convenience in the earlier examples.
+ We didn't type :
+\end_layout
+
+\begin_layout LyX-Code
+Transition( name: 
+\begin_inset Quotes eld
+\end_inset
+
+A2B
+\begin_inset Quotes erd
+\end_inset
+
+, codomain: [A, B], stoichiometry: [-1, 1] )
+\end_layout
+
+\begin_layout LyX-Code
+A2B = transition( :A2B )
+\end_layout
+
+\begin_layout Standard
+Instead, we just typed
+\end_layout
+
+\begin_layout LyX-Code
+A2B = Transition( stoichiometry: { A: -1, B: 1 } )
+\end_layout
+
+\begin_layout Standard
+Even shorter way to express the same would be:
+\end_layout
+
+\begin_layout LyX-Code
+A2B = Transition s: { A: -1, B: 1 }
+\end_layout
+
+\begin_layout Standard
+The above is a timeless transition.
+ But we could think eg.
+ about a more complicated transition, that would transfer tokens from 
+\family typewriter
+B
+\family default
+ to 
+\family typewriter
+A
+\family default
+ with rate depending on the square root of the product of marking of 
+\family typewriter
+C
+\family default
+ and 
+\family typewriter
+D
+\family default
+.
+ Start a new 
+\family typewriter
+irb
+\family default
+ session and type:
+\end_layout
+
+\begin_layout LyX-Code
+require 'y_nelson'
+\end_layout
+
+\begin_layout LyX-Code
+include YNelson
+\end_layout
+
+\begin_layout LyX-Code
+A = Place( default_marking: 5 )
+\end_layout
+
+\begin_layout LyX-Code
+B = Place m!: 5 # notice 
+\begin_inset Quotes eld
+\end_inset
+
+m!
+\begin_inset Quotes erd
+\end_inset
+
+ alias for 
+\begin_inset Quotes eld
+\end_inset
+
+default marking
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+C = Place m!: 1
+\end_layout
+
+\begin_layout LyX-Code
+D = Place m!: 1
+\end_layout
+
+\begin_layout Standard
+Let's check our work:
+\end_layout
+
+\begin_layout LyX-Code
+places.map &:m
+\end_layout
+
+\begin_layout LyX-Code
+#=> [5, 5, 1, 1]
+\end_layout
+
+\begin_layout Standard
+Indeed, the net state has been set according to the default markings of
+ the places.
+ Now let's define the transition we want:
+\end_layout
+
+\begin_layout LyX-Code
+B2A = Transition( stoichiometry: { B: -1, A: 1 },
+\end_layout
+
+\begin_layout LyX-Code
+                  domain: [C, D],
+\end_layout
+
+\begin_layout LyX-Code
+                  rate: lambda { |x, y| ( x * y ) ** 0.5 } )
+\end_layout
+
+\begin_layout LyX-Code
+#=> #<Transition: B2A (TS)>
+\end_layout
+
+\begin_layout Standard
+To prove that it works, let's fire it for 0.1 time units:
+\end_layout
+
+\begin_layout LyX-Code
+B2A.fire! 0.1
+\end_layout
+
+\begin_layout LyX-Code
+#=> nil
+\end_layout
+
+\begin_layout LyX-Code
+places.map &:m
+\end_layout
+
+\begin_layout LyX-Code
+#=> [5.1, 4.9, 1, 1]
+\end_layout
+
+\begin_layout Standard
+You can try to change marking of C and D to control the rate:
+\end_layout
+
+\begin_layout LyX-Code
+[A, B].each &:
+\color blue
+reset_marking
+\end_layout
+
+\begin_layout LyX-Code
+C.m = 4
+\end_layout
+
+\begin_layout LyX-Code
+D.m = 9
+\end_layout
+
+\begin_layout LyX-Code
+places.map &:m
+\end_layout
+
+\begin_layout LyX-Code
+#=> [5, 5, 4, 9]
+\end_layout
+
+\begin_layout LyX-Code
+B2A.fire! 0.1
+\end_layout
+
+\begin_layout LyX-Code
+places.map &:m
+\end_layout
+
+\begin_layout LyX-Code
+#=> [5.6, 4.4, 4, 9]
+\end_layout
+
+\begin_layout Standard
+We can see that the rate of 
+\family typewriter
+B2A
+\family default
+ has risen 6 times as expected (4 * 9 is 36), so 
+\family typewriter
+B2A
+\family default
+ works.
+ The question is, could we have written 
+\family typewriter
+B2A
+\family default
+ more concisely? For 
+\family typewriter
+TS
+\family default
+ transitions (check 
+\family typewriter
+B2A.type
+\family default
+ to make sure that it's a 
+\family typewriter
+TS
+\family default
+ transition), 
+\family typewriter
+\color blue
+TS()
+\family default
+\color inherit
+ constructor is available, allowing to express the same transition with
+ a shorter syntactic construct:
+\end_layout
+
+\begin_layout LyX-Code
+B2A = TS domain: [C, D], A: 1, B: -1 do |x, y| ( x * y ) ** 0.5 end
+\end_layout
+
+\begin_layout Standard
+Restart the 
+\family typewriter
+irb
+\family default
+ session again and use this shorter construct to see that the resulting
+ transition behaves like before.
+ Note the 
+\family typewriter
+\color red
+do ...
+ end
+\family default
+\color inherit
+ part of the construct: Using lambda syntax, it defines the rate function
+ of the transition.
+\end_layout
+
+\begin_layout Standard
+One more convenience constructor I want to mention here is 
+\family typewriter
+\color blue
+AT()
+\family default
+\color inherit
+ constructor for assignment transition.
+ Earlier, we defined:
+\end_layout
+
+\begin_layout LyX-Code
+A_to_42 = Transition codomain: A, assignment: lambda { 42 }
+\end_layout
+
+\begin_layout Standard
+This can be conveniently rewritten using 
+\family typewriter
+AT()
+\family default
+ constructor as:
+\end_layout
+
+\begin_layout LyX-Code
+A_to_42 = AT A do 42 end
+\end_layout
+
+\begin_layout Standard
+In short, syntactic shorthands are less readable than full 
+\family typewriter
+Transition()
+\family default
+ statements, but can save a lot of space and typing.
+ In any case, in Ruby, the user can easily defined new aliases and routines
+ that make the frequent tasks easier to type.
+\end_layout
+
+\begin_layout Part*
+Example III: YNelson::Simulation
+\end_layout
+
+\begin_layout Standard
+So far, we have been defining Petri nets and playing the token game using
+ 
 \family typewriter
 #fire!
 \family default
  method, let us now simulate a Petri net inside 
 \family typewriter
+YNelson
 \color blue
-YPetri::TimedSimulation
+::Simulation
 \family default
 \color inherit
 .
@@ -1585,7 +2373,7 @@ TimedSimulation
 \family default
 , the marking owned by 
 \family typewriter
-YPetri::Place
+YNelson::Place
 \family default
  instances is irrelevant.
  We just need to specify the initial state.
@@ -1631,7 +2419,7 @@ A_pump = Transition( stoichiometry: { A: -1 }, rate: proc { 0.005 } )
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: A_pump (SR)>
+#=> #<Transition: A_pump (TS)>
 \end_layout
 
 \begin_layout Standard
@@ -1660,7 +2448,7 @@ B_decay = Transition( stoichiometry: { B: -1 }, rate: 0.05 )
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: B_decay (SR)>
+#=> #<Transition: B_decay (TS)>
 \end_layout
 
 \begin_layout Standard
@@ -1700,8 +2488,7 @@ run!
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<YPetri::TimedSimulation: 2 places, 2 transitions, time: 60, object
- id: 75530290>
+#=> 60
 \end_layout
 
 \begin_layout Standard
@@ -1731,7 +2518,7 @@ simulation
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Simulation: Time: 60, 2 places, 2 transitions, object id: 75530290>
+#=> #<Simulation: time: 60, pp: 2, tt: 2, oid: 75530290>
 \end_layout
 
 \begin_layout Standard
@@ -1746,7 +2533,7 @@ mental image
 
  of the net, therefore the marking owned by 
 \family typewriter
-YPetri::Place
+YNelson::Place
 \family default
  instances does not change:
 \end_layout
@@ -1786,55 +2573,63 @@ print_recording
 \end_layout
 
 \begin_layout LyX-Code
-#=> 0.0,0.5,0.5
+#=> :A      :B
 \end_layout
 
 \begin_layout LyX-Code
-    5.0,0.475,0.38916
+    ----------------
 \end_layout
 
 \begin_layout LyX-Code
-    10.0,0.45,0.30289
+    0.5000  0.5000
 \end_layout
 
 \begin_layout LyX-Code
-    15.0,0.425,0.23574
+    0.4750  0.3892
 \end_layout
 
 \begin_layout LyX-Code
-    20.0,0.4,0.18348
+    0.4500  0.3029
 \end_layout
 
 \begin_layout LyX-Code
-    25.0,0.375,0.1428
+    0.4250  0.2357
 \end_layout
 
 \begin_layout LyX-Code
-    30.0,0.35,0.11115
+    0.4000  0.1835
 \end_layout
 
 \begin_layout LyX-Code
-    35.0,0.325,0.08651
+    0.3750  0.1428
 \end_layout
 
 \begin_layout LyX-Code
-    40.0,0.3,0.06733
+    0.3500  0.1111
 \end_layout
 
 \begin_layout LyX-Code
-    45.0,0.275,0.0524
+    0.3250  0.0865
 \end_layout
 
 \begin_layout LyX-Code
-    50.0,0.25,0.04079
+    0.3000  0.0673
 \end_layout
 
 \begin_layout LyX-Code
-    55.0,0.225,0.03174
+    0.2750  0.0524
 \end_layout
 
 \begin_layout LyX-Code
-    60.0,0.2,0.02471
+    0.2500  0.0408
+\end_layout
+
+\begin_layout LyX-Code
+    0.2250  0.0317
+\end_layout
+
+\begin_layout LyX-Code
+    0.2000  0.0247
 \end_layout
 
 \begin_layout LyX-Code
@@ -1861,9 +2656,9 @@ gnuplot
 \begin_layout LyX-Code
 
 \color blue
-plot_recording
+recording.plot
 \color inherit
-; nil
+ # plots a graph
 \end_layout
 
 \begin_layout LyX-Code
@@ -1871,39 +2666,54 @@ plot_recording
 \end_layout
 
 \begin_layout Standard
-We can investigate features of the recording (marking, gradient, firing,
- flux, delta):
+Previous command plots the default feature set, which is marking of the
+ places.
+ We can investigate also features of the recording (gradient or delta of
+ places, firing or flux of the transitions...):
 \end_layout
 
 \begin_layout LyX-Code
-simulation.recording.marking.plot
+recording.gradient.plot
 \end_layout
 
 \begin_layout LyX-Code
-simulation.recording.gradient.plot
+recording.flux.plot
 \end_layout
 
 \begin_layout LyX-Code
-simulation.recording.flux.plot
-\end_layout
-
-\begin_layout LyX-Code
-simulation.recording.delta.plot
+recording.delta( delta_time: 0.1 ).plot
 \end_layout
 
 \begin_layout Standard
-(As for firing, which is a feature of tS transitions, the plot would show
- nothing here, as all the transitions are timed in this case.)
+The last feature set – delta – requires 
+\family typewriter
+delta_time
+\family default
+ named argument to extrapolate the changes (deltas) of the places in the
+ given delta time.
+ As for 
+\family typewriter
+firing
+\family default
+, a feature of 
+\family typewriter
+tS
+\family default
+ transitions, the plot would show nothing here, as there ar no 
+\family typewriter
+tS
+\family default
+ transitions here.
 \end_layout
 
 \begin_layout Part*
-Example III
+Example IV: A real system.
 \end_layout
 
 \begin_layout Standard
 A highly simplified cell-biological pathway simulated with 
 \family typewriter
-YPetri::TimedSimulation
+YNelson::TimedSimulation
 \family default
 .
  Let's first define some assumptions.
@@ -1911,15 +2721,15 @@ YPetri::TimedSimulation
 \end_layout
 
 \begin_layout LyX-Code
-Cytoplasm_volume_in_litres = 5.0e-11
+require 'y_nelson' and include YNelson
 \end_layout
 
 \begin_layout LyX-Code
-NA = 6.022e23
+
 \end_layout
 
 \begin_layout LyX-Code
-Pieces_per_micromolar = NA / 1_000_000 * Cytoplasm_volume_in_litres
+Pieces_per_microM = 100_000
 \end_layout
 
 \begin_layout LyX-Code
@@ -1927,7 +2737,15 @@ Pieces_per_micromolar = NA / 1_000_000 * Cytoplasm_volume_in_litres
 \color blue
 set_step
 \color inherit
- 60
+ 10
+\end_layout
+
+\begin_layout LyX-Code
+
+\color blue
+set_sampling
+\color inherit
+ 30
 \end_layout
 
 \begin_layout LyX-Code
@@ -1935,7 +2753,7 @@ set_step
 \color blue
 set_target_time
 \color inherit
- 60 * 60 * 24
+ 30 * 60
 \end_layout
 
 \begin_layout Standard
@@ -1968,15 +2786,15 @@ ATP = Place m!: 3152.0
 \end_layout
 
 \begin_layout LyX-Code
-Deoxycytidine = Place m!: 0.5
+DeoxyCytidine = Place m!: 5.0
 \end_layout
 
 \begin_layout LyX-Code
-DeoxyCTP = Place m!: 1.0
+DeoxyCTP = Place m!: 20.0
 \end_layout
 
 \begin_layout LyX-Code
-DeoxyGMP = Place m!: 1.0
+DeoxyGMP = Place m!: 20.0
 \end_layout
 
 \begin_layout LyX-Code
@@ -1984,19 +2802,19 @@ UMP_UDP_pool = Place m!: 2737.0
 \end_layout
 
 \begin_layout LyX-Code
-DeoxyUMP_DeoxyUDP_pool = Place m!: 0.0
+DeoxyUMP_DeoxyUDP_pool = Place m!: 10.0
 \end_layout
 
 \begin_layout LyX-Code
-DeoxyTMP = Place m!: 3.3
+DeoxyTMP = Place m!: 50.0
 \end_layout
 
 \begin_layout LyX-Code
-DeoxyTDP_DeoxyTTP_pool = Place m!: 5.0
+DeoxyTDP_DeoxyTTP_pool = Place m!: 100.0
 \end_layout
 
 \begin_layout LyX-Code
-Thymidine = Place m!: 0.5
+Thymidine = Place m!: 10.0
 \end_layout
 
 \begin_layout Standard
@@ -2005,19 +2823,19 @@ All the places above have their marking in micromolars.
 \end_layout
 
 \begin_layout LyX-Code
-TK1 = Place m!: 100_000
+TK1 = Place m!: 100_000 / Pieces_per_microM
 \end_layout
 
 \begin_layout LyX-Code
-TYMS = Place m!: 100_000
+TYMS = Place m!: 100_000 / Pieces_per_microM
 \end_layout
 
 \begin_layout LyX-Code
-RNR = Place m!: 100_000
+RNR = Place m!: 100_000 / Pieces_per_microM
 \end_layout
 
 \begin_layout LyX-Code
-TMPK = Place m!: 100_000
+TMPK = Place m!: 100_000 / Pieces_per_microM
 \end_layout
 
 \begin_layout Standard
@@ -2041,7 +2859,19 @@ TMPK_kDa = 50.0
 \end_layout
 
 \begin_layout Standard
-Enzyme specfic activities (micromolar / minute / mg ):
+Enzyme specific activities (in 
+\emph on
+micromolar
+\emph default
+ / 
+\emph on
+minute
+\emph default
+ / 
+\emph on
+mg
+\emph default
+ ):
 \end_layout
 
 \begin_layout LyX-Code
@@ -2073,7 +2903,7 @@ clamp
 \end_layout
 
 \begin_layout LyX-Code
-clamp Deoxycytidine: 0.5, DeoxyCTP: 1.0, DeoxyGMP: 1.0
+clamp DeoxyCytidine: 0.5, DeoxyCTP: 1.0, DeoxyGMP: 1.0
 \end_layout
 
 \begin_layout LyX-Code
@@ -2089,56 +2919,43 @@ Before defining transitions, let's define some functions first:
 \end_layout
 
 \begin_layout LyX-Code
-Vmax_per_minute_per_enzyme_molecule =
+Vmax_per_min_per_enz_molecule =
 \end_layout
 
 \begin_layout LyX-Code
-  lambda { |enzyme_specific_activity_in_micromol_per_minute_per_mg,
+  lambda { |spec_act_microM_per_min_per_mg, kDa|
 \end_layout
 
 \begin_layout LyX-Code
-            enzyme_molecular_mass_in_kDa|
+             spec_act_microM_per_min_per_mg * kDa }
 \end_layout
 
 \begin_layout LyX-Code
-             enzyme_specific_activity_in_micromol_per_minute_per_mg *
+Vmax_per_min =
 \end_layout
 
 \begin_layout LyX-Code
-               enzyme_molecular_mass_in_kDa }
+  lambda { |spec_act, kDa, enz_molecules_per_cell|
 \end_layout
 
 \begin_layout LyX-Code
-Vmax_per_minute =
+           Vmax_per_min_per_enz_molecule.( spec_act, kDa ) *
 \end_layout
 
 \begin_layout LyX-Code
-  lambda { |specific_activity, kDa, enzyme_molecules_per_cell|
+             enz_molecules_per_cell }
 \end_layout
 
 \begin_layout LyX-Code
-           Vmax_per_minute_per_enzyme_molecule.( specific_activity, kDa )
- *
+Vmax_per_s =
 \end_layout
 
 \begin_layout LyX-Code
-             enzyme_molecules_per_cell }
+  lambda { |spec_act, kDa, enz_mol_per_cell|
 \end_layout
 
 \begin_layout LyX-Code
-Vmax_per_second =
-\end_layout
-
-\begin_layout LyX-Code
-  lambda { |specific_activity, kDa, enzyme_molecules_per_cell|
-\end_layout
-
-\begin_layout LyX-Code
-           Vmax_per_minute.( specific_activity, kDa,
-\end_layout
-
-\begin_layout LyX-Code
-                             enzyme_molecules_per_cell ) / 60 }
+           Vmax_per_min.( spec_act, kDa, enz_mol_per_cell ) / 60 }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2150,11 +2967,7 @@ Km_reduced =
 \end_layout
 
 \begin_layout LyX-Code
-           ki_hash.map { |concentration, ci_Ki|
-\end_layout
-
-\begin_layout LyX-Code
-             concentration / ci_Ki }.reduce( 1, :+ ) * km }
+           ki_hash.map { |c, ki| c / ki }.reduce( 1, :+ ) * km }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2162,75 +2975,31 @@ Occupancy =
 \end_layout
 
 \begin_layout LyX-Code
-  lambda { |concentration, reactant_Km, compet_inh_w_Ki_hash={}|
+  lambda { |c, km, compet_inh_w_Ki_hash={}|
 \end_layout
 
 \begin_layout LyX-Code
-           concentration / ( concentration +
+           c / ( c + Km_reduced.( km, compet_inh_w_Ki_hash ) ) }
 \end_layout
 
 \begin_layout LyX-Code
-                             Km_reduced.( reactant_Km,
+MM_with_inh_microM_per_second =
 \end_layout
 
 \begin_layout LyX-Code
-                                          compet_inh_w_Ki_hash ) ) }
+  lambda { |c, spec_act, kDa, enz_mol_per_cell, km, ki_hash={}|
 \end_layout
 
 \begin_layout LyX-Code
-MM_with_inh_micromolars_per_second =
+            Vmax_per_s.( spec_act, kDa, enz_mol_per_cell ) *
 \end_layout
 
 \begin_layout LyX-Code
-  lambda { |reactant_concentration,
+              Occupancy.( c, km, ki_hash ) }
 \end_layout
 
 \begin_layout LyX-Code
-            enzyme_specific_activity,
-\end_layout
-
-\begin_layout LyX-Code
-            enzyme_mass_kDa,
-\end_layout
-
-\begin_layout LyX-Code
-            enzyme_molecules_per_cell,
-\end_layout
-
-\begin_layout LyX-Code
-            reactant_Km,
-\end_layout
-
-\begin_layout LyX-Code
-            competitive_inh_w_Ki_hash={}|
-\end_layout
-
-\begin_layout LyX-Code
-            Vmax_per_second.( enzyme_specific_activity,
-\end_layout
-
-\begin_layout LyX-Code
-                              enzyme_mass_kDa,
-\end_layout
-
-\begin_layout LyX-Code
-                              enzyme_molecules_per_cell ) *
-\end_layout
-
-\begin_layout LyX-Code
-              Occupancy.( reactant_concentration,
-\end_layout
-
-\begin_layout LyX-Code
-                          reactant_Km,
-\end_layout
-
-\begin_layout LyX-Code
-                          competitive_inh_w_Ki_hash ) }
-\end_layout
-
-\begin_layout LyX-Code
-MMi = MM_with_inh_micromolars_per_second
+MMi = MM_with_inh_microM_per_second
 \end_layout
 
 \begin_layout Standard
@@ -2262,141 +3031,197 @@ And finally, let us define the transitions:
 \end_layout
 
 \begin_layout LyX-Code
-TK1_Thymidine_DeoxyTMP =
+Transition name: :TK1_Thymidine_DeoxyTMP,
 \end_layout
 
 \begin_layout LyX-Code
-  Transition 
+           
 \color blue
 domain:
 \color inherit
- [ Thymidine, TK1, DeoxyTDP_DeoxyTTP_pool,
+ [ Thymidine, TK1, DeoxyTDP_DeoxyTTP_pool, DeoxyCTP,
 \end_layout
 
 \begin_layout LyX-Code
-                       DeoxyCTP, Deoxycytidine, AMP, ADP, ATP ],
+                     DeoxyCytidine, AMP, ADP, ATP ],
 \end_layout
 
 \begin_layout LyX-Code
-             stoichiometry: { Thymidine: -1, DeoxyTMP: 1 },
+           stoichiometry: { Thymidine: -1, DeoxyTMP: 1 },
 \end_layout
 
 \begin_layout LyX-Code
-             rate: proc { |rc, e, pool1, ci2, ci3, master1, master2, master3|
+           rate: proc { |c, e, pool1, ci2, ci3, master1, master2, master3|
 \end_layout
 
 \begin_layout LyX-Code
-                          ci1 = pool1 * master3 / ( master2 + master3 )
+                        ci1 = pool1 * master3 / ( master2 + master3 )
 \end_layout
 
 \begin_layout LyX-Code
-                          MMi.( rc, TK1_a, TK1_kDa, e, TK1_Thymidine_Km,
+                        MMi.( c, TK1_a, TK1_kDa, e, TK1_Thymidine_Km,
 \end_layout
 
 \begin_layout LyX-Code
-                                ci1 => 13.5, ci2 => 0.8, ci3 => 40.0 ) }
+                              ci1 => 13.5, ci2 => 0.8, ci3 => 40.0 ) }
 \end_layout
 
 \begin_layout LyX-Code
-TYMS_DeoxyUMP_DeoxyTMP =
+
 \end_layout
 
 \begin_layout LyX-Code
-  Transition domain: [ DeoxyUMP_DeoxyUDP_pool, TYMS, AMP, ADP, ATP ],
+Transition name: :TYMS_DeoxyUMP_DeoxyTMP,
 \end_layout
 
 \begin_layout LyX-Code
-             stoichiometry: { DeoxyUMP_DeoxyUDP_pool: -1, DeoxyTMP: 1 },
+           domain: [ DeoxyUMP_DeoxyUDP_pool, TYMS, AMP, ADP, ATP ],
 \end_layout
 
 \begin_layout LyX-Code
-             rate: proc { |pool, e, master1, master2, master3|
+           stoichiometry: { DeoxyUMP_DeoxyUDP_pool: -1, DeoxyTMP: 1 },
 \end_layout
 
 \begin_layout LyX-Code
-                          rc = pool * master2 / ( master1 + master2 )
+           rate: proc { |pool, e, mono, di, tri|
 \end_layout
 
 \begin_layout LyX-Code
-                          MMi.( rc, TYMS_a, TYMS_kDa, e, TYMS_DeoxyUMP_Km
+                        c = pool * di / ( mono + di )
+\end_layout
+
+\begin_layout LyX-Code
+                          MMi.( c, TYMS_a, TYMS_kDa, e, TYMS_DeoxyUMP_Km
  ) }
 \end_layout
 
 \begin_layout LyX-Code
-RNR_UDP_DeoxyUDP =
+
 \end_layout
 
 \begin_layout LyX-Code
-  Transition domain: [ UMP_UDP_pool, RNR, DeoxyUMP_DeoxyUDP_pool, AMP, ADP,
+Transition name: :RNR_UDP_DeoxyUDP,
+\end_layout
+
+\begin_layout LyX-Code
+           domain: [ UMP_UDP_pool, RNR, DeoxyUMP_DeoxyUDP_pool, AMP, ADP,
  ATP ],
 \end_layout
 
 \begin_layout LyX-Code
-             stoichiometry: { UMP_UDP_pool: -1, DeoxyUMP_DeoxyUDP_pool:
+           stoichiometry: { UMP_UDP_pool: -1, DeoxyUMP_DeoxyUDP_pool: 1
+ },
+\end_layout
+
+\begin_layout LyX-Code
+           rate: proc { |pool, e, mono, di, tri|
+\end_layout
+
+\begin_layout LyX-Code
+                        c = pool * di / ( mono + di )
+\end_layout
+
+\begin_layout LyX-Code
+                        MMi.( c, RNR_a, RNR_kDa, e, RNR_UDP_Km ) }
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Transition name: :DNA_polymerase_consumption_of_DeoxyTTP,
+\end_layout
+
+\begin_layout LyX-Code
+           stoichiometry: { DeoxyTDP_DeoxyTTP_pool: -1 },
+\end_layout
+
+\begin_layout LyX-Code
+           rate: proc { DNA_creation_speed / 4 }
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+Transition name: :TMPK_DeoxyTMP_DeoxyTDP,
+\end_layout
+
+\begin_layout LyX-Code
+           domain: [ DeoxyTMP, TMPK, DeoxyTDP_DeoxyTTP_pool, DeoxyGMP, AMP,
+ ADP, ATP ],
+\end_layout
+
+\begin_layout LyX-Code
+           stoichiometry: { DeoxyTMP: -1, TMPK: 0, DeoxyTDP_DeoxyTTP_pool:
  1 },
 \end_layout
 
 \begin_layout LyX-Code
-             rate: proc { |pool, e, master1, master2, master3|
+           rate: proc { |c, e, pool, ci4, mono, di, tri|
 \end_layout
 
 \begin_layout LyX-Code
-                          rc = pool * master2 / ( master1 + master2 )
+                        ci1 = di
 \end_layout
 
 \begin_layout LyX-Code
-                          MMi.( rc, RNR_a, RNR_kDa, e, RNR_UDP_Km ) }
+                        ci2 = pool * di / ( di + tri )
 \end_layout
 
 \begin_layout LyX-Code
-DNA_polymerase_consumption_of_DeoxyTTP =
+                        ci3 = pool * tri / ( di + tri )
 \end_layout
 
 \begin_layout LyX-Code
-  Transition stoichiometry: { DeoxyTDP_DeoxyTTP_pool: -1 },
+                        MMi.( c, TMPK_a, TMPK_kDa, e, TMPK_DeoxyTMP_Km,
 \end_layout
 
 \begin_layout LyX-Code
-             rate: proc { DNA_creation_speed / 4 }
+                              ci1 => 250.0, ci2 => 30.0, ci3 => 750, ci4 =>
+ 117 ) }
 \end_layout
 
 \begin_layout LyX-Code
-TMPK_DeoxyTMP_DeoxyTDP =
+# require 'mathn' 
 \end_layout
 
 \begin_layout LyX-Code
-  Transition domain: [ DeoxyTMP, TMPK, ADP, DeoxyTDP_DeoxyTTP_pool, DeoxyGMP,
- AMP, ATP ],
+Transition name: :PhosphataseI,
 \end_layout
 
 \begin_layout LyX-Code
-             stoichiometry: { DeoxyTMP: -1, TMPK: 0, DeoxyTDP_DeoxyTTP_pool:
- 1 },
+           stoichiometry: { DeoxyTMP: -1, Thymidine: 1 },
 \end_layout
 
 \begin_layout LyX-Code
-             rate: proc { |rc, e, ci1, pool, ci4, master1, master3|
+           rate: 0.04
 \end_layout
 
 \begin_layout LyX-Code
-                          master2 = ci1
+
 \end_layout
 
 \begin_layout LyX-Code
-                          ci2 = pool * master2 / ( master2 + master3 )
+Transition name: :PhosphataseII,
 \end_layout
 
 \begin_layout LyX-Code
-                          ci3 = pool * master3 / ( master2 + master3 )
+           stoichiometry: { DeoxyTDP_DeoxyTTP_pool: -1, DeoxyTMP: 1 },
 \end_layout
 
 \begin_layout LyX-Code
-                          MMi.( rc, TMPK_a, TMPK_kDa, e, TMPK_DeoxyTMP_Km,
+           rate: 0.01
+\end_layout
+
+\begin_layout Standard
+The created net can be visualized by:
 \end_layout
 
 \begin_layout LyX-Code
-                                ci1 => 250.0, ci2 => 30.0, ci3 => 750, ci4
- => 117 ) }
+net.visualize
 \end_layout
 
 \begin_layout Standard
@@ -2407,20 +3232,32 @@ The simulation should work.
 run!
 \end_layout
 
-\begin_layout LyX-Code
-plot_recording
+\begin_layout Standard
+State recording can be plotted by:
 \end_layout
 
-\begin_layout Part*
-Example IV
+\begin_layout LyX-Code
+recording.plot
 \end_layout
 
 \begin_layout Standard
-Here, I will demonstrate the idea of using 
+Flux of the transitions can be plotted by:
+\end_layout
+
+\begin_layout LyX-Code
+recording.flux.plot
+\end_layout
+
+\begin_layout Part*
+Example V: Using SY.
+\end_layout
+
+\begin_layout Standard
+Here, we'll take a look at using 
 \family typewriter
-YPetri
+YNelson
 \family default
- together with 
+ with 
 \family typewriter
 \color blue
 SY
@@ -2441,10 +3278,9 @@ Example III
 \family typewriter
 SY
 \family default
- is to take care of all this, to relieve the modeler from this task, to
- clean up the model code, and let the modeler concentrate on the real issue.
- That's a great dream, which, in biochemical modeling, has not been realized
- so far.
+ is to take care of all this, to relieve the modeler from the task of unit
+ conversion, to clean up the model code, and let the modeler concentrate
+ on the real issue.
 \end_layout
 
 \begin_layout Subsection*
@@ -2529,19 +3365,19 @@ SY::Magnitude
 \end_layout
 
 \begin_layout LyX-Code
-1.m.class
+1.m.quantity
 \end_layout
 
 \begin_layout LyX-Code
-#=> Length±@Magnitude
+#=> #<Quantity:Length±>
 \end_layout
 
 \begin_layout LyX-Code
-1.cm.min⁻¹.class
+1.cm.min⁻¹.quantity
 \end_layout
 
 \begin_layout LyX-Code
-#=> Speed±@Magnitude
+#=> #<Quantity:Speed±>
 \end_layout
 
 \begin_layout Standard
@@ -2591,7 +3427,7 @@ SY
 \family default
  and 
 \family typewriter
-YPetri
+YNelson
 \end_layout
 
 \begin_layout Standard
@@ -2627,7 +3463,11 @@ B_decay = Transition s: { B: -1 }, rate: 0.002.s⁻¹
 \end_layout
 
 \begin_layout LyX-Code
-#=> YPetri::Transition[ B_decay: stoichiometric transition with rate ]
+#=> 
+\family typewriter
+YNelson
+\family default
+::Transition[ B_decay: stoichiometric transition with rate ]
 \end_layout
 
 \begin_layout Standard
@@ -2635,9 +3475,9 @@ Now we have created places and transitions, whose marking and rate closures
  are defined in physical units.
  Presently, 
 \family typewriter
-YPetri::TimedSimulation
+YNelson::TimedSimulation
 \family default
- will not accept such a Petri net, so the only thing we can do is play the
+ will not accept such Petri net, so the only thing we can do is play the
  token game ourselves:
 \end_layout
 
@@ -2745,6 +3585,101 @@ B.marking.in :µM
 
 \begin_layout LyX-Code
 #=> 5797.976678013365
+\end_layout
+
+\begin_layout Part*
+Example VI: Other simulation methods
+\end_layout
+
+\begin_layout Standard
+At this moment, the default simulation method is implicit Euler (or 
+\family typewriter
+pseudo_euler
+\family default
+ – 
+\emph on
+pseudo
+\emph default
+ because timeless transitions and assignment transtitions also fire at each
+ step in time).
+ From other simulation methods, Gillespie algorithm is available:
+\end_layout
+
+\begin_layout LyX-Code
+require 'y_nelson' and include YNelson
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+A = Place m!: 10
+\end_layout
+
+\begin_layout LyX-Code
+B = Place m!: 10
+\end_layout
+
+\begin_layout LyX-Code
+AB = Place m!: 0
+\end_layout
+
+\begin_layout LyX-Code
+AB_association = TS A: -1, B: -1, AB: 1, rate: 0.1
+\end_layout
+
+\begin_layout LyX-Code
+AB_dissociation = TS AB: -1, A: 1, B: 1, rate: 0.1
+\end_layout
+
+\begin_layout LyX-Code
+A2B = TS A: -1, B: 1, rate: 0.05
+\end_layout
+
+\begin_layout LyX-Code
+B2A = TS A: 1, B: -1, rate: 0.07
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+set_step 1
+\end_layout
+
+\begin_layout LyX-Code
+set_target_time 50
+\end_layout
+
+\begin_layout LyX-Code
+set_sampling 1
+\end_layout
+
+\begin_layout LyX-Code
+set_simulation_method :gillespie
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+run!
+\end_layout
+
+\begin_layout LyX-Code
+print_recording
+\end_layout
+
+\begin_layout LyX-Code
+plot_state
+\end_layout
+
+\begin_layout Standard
+The state recording should show the random walk of the system state over
+ 50 time units.
 \end_layout
 
 \begin_layout LyX-Code
