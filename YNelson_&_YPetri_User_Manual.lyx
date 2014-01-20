@@ -973,8 +973,8 @@ timed? – whether the dataset type is timed
 \end_layout
 
 \begin_layout Standard
-reconstruct( event:, **settings ) – reconstructs a simulation instance for
- a given key
+reconstruct( at: (time or event), **settings ) – reconstructs a simulation
+ instance for a given time or event
 \end_layout
 
 \begin_layout Subsection*
