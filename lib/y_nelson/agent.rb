@@ -49,8 +49,8 @@ class YNelson::Agent
   attr_reader :sheets
 
   # Dimension convenience constructor from 
-  delegate( :Dimension,
-            to: :world )
+  delegate :Dimension,
+           to: :world
   
   # Now let's look into the graph visualization.
 
@@ -140,6 +140,49 @@ class YNelson::Agent
   end
 
   # graphviz [:domain, 0 ], [:codomain, 0]
+
+
+  # Creation of a place governed by a single assignment transition. In other
+  # words, creation of a place with a unary-output formula known well from
+  # spreadsheets. The transition is named automatically by adding "_ϝ"
+  # (digamma, resembles mathematical f used to denote functions) suffix to
+  # the place's name, as soon as the place is named. For example,
+  # 
+  # Fred = PAT Joe do |joe| joe * 2 end
+  # 
+  # creates a place named "Fred" and an assignment transition named "Fred_ϝ"
+  # that keeps Fred equal to 2 times Joe.
+  #
+  def PAT *domain, **named_args, &block
+    Place().tap do |p| # place can be instantiated right away
+      p.name = named_args.delete :name if named_args.has? :name, syn!: :ɴ
+      @todo << -> {
+        t = AT p, domain: domain, &block
+        if p.name then t.name = "#{p.name}_ϝ" else
+          # Rig the hook to name the transition as soon as the place is named.
+          p.name_set_hook do |name| transition.name = "#{name}_ϝ" end
+        end
+        # Monkey-patch the place with default marking closure.
+        place.define_singleton_method :default_marking do
+          begin; super; rescue TypeError
+            t.assignment_closure.( *t.domain.map( &:default_marking ) ).call
+          end
+        end
+      }
+    end
+  end
+  alias ϝ PAT
+
+  # Executes all @todo closures.
+  # 
+  def finalize
+    @todo.pop.call while not @todo.empty?
+  end
+
+  # ============================================================================
+  # === THE METHODS BELOW ARE NOT REVIEWED FOR THE NEW VERSION AND NOT       ===
+  # === EXPOSED IN THE DSL YET                                               ===
+  # ============================================================================
 
   # Cell side referencers with r. to primary and secondary point
   def ξ_posward_side dim=nil; ::YTed::POINT.posward_side dim end
@@ -262,42 +305,5 @@ class YNelson::Agent
     ::YTed::SHEETS
       .define_singleton_method name.to_sym do ::YTed::SHEETS[name] end
     return ::YTed::SHEETS[name]
-  end
-
-  # Creation of a place governed by a single assignment transition. In other
-  # words, creation of a place with a unary-output formula known well from
-  # spreadsheets. The transition is named automatically by adding "_ϝ"
-  # (digamma, resembles mathematical f used to denote functions) suffix to
-  # the place's name, as soon as the place is named. For example,
-  # 
-  # Fred = PAT Joe do |joe| joe * 2 end
-  # 
-  # creates a place named "Fred" and an assignment transition named "Fred_ϝ"
-  # that keeps Fred equal to 2 times Joe.
-  #
-  def PAT *domain, **named_args, &block
-    Place().tap do |p| # place can be instantiated right away
-      p.name = named_args.delete :name if named_args.has? :name, syn!: :ɴ
-      @todo << -> {
-        t = AT p, domain: domain, &block
-        if p.name then t.name = "#{p.name}_ϝ" else
-          # Rig the hook to name the transition as soon as the place is named.
-          p.name_set_hook do |name| transition.name = "#{name}_ϝ" end
-        end
-        # Monkey-patch the place with default marking closure.
-        place.define_singleton_method :default_marking do
-          begin; super; rescue TypeError
-            t.assignment_closure.( *t.domain.map( &:default_marking ) ).call
-          end
-        end
-      }
-    end
-  end
-  alias ϝ PAT
-
-  # Executes all @todo closures.
-  # 
-  def finalize
-    @todo.pop.call while not @todo.empty?
   end
 end
