@@ -16,8 +16,8 @@
 class YNelson::Agent
   attr_reader :world
 
-  include YPetri::Agent::PetriNetRelated
-  include YPetri::Agent::SimulationRelated
+  ★ YPetri::Agent::PetriNetRelated
+  ★ YPetri::Agent::SimulationRelated
 
   # Initialization of a YNelson::Agent instance. For YNelson manipulators, the
   # world is always YNelson itself.
@@ -37,6 +37,7 @@ class YNelson::Agent
       YNelson::DimensionPoint.new YNelson.Dimension( :row )
     @secondary_dimension_point =
       YNelson::DimensionPoint.new YNelson.Dimension( :column )
+    @todo = [] # array of blocks
   end
 
   # Now the part related to the zz structure itself, like in
@@ -51,17 +52,6 @@ class YNelson::Agent
   delegate( :Dimension,
             to: :world )
   
-  # Creation of a single-output formula known well from spreadseets. Given a
-  # place, it creates a new assignment transition.
-  # 
-  def ϝ &block
-    new_place = YNelson::Place.new
-    new_transition = YNelson::Transition.new assignment: true,
-                                             codomain: new_place,
-                                             action: block
-    return new_place, new_transition
-  end
-
   # Now let's look into the graph visualization.
 
   def default_dimension
@@ -274,105 +264,40 @@ class YNelson::Agent
     return ::YTed::SHEETS[name]
   end
 
-  def make_transitions
-    # require 'debug'
-    # LATER: When walking around the sheets, currently, there is no
-    # protection against references to empty cells
-    @transitions_to_make.map { |prescription|
-      sheet = prescription[:sheet]
-      type = prescription[:type]
-      place = prescription[:place]
-      block = prescription[:assignment_closure]
-
-      case type
-      when :unary_codomain_w_magic_block
-        # PARAMETER MAGIC:
-        # Blocks with specially named input arguments
-        domain = block.parameters.map{ |e| e[1].to_s }.map{ |param|
-          point = ZzPoint.new( place )
-          if SHEETS.keys.include? sheet_name = param.split('_')[0] then
-            # if the name consists of a sheet and parameter name, then ok
-            rest = param[sheet_name.size + 1..-1]
-            point = ZzPoint.new( SHEETS[sheet_name][0][0] )
-            col = [*('a'..'z')].index rest[0]
-            point.rewind_negward! :x
-            if rest.size > 1 then # also change row, asssuming "a0" style
-              point.rewind_negward! :y
-              row = rest[1..-1].to_i
-              row.times { point.step_posward :y }
-            end
-            col.times { point.step_posward :x }
-            point.cell
-          elsif [*('a'..'z')].include? param[0] then
-            # if the name consists of an alphabetic letter...
-            col = [*('a'..'z')].index param[0]
-            point.rewind_negward! :x
-            if param.size > 1 then # also change row, assuming "a0" style
-              point.rewind_negward! :y
-              row = param[1..-1].to_i
-              row.times { point.step_posward :y }
-            end
-            col.times { point.step_posward :x }
-            point.cell
-          elsif param[0] = '_' then
-            # Params named '_1', '_2', ... refer to different rows, same :col,
-            # param named '__' refers to same cell
-            if param == '__' then cell else
-              i = param[1..-1].to_i
-              point.rewind_negward! :y
-              i.times { point.step_posward :x }
-              point.cell
-            end
-          else
-            raise TypeError, "unrecognized magic block parameter: #{param}"
+  # Creation of a place governed by a single assignment transition. In other
+  # words, creation of a place with a unary-output formula known well from
+  # spreadsheets. The transition is named automatically by adding "_ϝ"
+  # (digamma, resembles mathematical f used to denote functions) suffix to
+  # the place's name, as soon as the place is named. For example,
+  # 
+  # Fred = PAT Joe do |joe| joe * 2 end
+  # 
+  # creates a place named "Fred" and an assignment transition named "Fred_ϝ"
+  # that keeps Fred equal to 2 times Joe.
+  #
+  def PAT *domain, **named_args, &block
+    Place().tap do |p| # place can be instantiated right away
+      p.name = named_args.delete :name if named_args.has? :name, syn!: :ɴ
+      @todo << -> {
+        t = AT p, domain: domain, &block
+        if p.name then t.name = "#{p.name}_ϝ" else
+          # Rig the hook to name the transition as soon as the place is named.
+          p.name_set_hook do |name| transition.name = "#{name}_ϝ" end
+        end
+        # Monkey-patch the place with default marking closure.
+        place.define_singleton_method :default_marking do
+          begin; super; rescue TypeError
+            t.assignment_closure.( *t.domain.map( &:default_marking ) ).call
           end
-        } # block.parameters.map
-        
-        # Instantiate the new transition (do not fire it yet):
-        Transition( domain: domain,
-                    codomain: [ place ],
-                    action_closure: block,
-                    assignment_action: true )
-      when :downstream_copy
-        # DOWNSTREAM COPY
-        # A single transition assigning upstream value to the downstream cell
-        Transition( domain: prescription[:domain],
-                                  codomain: [ place ],
-                                  action_closure: λ {|v| v },
-                                  assignment_action: true )
-      else raise "Unknown transition prescription type: #{prescription[:type]}"
-      end
-    } # @transitions_to_make.map
+        end
+      }
+    end
   end
+  alias ϝ PAT
 
-  # Places an order for a spreadsheet-like assignment transition. The order
-  # will be fullfilled later when #make_transitions method is called.
+  # Executes all @todo closures.
   # 
-  def new_downstream_cell &block
-    # The place can be instatiated right away
-    place = ZzCell( nil )
-
-    # Transition making requests get remembered in @transitions_to_make:
-    ( @transitions_to_make ||= [] ) <<
-      { place: place,
-        sheet: @current_sheet_name,
-        assignment_closure: block,
-        type: :unary_codomain_w_magic_block }
-    return place
+  def finalize
+    @todo.pop.call while not @todo.empty?
   end
-  alias :ϝ :new_downstream_cell
-
-  # Places an order for a spreadsheet-lie pure reference to another cell.
-  # 
-  def new_downstream_copy( cell )
-    # Again, the place can be instantiated immediately
-    p = ZzCell( nil )
-
-    # And put the transition making request to @transitions_to_make:
-    ( @transitions_to_make ||= [] ) <<
-      { place: p, sheet: @current_sheet_name, domain: cell,
-        type: :downstream_copy }
-    return p
-  end
-  alias :↱ :new_downstream_copy
 end
