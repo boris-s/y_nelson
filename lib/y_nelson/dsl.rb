@@ -70,7 +70,7 @@ module YNelson
 
   # Zz aspect.
   delegate( :Dimension,
-            :sheets
+            :sheets,
             :default_dimension,
             :primary_point, :p1,
             :secondary_point, :p2,

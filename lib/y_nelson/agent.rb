@@ -163,7 +163,7 @@ class YNelson::Agent
           p.name_set_hook do |name| transition.name = "#{name}_ϝ" end
         end
         # Monkey-patch the place with default marking closure.
-        place.define_singleton_method :default_marking do
+        p.define_singleton_method :default_marking do
           begin; super; rescue TypeError
             t.assignment_closure.( *t.domain.map( &:default_marking ) ).call
           end
