@@ -182,7 +182,10 @@ class YNelson::Agent
   # Executes all @todo closures.
   # 
   def finalize
-    @todo.pop.call while not @todo.empty?
+    while not @todo.empty?
+      @todo[-1].call # May raise errors in which case we don't want to pop.
+      @todo.pop      # That's why not @todo.pop.call while not @todo.empty?
+    end
   end
 
   # ============================================================================
