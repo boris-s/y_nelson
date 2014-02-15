@@ -19,6 +19,12 @@ class YNelson::Agent
   ★ YPetri::Agent::PetriNetRelated
   ★ YPetri::Agent::SimulationRelated
 
+  # Future module YNelson::Agent::SimulationRelated
+
+  # Calls #finalize before invoking YPetri::Agent#new_simulation.
+  #
+  def new_simulation *args; finalize; super end
+
   # Initialization of a YNelson::Agent instance. For YNelson manipulators, the
   # world is always YNelson itself.
   # 
@@ -165,7 +171,7 @@ class YNelson::Agent
         # Monkey-patch the place with default marking closure.
         p.define_singleton_method :default_marking do
           if has_default_marking? then local_variable_get :@default_marking else
-            t.action_closure.( *t.domain.map( &:default_marking ) ).call
+            t.action_closure.( *t.domain.map( &:default_marking ) )
           end
         end
       }
