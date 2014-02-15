@@ -164,8 +164,8 @@ class YNelson::Agent
         end
         # Monkey-patch the place with default marking closure.
         p.define_singleton_method :default_marking do
-          begin; super; rescue TypeError
-            t.assignment_closure.( *t.domain.map( &:default_marking ) ).call
+          if has_default_marking? then local_variable_get :@default_marking else
+            t.action_closure.( *t.domain.map( &:default_marking ) ).call
           end
         end
       }
