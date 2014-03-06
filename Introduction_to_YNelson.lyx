@@ -324,32 +324,37 @@ irb
 \end_layout
 
 \begin_layout Standard
-And why bother learning Ruby syntax and 
-\family typewriter
-YNelson
-\family default
-? Half-jokingly, 
-\family typewriter
-YNelson
-\family default
- is 
+If you want to 
 \emph on
-The Simplest Way To Work With Complicated Petri Nets
+seriously
 \emph default
-™.
- Petri net software at higher development stage, or written for a different
- purpose than 
+ work with 
+\emph on
+complicated
+\emph default
+ Petri Nets, no tool can avoid taking you through the process of learning
+ the object model, interface and syntax of the language in which the interface
+ is accessed.
+ GUI tools can be used for simpler tasks (such as drawing arcs between places
+ and transitions), but no tool can avoid using a real script language for
+ the difficult parts, such as functions of the transitions.
+ To operate 
 \family typewriter
 YNelson
 \family default
-, does exist.
- But none of the programs written for the same purpose as 
+, you will be learning powerful and intuitive syntax of a major scripting
+ language.
+ 
 \family typewriter
 YNelson
 \family default
- can avoid taking the user through the process of learning the interface.
- Advantages of using textual DSL become apparent as soon as the user's models
- become less simple.
+ is open source and gives you freedom.
+ All classes are introspectible and modifiable, even at runtime.
+ Possible bugs or missing features never put the 
+\family typewriter
+YNelson
+\family default
+ user in a dead end situation.
 \end_layout
 
 \begin_layout Part*

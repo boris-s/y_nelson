@@ -67,7 +67,6 @@ module YNelson
             :plot_delta,
             to: :y_nelson_agent )
 
-
   # Zz aspect.
   delegate( :Dimension,
             :sheets,

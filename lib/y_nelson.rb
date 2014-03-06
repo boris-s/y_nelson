@@ -61,8 +61,8 @@ module YNelson
     attr_reader :dimensions
 
     # Including instance methods of YPetri::World:
-    include YPetri::World::PetriNetRelated
-    include YPetri::World::SimulationRelated
+    include YPetri::World::PetriNetAspect
+    include YPetri::World::SimulationAspect
 
     # Allows summoning YNelson::DSL by 'include YNelson'.
     # 

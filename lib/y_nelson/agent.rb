@@ -16,8 +16,8 @@
 class YNelson::Agent
   attr_reader :world
 
-  ★ YPetri::Agent::PetriNetRelated
-  ★ YPetri::Agent::SimulationRelated
+  ★ YPetri::Agent::PetriNetAspect
+  ★ YPetri::Agent::SimulationAspect
 
   # Future module YNelson::Agent::SimulationRelated
 
