@@ -65,7 +65,7 @@
 \begin_body
 
 \begin_layout Title
-YNelson & YPetri – overview of the object model
+The object model of YNelson and YPetri
 \end_layout
 
 \begin_layout Part*
@@ -3602,7 +3602,13 @@ Record
 \family typewriter
 #reduce_features
 \family default
- – ...
+ – reduces the dataset into another dataset with a different set of features.
+ Reduction to a subset of features is always possible.
+ Reduction to a set of features that is not a subset of the receiver's set
+ of features is only possible if the former can be inferred from the latter.
+ Generally, this is the case if net state can be reconstructed from a receiver's
+ record.
+ From this net state, the desired new feature set is then extracted.
 \end_layout
 
 \begin_layout Itemize
@@ -3690,107 +3696,6 @@ Record
 \end_layout
 
 \begin_layout Part*
-Code demo for the classes of 
-\family typewriter
-YPetri::Net
-\family default
- namespace
-\end_layout
-
-\begin_layout Standard
-A short code example:
-\end_layout
-
-\begin_layout LyX-Code
-require 'y_petri' and include YPetri
-\end_layout
-
-\begin_layout LyX-Code
-A, B, C = 3.times.map { Place m!: 10 }
-\end_layout
-
-\begin_layout LyX-Code
-T1 = TS A: -1, B: -1, C: 1              # a TS transition
-\end_layout
-
-\begin_layout LyX-Code
-T2 = Transition s: { C: -1 }            # a tS transition
-\end_layout
-
-\begin_layout LyX-Code
-T3 = Transition codomain: [A, B],       # a Ts transition
-\end_layout
-
-\begin_layout LyX-Code
-     rate: -> { [0.1, 0.2] }
-\end_layout
-
-\begin_layout LyX-Code
-T4 = Transition codomain: [A, B],
-\end_layout
-
-\begin_layout LyX-Code
-     action: -> do
-\end_layout
-
-\begin_layout LyX-Code
-N = Net() << A << B << C
-\end_layout
-
-\begin_layout Standard
-We have hereby constructed net 
-\family typewriter
-N
-\family default
- containing 3 places 
-\family typewriter
-A
-\family default
-, 
-\family typewriter
-B
-\family default
-, 
-\family typewriter
-C
-\family default
-, and 3 different kinds of transitions.
- Now, 
-\family typewriter
-#State
-\family default
- getter returns a PS of 
-\family typewriter
-Net::State
-\family default
-:
-\end_layout
-
-\begin_layout LyX-Code
-N.State
-\end_layout
-
-\begin_layout LyX-Code
-#=> #<Class:0xb93d3380>
-\end_layout
-
-\begin_layout LyX-Code
-N.State.class
-\end_layout
-
-\begin_layout LyX-Code
-#=> Class
-\end_layout
-
-\begin_layout LyX-Code
-N.State.ancestors
-\end_layout
-
-\begin_layout LyX-Code
-#=> [#<Class:0xb93d3380>, YPetri::Net::State, Array, ..., BasicObject]
-\end_layout
-
-\begin_layout Part*
 
 \family typewriter
 Agent
@@ -3803,7 +3708,8 @@ Agent
 \family typewriter
 YPetri::Agent
 \family default
- class represents and assists the user.
+ and YNelson::Agent are dumb agent classes that represent and assist the
+ user.
  Originally, it was named 
 \family typewriter
 Manipulator
@@ -3821,9 +3727,13 @@ Agent
 \family typewriter
 YPetri
 \family default
- interface.
- Rather, it but it does define the top-level DSL commands (methods) that
- are available upon calling '
+ (
+\family typewriter
+YNelson
+\family default
+) interface.
+ Rather, it defines a number of top-level DSL commands (methods) available
+ upon calling '
 \family typewriter
 include YPetri
 \family default
@@ -3832,6 +3742,40 @@ include YPetri
 include YNelson
 \family default
 '.
+ Agent is not a part of the core object model establihed in 
+\family typewriter
+YPetri
+\family default
+ and 
+\family typewriter
+YNelson
+\family default
+, and it is also hotter than other parts of 
+\family typewriter
+YPetri
+\family default
+ / 
+\family typewriter
+YNelson
+\family default
+.
+ For the basic use, see the tutorial (Introduction to 
+\family typewriter
+YNelson
+\family default
+).
+ For the detailed enumeration and description of the currently available
+ assets of 
+\family typewriter
+Agent
+\family default
+ class, see the class documentation.
+ Also, it is perfectly plausible and encouraged for the user to augment
+ the 
+\family typewriter
+Agent
+\family default
+ class on his or her own with methods that he or she deems useful.
 \end_layout
 
 \begin_layout LyX-Code

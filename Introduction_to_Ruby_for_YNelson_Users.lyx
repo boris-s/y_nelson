@@ -74,29 +74,67 @@ For
 YNelson
 \family default
  users, basic Ruby syntax is necessary.
- This document is a Ruby primer for 
+ This document is a primer to Ruby for 
 \family typewriter
 YNelson
 \family default
  users.
- 
-\series bold
-This document is better done in one session, as the provided code samples
- rely on each other.
+ This documents should be used in the same way as 
+\family typewriter
+YNelson
+\family default
+ tutorial (Introduction to 
+\family typewriter
+YNelson
+\family default
+) – that is, get an 
+\emph on
+irb
+\emph default
+ session running, and type all the examples in by yourself.
+ You might also wish to install 
+\family typewriter
+YNelson
+\family default
+ by by typing "
+\family typewriter
+gem install y_nelson
+\family default
+" from your command line.
+ Since many of the code samples here rely heavily on each other, you may
+ consider to do this document in one session.
+ On the other hand, if you happen to be a Ruby hacker, you do not need to
+ continue reading this document at all.
+ This document is not a replacement for a Ruby textbook.
+ For those, who want more thorough introduction to the language, I recommend
+ the document 
+\begin_inset CommandInset href
+LatexCommand href
+target "http://www.rubyist.net/~slagell/ruby/index.html"
 
-\series default
- If you are familiar with Ruby, you do not need to read this document at
- all.
- Those who want more thorough introduction to the language, I recommend
- http://www.rubyist.net/~slagell/ruby/index.html, or any of the many Ruby textbooks.
+\end_inset
+
+, or one of the many Ruby textbooks.
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Part*
 Variables and constants
 \end_layout
 
 \begin_layout Standard
-In Ruby, everything is an 
+In Ruby, everything
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Almost everything.
+ Non-object include eg.
+ variables or argument fields.
+\end_layout
+
+\end_inset
+
+ is an 
 \emph on
 \color red
 object
@@ -199,7 +237,7 @@ defined? Gamma
 #=> "constant"
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Part*
 Code lines and comments
 \end_layout
 
@@ -277,7 +315,7 @@ Hello world!
 
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Part*
 Methods
 \end_layout
 
@@ -390,7 +428,7 @@ to_f
  which is not important.
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Part*
 Classes
 \end_layout
 
@@ -552,7 +590,7 @@ puts
 ' method, used to simply print characters on the screen.
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Part*
 Strings, Symbols, Arrays and Hashes
 \end_layout
 
@@ -612,7 +650,7 @@ Understanding argument passing and closure writing is essential in using
  YPetri DSL.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Strings
 \end_layout
 
@@ -771,7 +809,7 @@ Again,
  operator changed the contents, but the object id remained the same.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Symbols
 \end_layout
 
@@ -796,7 +834,7 @@ Unlike strings, symbols are immutable – they never change.
 Symbol
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Arrays
 \end_layout
 
@@ -847,7 +885,7 @@ my_array[-2]
 #=> #<Dog:0x9c214ac>
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Hashes
 \end_layout
 
@@ -913,7 +951,7 @@ h2[:dog]
 #=> #<Dog:0x9c214ac>
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Part*
 Code blocks and Closures
 \end_layout
 
@@ -1024,7 +1062,7 @@ lambda calculus
 .
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Return values
 \end_layout
 
@@ -1053,7 +1091,7 @@ Code blocks (and actually, all Ruby statements) have return value.
 #=> [0, 1, 2, 3]
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Closures
 \end_layout
 
@@ -1273,7 +1311,7 @@ my_lambda = -> orgnism { organism.speak! }
 All of the four above statements define exactly the same thing.
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Section*
 Passing arguments
 \end_layout
 
@@ -1362,7 +1400,7 @@ YNelson
 , this is the language of Ruby closures.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Optional arguments
 \end_layout
 
@@ -1537,7 +1575,7 @@ c
  All code lines, exception the obvious ones, should have comments.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Variable-length argument lists
 \end_layout
 
@@ -1722,7 +1760,7 @@ avg.( 11, 7, 5, 3 )
 #=> 6.5
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Named arguments
 \end_layout
 
@@ -1823,7 +1861,7 @@ lambda do |arg| ...
  ) array constructor syntax.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Hash-collecting behavior of square brackets
 \end_layout
 
@@ -1928,7 +1966,7 @@ enzyme
  constructor method.
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Section*
 Arity
 \end_layout
 
@@ -2108,7 +2146,7 @@ array_scale.arity
 #=> -2
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Section*
 Return value
 \end_layout
 
@@ -2226,12 +2264,28 @@ experimental_lambda.call
 #=> 3
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Section*
 Return value arity
 \end_layout
 
 \begin_layout Standard
-It is possible to return more than one value.
+It is possible to return more than one value
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Technically, methods and closures always return exactly 1 object – multiple
+ values are returned via a single array object.
+ But pragmatically, and especially with respect to 
+\family typewriter
+YPetri
+\family default
+, the notion of return value arity is useful.
+\end_layout
+
+\end_inset
+
+.
  For example:
 \end_layout
 
@@ -2356,7 +2410,258 @@ z
 #=> 3
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Part*
+
+\family typewriter
+YSupport
+\family default
+ library
+\end_layout
+
+\begin_layout Standard
+Finally, having introduced the basic Ruby syntax, let us mention 
+\family typewriter
+YSupport
+\family default
+ gem (gem = published Ruby library), that collects the assets (modules,
+ classes, methods...) of general concern in use by 
+\family typewriter
+YPetri
+\family default
+/
+\family typewriter
+YNelson
+\family default
+.
+ Of these, a particular mention goes to 
+\family typewriter
+NameMagic
+\family default
+, widely used in 
+\family typewriter
+YPetri
+\family default
+, 
+\family typewriter
+YNelson
+\family default
+ and 
+\family typewriter
+SY
+\family default
+ (physical units) libraries.
+\end_layout
+
+\begin_layout Section*
+
+\family typewriter
+NameMagic
+\end_layout
+
+\begin_layout Standard
+In software engineering, 
+\emph on
+magic
+\emph default
+ is a technical term for irregular side effects of language expressions.
+ The problem that 
+\family typewriter
+NameMagic
+\family default
+ solves is, that objects (such as chemical species encoded in 
+\family typewriter
+YNelson
+\family default
+) are frequently named, and naming them is an annoying chore.
+ Consider a simple case:
+\end_layout
+
+\begin_layout LyX-Code
+class Student
+\end_layout
+
+\begin_layout LyX-Code
+  attr_accessor :name
+\end_layout
+
+\begin_layout LyX-Code
+  def initialize name: nil
+\end_layout
+
+\begin_layout LyX-Code
+    @name = name
+\end_layout
+
+\begin_layout LyX-Code
+  end
+\end_layout
+
+\begin_layout LyX-Code
+end
+\end_layout
+
+\begin_layout Standard
+Now, to create named 
+\family typewriter
+Student
+\family default
+ instances, one has to mention 
+\family typewriter
+:name
+\family default
+ named argument in the constructor, and frequently, the same name has to
+ be mentioned twice, such as when assigning to constants or variables:
+\end_layout
+
+\begin_layout LyX-Code
+richard = Student.new( name: "Richard" )
+\end_layout
+
+\begin_layout LyX-Code
+richard.name
+\end_layout
+
+\begin_layout LyX-Code
+#=> "Richard"
+\end_layout
+
+\begin_layout Standard
+In Ruby, we can notice that some objects have built-in capability to be
+ named simply by constant assignment:
+\end_layout
+
+\begin_layout LyX-Code
+foo = Class.new
+\end_layout
+
+\begin_layout LyX-Code
+foo.name
+\end_layout
+
+\begin_layout LyX-Code
+#=> nil
+\end_layout
+
+\begin_layout LyX-Code
+Car = foo
+\end_layout
+
+\begin_layout LyX-Code
+foo.name
+\end_layout
+
+\begin_layout LyX-Code
+#=> "Car"
+\end_layout
+
+\begin_layout Standard
+Magically, upon assigning 
+\family typewriter
+Car = foo
+\family default
+, the object referred to by the 
+\family typewriter
+foo
+\family default
+ variable received an attribute 
+\family typewriter
+name
+\family default
+, with value set to "
+\family typewriter
+Car
+\family default
+".
+ This standard behavior is termed constant magic.
+ 
+\family typewriter
+NameMagic
+\family default
+ mixin (part of 
+\family typewriter
+YSupport
+\family default
+) extends this standard behavior to any chosen object, and also takes care
+ of keeping the instance registry and doing general naming related chores
+ for its includers:
+\end_layout
+
+\begin_layout LyX-Code
+require 'y_support/name_magic'
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+class Chemical
+\end_layout
+
+\begin_layout LyX-Code
+  include NameMagic
+\end_layout
+
+\begin_layout LyX-Code
+end
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+NaCl = Chemical.new
+\end_layout
+
+\begin_layout LyX-Code
+NaCl.name
+\end_layout
+
+\begin_layout LyX-Code
+#=> "NaCl"
+\end_layout
+
+\begin_layout Standard
+It might seem like a small thing, but in a big file of complicated equation,
+ it really starts to matter whether one writes on each line "
+\family typewriter
+NaCl = Chemical.new( name: NaCl )
+\family default
+", or just "
+\family typewriter
+NaCl = Chemical.new
+\family default
+".
+ 
+\family typewriter
+NameMagic
+\family default
+ is a part of 
+\family typewriter
+YSupport
+\family default
+ library accompanying 
+\family typewriter
+YPetri
+\family default
+ and 
+\family typewriter
+YNelson
+\family default
+.
+ You can install 
+\family typewriter
+YSupport
+\family default
+ from the command line by "
+\family typewriter
+gem install y_support
+\family default
+".
+\end_layout
+
+\begin_layout Part*
 Other essential concepts
 \end_layout
 
@@ -2383,7 +2688,7 @@ gem install y_support
  in your command line before studying code examples in this section.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Namespaces
 \end_layout
 
@@ -2600,7 +2905,7 @@ Simulation
  instance.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Parametrized subclassing
 \end_layout
 
@@ -2875,7 +3180,7 @@ Village
  The concept of parametrized subclassing is actually very simple.
 \end_layout
 
-\begin_layout Subsubsection*
+\begin_layout Section*
 Convenience methods
 \end_layout
 
@@ -2915,54 +3220,6 @@ A.marking "must never be negative" do |m| m >= 0 end
 \begin_layout Standard
 Depending on circumstances, use of convenience methods in reusable code
  may or may not be bad practice.
-\end_layout
-
-\begin_layout Subsection*
-
-\family typewriter
-YSupport
-\family default
- library
-\end_layout
-
-\begin_layout Standard
-
-\family typewriter
-YSupport
-\family default
- is a gem (published Ruby library) that collects the supporting assets of
- general concern used by 
-\family typewriter
-YPetri
-\family default
-/
-\family typewriter
-YNelson
-\family default
-.
-\end_layout
-
-\begin_layout Subsubsection*
-
-\family typewriter
-NameMagic
-\end_layout
-
-\begin_layout Standard
-Magic in software engineering is a technical term for irregular side effects
- of program statements.
- In Ruby, some objects have built-in capability to be named by constant
- assignment, termed constant magic.
- 
-\family typewriter
-NameMagic
-\family default
- mixin (part of 
-\family typewriter
-YSupport
-\family default
-) extends this capability to any chosen object, and also takes care of keeping
- the instance registry and doing general naming related chores for its includers.
 \end_layout
 
 \begin_layout LyX-Code
