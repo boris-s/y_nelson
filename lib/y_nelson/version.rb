@@ -1,3 +1,4 @@
 module YNelson
-  VERSION = "0.0.1"
+  DEBUG = false
+  VERSION = "2.3.0"
 end

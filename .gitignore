@@ -1,3 +1,6 @@
+*~
+.#*
+\#*#
 *.gem
 *.rbc
 .bundle
@@ -14,9 +17,5 @@ rdoc
 spec/reports
 test/tmp
 test/version_tmp
+test/*.png
 tmp
-*.bundle
-*.so
-*.o
-*.a
-mkmf.log
