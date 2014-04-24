@@ -242,47 +242,6 @@ Code lines and comments
 \end_layout
 
 \begin_layout Standard
-Ruby lines can be written with or without semicolons:
-\end_layout
-
-\begin_layout LyX-Code
-a = "with";
-\end_layout
-
-\begin_layout LyX-Code
-b = "without"
-\end_layout
-
-\begin_layout LyX-Code
-puts [ a, b ].join " or "
-\end_layout
-
-\begin_layout Standard
-Semicolon is compulsory only when two or more logical lines are crammed
- together like this:
-\end_layout
-
-\begin_layout LyX-Code
-a = 
-\begin_inset Quotes eld
-\end_inset
-
-Hello 
-\begin_inset Quotes eld
-\end_inset
-
-; b = 
-\begin_inset Quotes eld
-\end_inset
-
-world!
-\begin_inset Quotes erd
-\end_inset
-
-; puts a + b
-\end_layout
-
-\begin_layout Standard
 Comments are denoted by 
 \family typewriter
 #
@@ -313,6 +272,47 @@ Hello world!
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Ruby lines can be written with or without semicolons:
+\end_layout
+
+\begin_layout LyX-Code
+a = "with";
+\end_layout
+
+\begin_layout LyX-Code
+b = "without"
+\end_layout
+
+\begin_layout LyX-Code
+puts [ a, b ].join " or "
+\end_layout
+
+\begin_layout Standard
+Semicolon is compulsory only when two or more logical lines are crammed
+ together like this:
+\end_layout
+
+\begin_layout LyX-Code
+a = 
+\begin_inset Quotes eld
+\end_inset
+
+Hello
+\begin_inset Quotes eld
+\end_inset
+
+; b = 
+\begin_inset Quotes eld
+\end_inset
+
+world!
+\begin_inset Quotes erd
+\end_inset
+
+; puts a + ' ' + b
 \end_layout
 
 \begin_layout Part*
@@ -1418,7 +1418,7 @@ def average( a, b, c
 \color red
 =
 \color inherit
-:spot )
+nil )
 \end_layout
 
 \begin_layout LyX-Code
@@ -1426,11 +1426,7 @@ def average( a, b, c
 \color red
 #
 \color inherit
- If c argument was not given, :spot symbol will be assigned
-\end_layout
-
-\begin_layout LyX-Code
-  # to c by default.
+ If c argument was not given, it will default to nil
 \end_layout
 
 \begin_layout LyX-Code
@@ -1442,11 +1438,9 @@ if
 \color red
 ==
 \color inherit
- :spot 
+ nil 
 \color red
 then
-\color inherit
- # only 2 arguments were supplied
 \end_layout
 
 \begin_layout LyX-Code
@@ -1457,8 +1451,6 @@ then
   
 \color red
 else
-\color inherit
- # 3 arguments were supplied
 \end_layout
 
 \begin_layout LyX-Code
@@ -1679,7 +1671,7 @@ examine_arguments( 1 )
 \end_layout
 
 \begin_layout LyX-Code
-examine_arguments( :hello, :spot, 3, 5, "garbage" )
+examine_arguments( :hello, nil, 3, 5, "garbage" )
 \end_layout
 
 \begin_layout LyX-Code
@@ -1776,11 +1768,11 @@ as hash pairs in the method call
 \end_layout
 
 \begin_layout LyX-Code
-def density( length: 1, width: 1, height: 1, weight: 1 )
+def density( x: 1, y: 1, z: 1, weight: 1 )
 \end_layout
 
 \begin_layout LyX-Code
-  weight.to_f / ( length * width * height )
+  weight.to_f / ( x * y * z )
 \end_layout
 
 \begin_layout LyX-Code
@@ -1792,7 +1784,7 @@ end
 \end_layout
 
 \begin_layout LyX-Code
-density( length: 2, width: 2, height: 2, weight: 10 )
+density( x: 2, y: 2, z: 2, weight: 10 )
 \end_layout
 
 \begin_layout LyX-Code
@@ -1826,7 +1818,7 @@ dens_closure =
 \end_layout
 
 \begin_layout LyX-Code
-  nn[:weight].to_f / ( nn[:length] * nn[:width] * nn[:height] ) end
+  nn[:weight].to_f / ( nn[:x] * nn[:y] * nn[:z] ) end
 \end_layout
 
 \begin_layout LyX-Code
@@ -1834,7 +1826,7 @@ dens_closure =
 \end_layout
 
 \begin_layout LyX-Code
-dens_closure.( length: 2, width: 2, height: 2, weight: 10 )
+dens_closure.( x: 2, y: 2, z: 2, weight: 10 )
 \end_layout
 
 \begin_layout LyX-Code
@@ -1872,11 +1864,11 @@ In more complicated method argument structures, it can be advantageous to
 \end_layout
 
 \begin_layout LyX-Code
-h = { length: 2, width: 3, height: 4 }
+h = { x: 2, y: 3, z: 4 }
 \end_layout
 
 \begin_layout LyX-Code
-#=> {:length=>2, :width=>3, :height=>4}
+#=> {:x=>2, :y=>3, :z=>4}
 \end_layout
 
 \begin_layout LyX-Code
@@ -1912,11 +1904,11 @@ a0.class
 \end_layout
 
 \begin_layout LyX-Code
-a1 = [ 1, 2, 3, length: 2, width: 3, height: 4 ]
+a1 = [ 1, 2, 3, x: 2, y: 3, z: 4 ]
 \end_layout
 
 \begin_layout LyX-Code
-#=> [1, 2, 3, {:length=>2, :width=>3, :height=>4}]
+#=> [1, 2, 3, {:x=>2, :y=>3, :z=>4}]
 \end_layout
 
 \begin_layout LyX-Code
@@ -1940,19 +1932,19 @@ a1[-1]
 \end_layout
 
 \begin_layout LyX-Code
-#=> {:length=>2, :width=>3, :height=>4}
+#=> {:x=>2, :y=>3, :z=>4}
 \end_layout
 
 \begin_layout Standard
 In other words, if there are any trailing 
 \family typewriter
-key / value
+key/value
 \family default
  pairs inside square brackets, they will be collected into a hash, which
  will become the last element of the array.
  This possibility to mix ordered elements with 
 \family typewriter
-key / value
+key/value
 \family default
  pairs is used eg.
  in 
@@ -2022,7 +2014,7 @@ doubler.arity
 \end_layout
 
 \begin_layout LyX-Code
-adder = lambda { |p, q| p + q }
+adder = -> p, q { p + q }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2046,7 +2038,7 @@ adder.arity
 \end_layout
 
 \begin_layout LyX-Code
-scaler = lambda { |number, p, q| number * (q / p) }
+scaler = -> number, p, q { number * (q / p) }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2070,7 +2062,7 @@ scaler.arity
 \end_layout
 
 \begin_layout LyX-Code
-constant_function = lambda { 42 }
+constant_function = -> { 42 }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2099,7 +2091,7 @@ Closures / methods with variable length arguments indicate this by reporting
 \end_layout
 
 \begin_layout LyX-Code
-summation = lambda { |*array| array.reduce( :+ ) }
+summation = -> *array { array.reduce( :+ ) }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2123,7 +2115,7 @@ summation.arity
 \end_layout
 
 \begin_layout LyX-Code
-array_scale = lambda { |*a, coeff| a.map { |e| e * coeff } }
+array_scale = -> *a, coeff { a.map { |e| e * coeff } }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2151,13 +2143,13 @@ Return value
 \end_layout
 
 \begin_layout Standard
-The last statement in a closure / method becomes the return value.
+The last statement in a closure or method becomes the return value.
  In methods and lambda-type closures, return statement can also be used
  explicitly:
 \end_layout
 
 \begin_layout LyX-Code
-divider = lambda { |u, v|
+divider = -> u, v {
 \end_layout
 
 \begin_layout LyX-Code
@@ -2165,7 +2157,7 @@ divider = lambda { |u, v|
 \end_layout
 
 \begin_layout LyX-Code
-              return :division_by_zero # explicit return statement
+              return :division_by_zero # explicit return
 \end_layout
 
 \begin_layout LyX-Code
@@ -2173,7 +2165,7 @@ divider = lambda { |u, v|
 \end_layout
 
 \begin_layout LyX-Code
-            u / v # implicit return value - last statement of the closure
+            u / v # implicit return - last statement
 \end_layout
 
 \begin_layout LyX-Code
@@ -2205,19 +2197,15 @@ experimental_closure = proc {
 \end_layout
 
 \begin_layout LyX-Code
-                         1      # this value will be ignored
+                         42     # ignored
 \end_layout
 
 \begin_layout LyX-Code
-                         3      # this value will be ignored, too
+                         41     # returned
 \end_layout
 
 \begin_layout LyX-Code
-                         42     # this value will be discarded as well
-\end_layout
-
-\begin_layout LyX-Code
-                         41 }   # this value will be returned
+                       }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2237,15 +2225,15 @@ experimental_lambda = lambda {
 \end_layout
 
 \begin_layout LyX-Code
-                        1          # this value will be ignored
+                        1          # ignored
 \end_layout
 
 \begin_layout LyX-Code
-                        return 3   # this value will be returned
+                        return 3   # returned
 \end_layout
 
 \begin_layout LyX-Code
-                        7          # execution will never get here at all
+                        7          # never executed
 \end_layout
 
 \begin_layout LyX-Code
@@ -2290,15 +2278,11 @@ YPetri
 \end_layout
 
 \begin_layout LyX-Code
-multiplication_table = lambda { |number|
+mult_table = -> number {
 \end_layout
 
 \begin_layout LyX-Code
-                         [1, 2, 3, 4, 5]
-\end_layout
-
-\begin_layout LyX-Code
-                           .map { |element| element * number }
+                         [1, 2, 3, 4, 5].map { |e| e * number }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2315,8 +2299,7 @@ This method returns 5 values.
 \end_layout
 
 \begin_layout LyX-Code
-by_one, by_two, by_three, by_four, by_five = multiplication_table.call( 7
- )
+by_one, by_two, by_three, by_four, by_five = mult_table.call( 7 )
 \end_layout
 
 \begin_layout LyX-Code
@@ -2352,7 +2335,7 @@ Or we can simply collect them in an array:
 \end_layout
 
 \begin_layout LyX-Code
-collection = multiplication_table.( 3 )
+collection = mult_table.( 3 )
 \end_layout
 
 \begin_layout LyX-Code
@@ -2371,7 +2354,7 @@ YNelson
 \end_layout
 
 \begin_layout LyX-Code
-constant_vector = lambda { return 1, 2, 3 }
+constant_vector = -> { return 1, 2, 3 }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2572,7 +2555,11 @@ name
 Car
 \family default
 ".
- This standard behavior is termed constant magic.
+ This standard behavior is termed 
+\emph on
+constant magic
+\emph default
+.
  
 \family typewriter
 NameMagic
@@ -2623,8 +2610,8 @@ NaCl.name
 \end_layout
 
 \begin_layout Standard
-It might seem like a small thing, but in a big file of complicated equation,
- it really starts to matter whether one writes on each line "
+It might seem like a small thing, but in a big file full of complicated
+ statements, it really matters whether you have to write each time "
 \family typewriter
 NaCl = Chemical.new( name: NaCl )
 \family default
@@ -3021,6 +3008,31 @@ John.class.settlement #=> London
 \end_layout
 
 \begin_layout Standard
+To make it easier to ask humans about their settlement, let's reopen class
+ 
+\family typewriter
+Human
+\family default
+ and delegate method 
+\family typewriter
+#settlement
+\family default
+ to the class:
+\end_layout
+
+\begin_layout LyX-Code
+class Human
+\end_layout
+
+\begin_layout LyX-Code
+  def settlement; self.class.settlement end
+\end_layout
+
+\begin_layout LyX-Code
+end
+\end_layout
+
+\begin_layout Standard
 Alternative syntax for subclassing is this:
 \end_layout
 
@@ -3189,16 +3201,28 @@ Convenience methods are methods in which the consistency of the behavior
  is traded for syntax sweetness.
  Convenience methods may do entirely different things for different argument
  sets.
- For example, 
+ For example, in 
+\family typewriter
+YNelson
+\family default
+, (you can install it by "
+\family typewriter
+gem install y_nelson
+\family default
+", if you haven't done so yet), 
 \family typewriter
 Place#marking
 \family default
  without arguments simply returns the place's marking.
- But with arguments, it can be used to define a guard.
+ But with arguments, it can be used to define a guard:
 \end_layout
 
 \begin_layout LyX-Code
-A = Place.new marking: 42
+require 'y_nelson' and include YNelson
+\end_layout
+
+\begin_layout LyX-Code
+A = Place marking: 42
 \end_layout
 
 \begin_layout LyX-Code
@@ -3214,7 +3238,15 @@ A.marking # Simply returns its marking
 \end_layout
 
 \begin_layout LyX-Code
-A.marking "must never be negative" do |m| m >= 0 end
+A.marking "must never be above 100" do |m| m <= 100 end
+\end_layout
+
+\begin_layout LyX-Code
+A.marking = 99 # no problem
+\end_layout
+
+\begin_layout LyX-Code
+A.marking = 101 # YPetri::GuardError is raised
 \end_layout
 
 \begin_layout Standard
