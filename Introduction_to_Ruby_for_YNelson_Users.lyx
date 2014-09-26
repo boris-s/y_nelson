@@ -2038,7 +2038,7 @@ adder.arity
 \end_layout
 
 \begin_layout LyX-Code
-scaler = -> number, p, q { number * (q / p) }
+scaler = -> number, p, q { number * ( q.to_f / p ) }
 \end_layout
 
 \begin_layout LyX-Code
@@ -2050,7 +2050,7 @@ scaler.call( 10, 2, 3 )
 \end_layout
 
 \begin_layout LyX-Code
-#=> 15
+#=> 15.0
 \end_layout
 
 \begin_layout LyX-Code
@@ -2165,7 +2165,7 @@ divider = -> u, v {
 \end_layout
 
 \begin_layout LyX-Code
-            u / v # implicit return - last statement
+            u.to_f / v # implicit return - last statement
 \end_layout
 
 \begin_layout LyX-Code
@@ -2181,7 +2181,7 @@ divider.call( 15, 3 )
 \end_layout
 
 \begin_layout LyX-Code
-#=> 5
+#=> 5.0
 \end_layout
 
 \begin_layout LyX-Code
@@ -2294,7 +2294,7 @@ mult_table = -> number {
 \end_layout
 
 \begin_layout Standard
-This method returns 5 values.
+This closure returns 5 values.
  We can receive them by using a simultaneous assignment statement:
 \end_layout
 
@@ -3203,11 +3203,15 @@ Convenience methods are methods in which the consistency of the behavior
  sets.
  For example, in 
 \family typewriter
+YPetri
+\family default
+, (a Petri net gem on which 
+\family typewriter
 YNelson
 \family default
-, (you can install it by "
+ depends, you can install it by "
 \family typewriter
-gem install y_nelson
+gem install y_petri
 \family default
 ", if you haven't done so yet), 
 \family typewriter
@@ -3218,7 +3222,7 @@ Place#marking
 \end_layout
 
 \begin_layout LyX-Code
-require 'y_nelson' and include YNelson
+require 'y_petri' and include YPetri
 \end_layout
 
 \begin_layout LyX-Code
@@ -3250,8 +3254,8 @@ A.marking = 101 # YPetri::GuardError is raised
 \end_layout
 
 \begin_layout Standard
-Depending on circumstances, use of convenience methods in reusable code
- may or may not be bad practice.
+Convenience methods are especially suited for non-reusable code, but their
+ use may sometimes be efficient also in reusable code.
 \end_layout
 
 \begin_layout LyX-Code

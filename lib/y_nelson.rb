@@ -100,3 +100,126 @@ module YNelson
 end
 
 puts "YNelson: Nelson net domain model and simulator. ⓒ 2013 Boris Stitnicky"
+
+
+# ===========================================================================
+# !!! TODO !!!
+# 
+# Refactoring plans
+# 
+# When 'y_petri' is required, class Module will gain the capacity to respond
+# to y_petri DSL commands (#Place, #Transition etc.).
+# 
+# This will allow syntax such as:
+#
+# # syntax 1
+# 
+# module Foo
+#   P1 = Place()
+#   P2 = Place()
+#   P3 = Place()
+# end
+#
+# module Bar
+#   T1 = Transition s: { P1: -1, P2: 1 }
+# end
+#
+# module Baz
+#   T2 = Transition s: { P2: -1, P3: 1 }
+# end
+#
+# In this syntax, there are two questions:
+# 1. Which world will the defined nodes belong to?
+# 2. Which net(s) will they be automatically included in?
+#
+# The goal here is to be able to construct things like:
+#
+# class Foobar
+#   include Foo
+#   include Bar
+# end
+#
+# object = Foobar.new # Object with state defined by a net consisting
+#                     # of Foo and Bar modules
+#                     
+# object.net          # YPetri net
+# object.state        # state of the object's net
+# 
+# A different possibility would be to use the block syntax:
+#
+# # syntax 2
+# 
+# quux = net do
+#   include "Foo"
+#   Place "A", marking: 42
+# end
+#
+# (Since net do A = Place( m: 42 ) end does not work -- constant gets
+# defined in the callers scope.)
+# 
+# The question is, which world will the nodes defined by syntax 1 go to?
+# I think that the world should be defined either:
+#
+# 1. explicitly
+# 
+# module Foo
+#   self.y_petri_world = Bar
+# end
+#
+# 2. implicitly
+#
+# module Foo
+#   A = Place() # will automatically connect Foo with the default world
+# end
+# 
+# module Foo::Bar
+#   A = Place() # will search nesting and connect Foo::Bar with the world of Foo
+# end
+# 
+# As for +YPetri::Net+ block constructor, the block should be module-evalled in
+# the nascent instance (whose class descends from Module), but +include+ in it
+# should be peppered so as to admit also Place and Transition arguments and to
+# make the first include decide implicitly the world of this net.
+#
+# X = net do
+#   include Foo::A
+#   include Foo::Bar
+# end
+#
+# Other than that, the world would have to be either defined explicitly
+#
+# X = foo_world.net do
+#   # ...
+# end
+#
+# or implicitly by Module#net, taking the module's world as the net's
+# world, as in module definition.
+#
+# So Module#net would go somehow like:
+#
+# class Module
+#   def net &block
+#     x = Net.new
+#     x.y_petri_world = y_petri_world # of the receiver
+#     x.module_exec &block
+#     return x
+#   end
+# end
+#
+# Object.y_petri_world is automatically created. World is not a module class.
+#
+# #net called outside a module should create a Net belonging to the
+# Object.y_petri_world.
+#
+# ===========================================================================
+
+
+# ===========================================================================
+# !!! TODO !!!
+# 
+# Refactoring plans: Modules themselves should be ZZ objects, but not
+# before yzz is refactored so as to allow to give the zz properties to
+# already existing objects.
+#
+# It is a question whether all the objects should be zz objects, and the
+# probable answer is actually yes.

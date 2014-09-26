@@ -752,7 +752,7 @@ B = Place()
 \begin_layout LyX-Code
 
 \family typewriter
-#=> #<Place: name: B, marking: nil, default_marking: ø>
+#=> B
 \end_layout
 
 \begin_layout Standard
@@ -991,7 +991,7 @@ Transition
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: A2B (tS)>
+#=> A2B
 \end_layout
 
 \begin_layout Standard
@@ -1143,11 +1143,7 @@ arcs
 \end_layout
 
 \begin_layout LyX-Code
-#=> [#<Place: name: A, marking: 2, default_marking: ø >,
-\end_layout
-
-\begin_layout LyX-Code
-     #<Place: name: B, marking: 5, default_marking: ø >]
+#=> [A, B]
 \end_layout
 
 \begin_layout Standard
@@ -1221,11 +1217,7 @@ downstream_arcs
 \end_layout
 
 \begin_layout LyX-Code
-[#<Place: name: A, marking: 2, default_marking: ø>,
-\end_layout
-
-\begin_layout LyX-Code
- #<Place: name: B, marking: 5, default_marking: ø>]
+[A, B]
 \end_layout
 
 \begin_layout LyX-Code
@@ -1237,11 +1229,7 @@ codomain
 \end_layout
 
 \begin_layout LyX-Code
-[#<Place: name: A, marking: 2, default_marking: ø>,
-\end_layout
-
-\begin_layout LyX-Code
- #<Place: name: B, marking: 5, default_marking: ø>]
+[A, B]
 \end_layout
 
 \begin_layout Standard
@@ -1393,7 +1381,7 @@ key "Matsuno2011brs"
 
 \end_inset
 
-, which was already mentioned in the introduction.
+, already mentioned in the introductory part of this document.
  
 \family typewriter
 YNelson
@@ -1415,7 +1403,7 @@ marking
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Place: name: C, marking: 7.77, default_marking: ø>
+#=> C
 \end_layout
 
 \begin_layout Standard
@@ -1453,7 +1441,7 @@ rate
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: C_decay (TS)>
+#=> C_decay
 \end_layout
 
 \begin_layout LyX-Code
@@ -1938,7 +1926,7 @@ A_to_42 = Transition codomain: A, assignment: lambda { 42 }
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: A_to_42 (A Assign.)>
+#=> A_to_42
 \end_layout
 
 \begin_layout Standard
@@ -2166,7 +2154,7 @@ Let's check our work:
 \end_layout
 
 \begin_layout LyX-Code
-places.map &:m
+places.map &:marking
 \end_layout
 
 \begin_layout LyX-Code
@@ -2208,7 +2196,7 @@ B2A.fire! 0.1
 \end_layout
 
 \begin_layout LyX-Code
-places.map &:m
+places.map &:marking
 \end_layout
 
 \begin_layout LyX-Code
@@ -2226,15 +2214,15 @@ reset_marking
 \end_layout
 
 \begin_layout LyX-Code
-C.m = 4
+C.marking = 4
 \end_layout
 
 \begin_layout LyX-Code
-D.m = 9
+D.marking = 9
 \end_layout
 
 \begin_layout LyX-Code
-places.map &:m
+places.map &:marking
 \end_layout
 
 \begin_layout LyX-Code
@@ -2246,7 +2234,7 @@ B2A.fire! 0.1
 \end_layout
 
 \begin_layout LyX-Code
-places.map &:m
+places.map &:marking
 \end_layout
 
 \begin_layout LyX-Code
@@ -2400,7 +2388,7 @@ default_marking:
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Place: name: A, marking: 0.5, default_marking: 0.5>
+#=> A
 \end_layout
 
 \begin_layout LyX-Code
@@ -2408,7 +2396,7 @@ B = Place( default_marking: 0.5 )
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Place: name: B, marking: 0.5, default_marking: 0.5>
+#=> B
 \end_layout
 
 \begin_layout Standard
@@ -2424,7 +2412,7 @@ A_pump = Transition( stoichiometry: { A: -1 }, rate: proc { 0.005 } )
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: A_pump (TS)>
+#=> A_pump
 \end_layout
 
 \begin_layout Standard
@@ -2453,7 +2441,7 @@ B_decay = Transition( stoichiometry: { B: -1 }, rate: 0.05 )
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: B_decay (TS)>
+#=> B_decay
 \end_layout
 
 \begin_layout Standard
@@ -2564,7 +2552,8 @@ settings
 \end_layout
 
 \begin_layout LyX-Code
-#=> {:step=>0.1, :sampling=>5, :time=>0..60}
+#=> {:method=>:pseudo_euler, :guarded=>false, :step=>0.1, :sampling=>5, :time=>0..6
+0}
 \end_layout
 
 \begin_layout Standard
@@ -3436,7 +3425,15 @@ YNelson
 \end_layout
 
 \begin_layout Standard
-Enter:
+In a fresh 
+\family typewriter
+irb
+\family default
+ session, enter:
+\end_layout
+
+\begin_layout LyX-Code
+require 'sy'; require 'y_nelson' and include YNelson
 \end_layout
 
 \begin_layout LyX-Code
@@ -3444,7 +3441,7 @@ A = Place m!: 3.mM
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Place: name: A, marking: 0.003.M, default_marking: 0.003.M >
+#=> A
 \end_layout
 
 \begin_layout LyX-Code
@@ -3452,7 +3449,7 @@ B = Place m!: 4.mM
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Place: name: B, marking: 0.004.M, default_marking: 0.004.M >
+#=> B
 \end_layout
 
 \begin_layout LyX-Code
@@ -3460,7 +3457,7 @@ A2B = Transition s: { A: -1, B: 1 }, rate: 0.05.s⁻¹
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: A2B (SR) >
+#=> A2B
 \end_layout
 
 \begin_layout LyX-Code
@@ -3470,9 +3467,7 @@ B_decay = Transition s: { B: -1 }, rate: 0.002.s⁻¹
 \begin_layout LyX-Code
 #=> 
 \family typewriter
-YNelson
-\family default
-::Transition[ B_decay: stoichiometric transition with rate ]
+B_decay
 \end_layout
 
 \begin_layout Standard
