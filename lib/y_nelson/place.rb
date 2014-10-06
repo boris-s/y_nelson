@@ -1,5 +1,5 @@
 # YNelson::Place is analogical to a spreadsheet cell. It is based on
-# YPetri::Place and offers simlar interace.
+# YPetri::Place, which is made into a ZZ object using Yzz mixin.
 # 
 class YNelson::Place < YPetri::Place
   include YNelson::Yzz
@@ -18,13 +18,24 @@ class YNelson::Place < YPetri::Place
     
   end
 
-  # Subclass of YTed::Zz::Side.
+  # Subclass of Yzz::PoswardSide.
   # 
-  class Side < Side
+  class PoswardSide < Yzz::PoswardSide
     # "Budding": creation of new cells from the cell sides.
     # 
     def bud( value: L!, f: nil )
-      # FIXME
+      # FIXME -- budding from posward side
+    end
+    alias :>> :bud
+  end
+
+  # Subclass of Yzz::NegwardSide.
+  # 
+  class NegwardSide < Yzz::NegwardSide
+    # "Budding": creation of new cells from the cell sides.
+    # 
+    def bud( value: L!, f: nil )
+      # FIXME -- budding from negward side
     end
     alias :>> :bud
   end
