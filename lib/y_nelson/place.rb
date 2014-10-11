@@ -18,6 +18,11 @@ class YNelson::Place < YPetri::Place
     
   end
 
+  # FIXME: Because Yzz::SidePair actually parametrizes ::Yzz::PoswardSide
+  # and ::Yzz::NegwardSide, the following two class definitions will probably
+  # be ignored. I'm too tired to look into this now, this is for later
+  # user comfort development of YNelson.
+  #
   # Subclass of Yzz::PoswardSide.
   # 
   class PoswardSide < Yzz::PoswardSide
