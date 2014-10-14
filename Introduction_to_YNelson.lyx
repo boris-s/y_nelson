@@ -107,12 +107,12 @@ ZZ structures
 \color inherit
 .
  If you follow this guide closely, you will receive a concise and efficient
- introduction to each of these three (remark:
+ introduction to each of these three.
+ (Remark:
 \emph on
  only the Petri net aspect is covered in this version of this guide.
- ZZ structure aspect will be covered in the future versions of this manual)
+ ZZ structure aspect will be covered in the future versions of this manual.)
 \emph default
-.
  Newly introduced 
 \color red
 Ruby keywords and terms
@@ -135,7 +135,7 @@ YNelson keywords and terms
 YNelson
 \family default
 \color inherit
- is a domain model and a simulator of 
+ is a domain model and a simulator of Nelson nets, 
 \emph on
 \color green
 functional
@@ -145,33 +145,23 @@ functional
 Petri nets
 \emph default
 \color inherit
- living in the 
+ living in a 
 \emph on
 \color green
 ZZ space
 \emph default
 \color inherit
 .
- The Petri net flavor used in 
+ 
 \family typewriter
 YNelson
 \family default
- is similar, but not identical with 
-\emph on
-\color green
-hybrid functional Petri nets
-\emph default
- (HFPNs)
-\color inherit
- introduced by 
-\begin_inset CommandInset citation
-LatexCommand citet
-key "Matsuno2011brs"
-
-\end_inset
-
-.
- For a recent review of the various flavors of Petri nets, see eg.
+ is designed for the purpose of modelling and simulation of dynamical systems,
+ especially biochemical systems.
+ Modelling dynamical systems (including biochemical systems) is one of the
+ typical applications of Petri nets.
+ For a review of the various flavors of Petri nets used in modelling biochemical
+ systems, see eg.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -184,11 +174,47 @@ key "Bos2008mbs"
 \family typewriter
 YNelson
 \family default
- is implemented in 
+ introduces its own Petri net flavor, which is similar, but not identical
+ with 
+\emph on
+\color green
+hybrid functional Petri nets (HFPN)
+\emph default
+\color inherit
+ introduced by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Matsuno2011brs"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+YNelson
+\family default
+ is implemented as an 
+\emph on
+\color red
+internal domain-specific language (DSL)
+\emph default
+\color inherit
+ in 
 \emph on
 \color red
 Ruby programming language
 \emph default
+\color inherit
+, which you can use in scripts, or access interactively from 
+\color red
+inferior Ruby interpreter (
+\emph on
+irb
+\emph default
+)
 \color inherit
 .
  It is publicly available as 
@@ -216,7 +242,7 @@ gem
 \family typewriter
 YNelson
 \family default
- is one of the series of Ruby gems (
+ belongs to a series of Ruby gems (
 \family typewriter
 \color blue
 
@@ -230,6 +256,10 @@ target "https://rubygems.org/gems/y_petri"
 
 \family default
 \color inherit
+, 
+\family typewriter
+YNelson
+\family default
 , 
 \family typewriter
 \color blue
@@ -270,8 +300,8 @@ target "https://rubygems.org/gems/sy"
 
 \family default
 \color inherit
-...), whose design intent is to bring ergonomy to biochemical modeling.
- Note that 
+...), whose design intent is to bring ergonomy into biochemical modelling.
+ 
 \family typewriter
 YNelson
 \family default
@@ -287,70 +317,60 @@ Yzz
 \family typewriter
 SY
 \family default
- might be desirable if you are dealing with physical units.
- Also, 
+ might be desirable when dealing with physical units.
+ At the time of writing this text, 
 \family typewriter
 YNelson
 \family default
- use is not limited to biochemistry, but for all the applications where
- Petri nets and/or relational databases are used.
-\end_layout
-
-\begin_layout Standard
-
+ was the only publicly available internal DSL for modelling dynamic systems
+ in Ruby.
+ DSLs designed for the purpose of modelling are known from other languages,
+ but they are generally 
+\emph on
+\color red
+external
+\emph default
+\color inherit
+, not internal DSLs.
+ They are sometimes denoted as domain-specific modeling languages (DSML),
+ a term which also applies to 
 \family typewriter
 YNelson
 \family default
- provides a 
-\emph on
-\color red
-domain-specific language
-\emph default
- (DSL)
-\color inherit
-, which you can use in scripts, or access interactively from 
-\color red
-inferior Ruby interpreter (
-\emph on
-irb
-\emph default
-)
-\color inherit
 .
- A DSLs can be thought of as APIs with user-friendly syntax.
- As a believer in robot equality, I dislike the distinction between API
- and UI (user interface), and prefer common textual command interface (CI)
- for humanoid as well as cybernetic users.
 \end_layout
 
 \begin_layout Standard
-If you want to 
-\emph on
-seriously
-\emph default
- work with 
+All in all, if you want to seriously work with 
 \emph on
 complicated
 \emph default
  Petri Nets, no tool can avoid taking you through the process of learning
- the object model, interface and syntax of the language in which the interface
- is accessed.
- GUI tools can be used for simpler tasks (such as drawing arcs between places
- and transitions), but no tool can avoid using a real script language for
- the difficult parts, such as functions of the transitions.
- To operate 
-\family typewriter
-YNelson
-\family default
-, you will be learning powerful and intuitive syntax of a major scripting
- language.
+ the language of the tool's interface.
+ This language can be visual only partially.
+ GUI Petri net modelling tools can provide visual commands for simple tasks,
+ such as creating places and transitions, or drawing arcs between them,
+ but a textual language is needed anyway for more complex tasks, such as
+ writing mathematical functions that govern firing of transitions, or managing
+ the Petri net in an automated manner.
  
 \family typewriter
 YNelson
 \family default
- is open source and gives you freedom.
- All classes are introspectible and modifiable, even at runtime.
- Possible bugs or missing features never put the 
+ is all textual, but it does not introduce its own language.
+ It relies on powerful and intuitive syntax of a widely adopted general-purpose
+ computer language – Ruby.
+ 
+\family typewriter
+YNelson
+\family default
+ is open source and leverages on the freedom and respect for the user inherent
+ to its host language, whose role in making 
+\family typewriter
+YNelson
+\family default
+ good can hardly be overstated.
+ Possible bugs or missing features will never get you as a 
 \family typewriter
 YNelson
 \family default
@@ -623,7 +643,7 @@ A =
 \color blue
 Place
 \color inherit
-()
+( marking: 2 )
 \end_layout
 
 \begin_layout Standard
@@ -658,7 +678,18 @@ constant
 A
 \family default
 .
- In this case, the return value is an 
+ In this case, the method is called with a single 
+\emph on
+\color red
+argument
+\emph default
+\color inherit
+, 
+\family typewriter
+marking
+\family default
+.
+ The return value is an 
 \emph on
 \color red
 object
@@ -701,7 +732,8 @@ YNelson
 \emph on
 domain model
 \emph default
- (and '
+.
+ ('
 \family typewriter
 Place
 \family default
@@ -715,34 +747,24 @@ constructor
 \family typewriter
 YNelson::Place
 \family default
-, which is not important.).
- Whole this object has now been assigned to 
+, which is not important.) This newly created Petri net place has now been
+ assigned to 
 \family typewriter
 A
 \family default
 .
- On the screen, you will see the output: 
+ On the screen, you will see the output, which is simply the name of the
+ place – 
 \family typewriter
-#<Place: name: A, marking: nil, default_marking: ø>
+A
 \family default
 .
- (This is the 
-\emph on
-\color red
-inspect string
-\emph default
-\color inherit
- of the object, created by 
+ In the following text, screen output will always be written immediately
+ under the code sample, preceded by sherocket (
 \family typewriter
-YNelson::Place#
-\color red
-inspect
+#=>)
 \family default
-\color inherit
- method, which is not important.) In the following, screen output will always
- be written immediately under the code sample, preceded by sherocket (
-\family typewriter
-#=>):
+:
 \end_layout
 
 \begin_layout LyX-Code
@@ -750,13 +772,11 @@ B = Place()
 \end_layout
 
 \begin_layout LyX-Code
-
-\family typewriter
 #=> B
 \end_layout
 
 \begin_layout Standard
-We have so far defined 2 Petri net places named 
+In the above, we have so far defined 2 Petri net places (named 
 \family typewriter
 A
 \family default
@@ -764,8 +784,8 @@ A
 \family typewriter
 B
 \family default
-.
- You can check it by typing:
+).
+ You can check them by typing:
 \end_layout
 
 \begin_layout LyX-Code
@@ -777,11 +797,7 @@ places
 \end_layout
 
 \begin_layout LyX-Code
-#=> [#<Place: name: A, marking: nil, default_marking: ø>,
-\end_layout
-
-\begin_layout LyX-Code
-     #<Place: name: B, marking: nil, default_marking: ø>]
+#=> [A, B]
 \end_layout
 
 \begin_layout LyX-Code
@@ -814,7 +830,7 @@ net
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Net: name: Top, 2 pp, 0 tt >
+#=> #<Net: name: Top, 2 places, 0 transitions>
 \end_layout
 
 \begin_layout Standard
@@ -848,24 +864,17 @@ array
 \color inherit
  of places to the array of their names.
  The advantage of internal DSLs is, that one retains full power of the language,
- augmented with human-friendly, domain-specific CI.
+ augmented with human-friendly, domain-specific commands.
  GUI systems generally sandbox the user inside their interface, with no
  way to overcome its limitations.
  But let us go on.
- Way above, you might have noticed '
-\family typewriter
-\color red
-nil
-\family default
-\color inherit
-' in the places' inspect strings.
- This is because we have specified no 
+ You can notice that the 
 \emph on
 \color green
 marking
 \emph default
 \color inherit
- for 
+ of 
 \family typewriter
 A
 \family default
@@ -873,55 +882,7 @@ A
 \family typewriter
 B
 \family default
-:
-\end_layout
-
-\begin_layout LyX-Code
-A.
-\color blue
-marking
-\color inherit
-()
-\end_layout
-
-\begin_layout LyX-Code
-#=> nil
-\end_layout
-
-\begin_layout LyX-Code
-places.map( &:marking )
-\end_layout
-
-\begin_layout LyX-Code
-#=> [nil, nil]
-\end_layout
-
-\begin_layout Standard
-Let us give these two places some marking:
-\end_layout
-
-\begin_layout LyX-Code
-A.
-\color blue
-marking =
-\color inherit
- 2
-\end_layout
-
-\begin_layout LyX-Code
-#=> 2
-\end_layout
-
-\begin_layout LyX-Code
-B.marking = 5
-\end_layout
-
-\begin_layout LyX-Code
-#=> 5
-\end_layout
-
-\begin_layout Standard
-The marking has indeed changed:
+ is one we gave them upon their creation:
 \end_layout
 
 \begin_layout LyX-Code
@@ -933,13 +894,13 @@ places.map( &:marking )
 \end_layout
 
 \begin_layout Standard
-In classical Petri nets, this marking is understood as the number of 
+In classical Petri nets, marking is understood as the number of 
 \emph on
 \color green
 tokens
 \emph default
 \color inherit
- in each place, and is always an integer.
+ in each place, which is always integer.
  In this case, 
 \family typewriter
 A
@@ -967,11 +928,11 @@ transitions
 .
  Each transition defines a single operation: Adding / subtracting some amount
  of tokens to / from some places.
- Transition operation can often be expressed by the transition's 
+ Transition operation can often be expressed by 
 \emph on
 stoichiometry
 \emph default
- – a list of places together with the number of tokens added / subtracted
+ – pairs of places with a corresponding number of tokens to add / subtract
  when the transition 
 \emph on
 \color green
@@ -995,7 +956,7 @@ Transition
 \end_layout
 
 \begin_layout Standard
-Stoichiometry of this transition is given by 
+Stoichiometry of this transition is given by the 
 \emph on
 \color red
 hash
@@ -1356,8 +1317,10 @@ A2B.fire!
 \end_layout
 
 \begin_layout LyX-Code
-#=> RuntimeError: Firing of #<Transition: A2B (tS)> would result in negative
- marking!
+#=> YPetri::GuardError: When trying call #fire method, adding action node
+ no.
+ 0 to A, marking change being -1, YPetri::GuardError occurred: Marking -1:Fixnum
+ of A should not be negative!
 \end_layout
 
 \begin_layout Subsection*
@@ -1374,19 +1337,23 @@ YNelson
 \emph on
 functional Petri nets
 \emph default
-, similar to HFPNs proposed by 
+, similar to 
+\emph on
+Hybrid Functional Petri Net (HFPN)
+\emph default
+ proposed by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Matsuno2011brs"
 
 \end_inset
 
-, already mentioned in the introductory part of this document.
+, which I already mentioned in the introductory part of this document.
  
 \family typewriter
 YNelson
 \family default
- domain model is similar, but not identical.
+ domain model is similar, but not identical to HFPN.
  On the side of similarities, 
 \family typewriter
 YNelson
@@ -2180,7 +2147,7 @@ B2A = Transition( stoichiometry: { B: -1, A: 1 },
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Transition: B2A (TS)>
+#=> B2A
 \end_layout
 
 \begin_layout Standard
@@ -3179,7 +3146,7 @@ Transition name: :TMPK_DeoxyTMP_DeoxyTDP,
 \end_layout
 
 \begin_layout LyX-Code
-# require 'mathn' 
+
 \end_layout
 
 \begin_layout LyX-Code
@@ -3689,7 +3656,7 @@ The state recording should show the random walk of the system state over
 \begin_layout LyX-Code
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "/home/boris/b/1num/num,/home/boris/b/2prp/prp"
+bibfiles "/home/boris/b/8oav/ptn/ptn"
 options "plainnat"
 
 \end_inset
