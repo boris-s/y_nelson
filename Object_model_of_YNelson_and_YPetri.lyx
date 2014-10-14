@@ -153,8 +153,15 @@ YPetri
 \end_layout
 
 \begin_layout Standard
-Whereas for the beginners, there is tutorial available to YPetri / YNelson,
- and the classes are more or less fully documented, the internal workings
+For the beginners, there is tutorial available for 
+\family typewriter
+YPetri
+\family default
+ / 
+\family typewriter
+YNelson
+\family default
+, and the classes are more or less fully documented, the internal workings
  and the design intent might not be immediately obvious.
  The purpose of is document is to make the reader faster achieve their understan
 ding.
@@ -705,17 +712,45 @@ Transition
 \family typewriter
 YPetri::Transition
 \family default
- class represents functional transitions of a (functinal) Petri net.
- It includes 
+ class represents Petri net transitions.
+ They are 
+\begin_inset Quotes eld
+\end_inset
+
+functional
+\begin_inset Quotes erd
+\end_inset
+
+ in the sense that they may have mathematical functions attached to them,
+ that govern their firing according to the current marking of the Petri
+ net places.
+ (Term 
+\begin_inset Quotes eld
+\end_inset
+
+functional
+\begin_inset Quotes erd
+\end_inset
+
+ has also been used in other meanings in conjunction with Petri nets.) 
+\family typewriter
+YPetri::Transition
+\family default
+ class utilizes 
 \family typewriter
 NameMagic
 \family default
- and is normally used as a parametrized subclass (PS) depending on 
+ mixin.
+ 
+\family typewriter
+YPetri::Transition
+\family default
+ class is normally used as a parametrized subclass (PS) depending on 
 \family typewriter
 YPetri::World
 \family default
 .
- The main attribute of a 
+ The most prominent attribute of a 
 \family typewriter
 Transition
 \family default
@@ -806,7 +841,7 @@ NameMagic
 YPetri::World
 \family default
 .
- It is basically a specialized collection of of 
+ It is basically a specialized collection of 
 \family typewriter
 Place
 \family default
@@ -1525,10 +1560,6 @@ run( upto: ...
 
 \family typewriter
 #dup
-\family default
-, alias 
-\family typewriter
-#at
 \family default
  – duplicate of the receiver simulation, with the possibility to change
  time and/or other simulation settings.
@@ -2412,8 +2443,8 @@ Core
 \family typewriter
 Simulation
 \family default
- for the purpose of facilitating the use of different machines to run the
- simulation.
+ for the purpose of facilitating future use of different machines to run
+ the simulation.
  At the moment, plain Ruby is used to compute the simulation steps.
  
 \family typewriter
@@ -3101,7 +3132,7 @@ DataSet
 \family default
  
 \emph on
-double parametrized
+doubly parametrized
 \emph default
  by the instance.
  Therefore, also instance methods include:
@@ -3116,7 +3147,11 @@ double parametrized
 \family typewriter
 Features.Record
 \family default
- PS double parametrized by the receiver.
+ PS parametrized by the 
+\family typewriter
+Features
+\family default
+ instance.
 \end_layout
 
 \begin_layout Itemize
@@ -3128,7 +3163,11 @@ Features.Record
 \family typewriter
 Features.DataSet
 \family default
- double parametrized by the receiver.
+ PS parametrized by the 
+\family typewriter
+Features
+\family default
+ instance.
 \end_layout
 
 \begin_layout Standard
