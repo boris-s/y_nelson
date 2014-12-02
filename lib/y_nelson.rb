@@ -17,37 +17,34 @@ require_relative 'y_nelson/dimension_point'
 require_relative 'y_nelson/agent'
 require_relative 'y_nelson/dsl'
 
-# YNelson is an implementation of a cross between Ted Nelson's Zz structure, and
-# the functional Petri net (FPN). The resulting data structure, which combines
-# the qualities of FPNs with those of relational databases, I refer to as Nelson
-# net throughout this text.
+# YNelson is an implementation of a cross between Ted Nelson's Zz structure,
+# and a specific type of universal Petri net (PN), to whose creation I put
+# particularly large amount of design considerations. The resulting data
+# structure, combining the qualities of the said PN with those of a relational
+# database, I refer to as Nelson net.
 # 
-# A Nelson net, from a certain point of view, is as a genralization of a
-# spreadsheet software. In his explanations of Zz structures, Ted Nelson makes
-# wide use of metaphors well known from spreadsheets: cells, ranks, rows,
-# columns, cursors, selections... Nelson net, as implemented here, adds
-# "formulas" to the mix: Spreadsheet "formulas" are simply represented by FPN
-# transitions.
+# A Nelson net can be viewed as a genralization of a spreadsheet. Ted Nelson
+# does note similarities between zz structures and spreadsheets and makes wide
+# use of spreadsheet metaphors in his terminology: cells, rows, columns, ranks,
+# cursors, selections... Nelson net arises by adding spreadsheet "formulas" to
+# the mixture, which are nothing else than PN transitions.
 # 
-# Nelson net disposes of the arbitrary constraints on FPNs, and also extends the
-# plain orthogonal structure of spreadsheet "cells", as can be seen in the
-# existing spreadsheet implementations:
-# 
-# 1. Both places and transitions of the FPN take part in zz structure.
-# 2. Formula-based transitions are upgraded to standalone FPN transitions.
-# 
-# The implications of the differences of a zz structure from ordinary
-# hyperorthogonal structures have been, to a degree, explained by Ted Nelson
-# himself. There is a growing body of literature on zz structure applications,
-# including the applications in bioinformatics.
+# From spreadsheet software implementations, we are used to various constraints
+# regarding the available PN transitions. In Nelson nets, these constraints are
+# removed by the Nelson nets being based on the said formally defined universal
+# PN. Also, the plain globally orthogonal structure of rows/columns/sheets
+# typical for spreadsheet implementations is generalized to the locally
+# orthogonal zz structure with unlimited number of dimensions. The generalization
+# is as follows:
 #
-# As for functional Petri nets, their power in computing is well recognized (eg.
-# Funnel, Odersky 2000). FPNs are sometimes just called functional nets, because
-# Petri originally described his nets as timeless and functionless. However, in
-# special-purpose applications, such as biochemical applications, to which I
-# incline, it is appropriate to honor Petri, who designed his nets specifically
-# with chemical modeling in mind. In biochemistry, it is common to call
-# functional nets Petri nets (Miyano, 200?).
+# 1. Both places and transitions of the PN are zz objects.
+# 2. The way the spreadsheet is based on PNs is properly formalized.
+# 
+# Luckily, Ted Nelson and his crowd already put energy into explaining the ins
+# and outs of zz structures. There is a growing body of literature on this,
+# including zz structure applications in bioinformatics. And I add to this my
+# explanation of the extended PN type that I designed and implemented in YPetri
+# gem (gem install YPetri), which is a dependency of YNelson.
 # 
 module YNelson
   # Singleton class of YNelson is a partial descendant of YPetri::World. It
