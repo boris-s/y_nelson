@@ -65,7 +65,7 @@
 \begin_body
 
 \begin_layout Title
-Introduction to YNelson (hands-on tutorial)
+Introduction to YNelson and YPetri (hands-on tutorial)
 \end_layout
 
 \begin_layout Part*
@@ -92,7 +92,23 @@ Ruby
  language.
  It is not assumed that the reader is familiar with any of these, though
  familiarity with Ruby syntax would be an advantage.
- If you have never heard about Nelson nets, do not wonder: it is a semi-novel
+ This document can at the same time serve as a guide to 
+\family typewriter
+\color blue
+YPetri
+\family default
+\color inherit
+, which is one of the two main components of 
+\family typewriter
+YNelson
+\family default
+, and which caters solely to the concerns of Petri net-based modelling of
+ dynamical systems.
+ 
+\end_layout
+
+\begin_layout Standard
+If you have never heard about Nelson nets, do not wonder: it is a semi-novel
  concept based on 
 \emph on
 \color green
@@ -110,7 +126,8 @@ ZZ structures
  introduction to each of these three.
  (Remark:
 \emph on
- only the Petri net aspect is covered in this version of this guide.
+ only the Petri net aspect defined by YPetri is covered in this version
+ of this guide.
  ZZ structure aspect will be covered in the future versions of this manual.)
 \emph default
  Newly introduced 
@@ -122,8 +139,11 @@ Ruby keywords and terms
 Petri net terms
 \color inherit
  in green, and 
+\family typewriter
 \color blue
-YNelson keywords and terms
+YNelson
+\family default
+ keywords and terms
 \color inherit
  in blue throughout this document.
 \end_layout
@@ -135,7 +155,8 @@ YNelson keywords and terms
 YNelson
 \family default
 \color inherit
- is a domain model and a simulator of Nelson nets, 
+ is a domain model and a simulator of Nelson nets, a specific universal
+ type of 
 \emph on
 \color green
 functional
@@ -174,8 +195,8 @@ key "Bos2008mbs"
 \family typewriter
 YNelson
 \family default
- introduces its own Petri net flavor, which is similar, but not identical
- with 
+ introduces its own universal Petri net type, which is similar, but not
+ identical with 
 \emph on
 \color green
 hybrid functional Petri nets (HFPN)
@@ -189,6 +210,16 @@ key "Matsuno2011brs"
 \end_inset
 
 .
+ This universal Petri net is defined in 
+\family typewriter
+YPetri
+\family default
+ gem, on which 
+\family typewriter
+YNelson
+\family default
+ is based, and it purports to provide a universal Petri net abstraction
+ and a DSL to rule them all and in Ruby bind them.
 \end_layout
 
 \begin_layout Standard
@@ -196,7 +227,11 @@ key "Matsuno2011brs"
 \family typewriter
 YNelson
 \family default
- is implemented as an 
+ (and 
+\family typewriter
+YPetri
+\family default
+) is implemented as an 
 \emph on
 \color red
 internal domain-specific language (DSL)
@@ -546,21 +581,9 @@ irb
 \color red
 require
 \color inherit
- 'y_nelson'
-\end_layout
-
-\begin_layout Standard
-After succesful 
-\family typewriter
-require
-\family default
-, type:
-\end_layout
-
-\begin_layout LyX-Code
-
+ 'y_nelson' and
 \color red
-include
+ include
 \color inherit
  YNelson
 \end_layout
@@ -575,7 +598,27 @@ YNelson
 YNelson
 \family default
  DSL CI).
- You have to re-run 
+ You may also choose to work only with 
+\family typewriter
+YPetri
+\family default
+ alone, in which case the require line is:
+\end_layout
+
+\begin_layout LyX-Code
+
+\color red
+require
+\color inherit
+ 'y_petri' and
+\color red
+ include
+\color inherit
+ YPetri
+\end_layout
+
+\begin_layout Standard
+You have to re-run 
 \emph on
 irb
 \emph default
@@ -588,7 +631,7 @@ require
 include
 \family default
 ' statements before each of the usage examples written below.
- Please, also notice that this guide itself is alpha stage, so the actual
+ Also, please notice that this guide itself is alpha stage, so the actual
  
 \family typewriter
 YNelson
