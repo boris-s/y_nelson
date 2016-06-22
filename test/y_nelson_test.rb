@@ -2,7 +2,7 @@
 
 require 'minitest/autorun'
 # tested component itself
-require './../lib/y_nelson'
+require_relative '../lib/y_nelson'
 
 # **************************************************************************
 # Nelson net test
