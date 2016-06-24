@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass article
@@ -12,13 +12,13 @@
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -29,15 +29,24 @@
 \use_hyperref false
 \papersize default
 \use_geometry true
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
-\cite_engine natbib_authoryear
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -124,11 +133,11 @@ Variables and constants
 \begin_layout Standard
 In Ruby, everything
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 Almost everything.
- Non-object include eg.
+ Non-objects include eg.
  variables or argument fields.
 \end_layout
 
@@ -2906,14 +2915,8 @@ YNelson
 YPetri
 \family default
  domain model is parametrized subclassing.
- Literature on the topic does exist 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "Roberts1996efp"
-
-\end_inset
-
-, but again, the concept is best explained on examples:
+ Literature on the topic does exist, but the concept is best explained on
+ examples:
 \end_layout
 
 \begin_layout LyX-Code
@@ -3256,21 +3259,6 @@ A.marking = 101 # YPetri::GuardError is raised
 \begin_layout Standard
 Convenience methods are especially suited for non-reusable code, but their
  use may sometimes be efficient also in reusable code.
-\end_layout
-
-\begin_layout LyX-Code
-
-\end_layout
-
-\begin_layout LyX-Code
-\begin_inset CommandInset bibtex
-LatexCommand bibtex
-bibfiles "/home/boris/b/5ced/ced"
-options "plainnat"
-
-\end_inset
-
-
 \end_layout
 
 \end_body

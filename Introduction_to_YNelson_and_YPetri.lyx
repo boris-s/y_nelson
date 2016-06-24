@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass article
@@ -12,13 +12,13 @@
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -29,15 +29,24 @@
 \use_hyperref false
 \papersize default
 \use_geometry true
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
-\cite_engine natbib_authoryear
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -76,40 +85,30 @@ Introduction
 This document is a hands-on guide to 
 \family typewriter
 \color blue
-YNelson
+YPetri
 \family default
 \color inherit
 , 
+\family typewriter
+\color blue
+YNelson
+\family default
+\color inherit
+ and 
 \emph on
 \color green
 Nelson nets
 \emph default
 \color inherit
- and, partially, 
+, which in turn rely on 
 \color red
 Ruby
 \color inherit
  language.
- It is not assumed that the reader is familiar with any of these, though
- familiarity with Ruby syntax would be an advantage.
- This document can at the same time serve as a guide to 
-\family typewriter
-\color blue
-YPetri
-\family default
-\color inherit
-, which is one of the two main components of 
-\family typewriter
-YNelson
-\family default
-, and which caters solely to the concerns of Petri net-based modelling of
- dynamical systems.
- 
-\end_layout
-
-\begin_layout Standard
-If you have never heard about Nelson nets, do not wonder: it is a semi-novel
- concept based on 
+ It is not assumed you are familiar with Ruby, you can follow this guide
+ even if you never heard about it (but you will have to install it).
+ You more than likely never heard about Nelson nets.
+ Nelson net is a novel concept of 
 \emph on
 \color green
 Petri nets
@@ -122,15 +121,10 @@ ZZ structures
 \emph default
 \color inherit
 .
- If you follow this guide closely, you will receive a concise and efficient
- introduction to each of these three.
- (Remark:
-\emph on
- only the Petri net aspect defined by YPetri is covered in this version
- of this guide.
- ZZ structure aspect will be covered in the future versions of this manual.)
-\emph default
- Newly introduced 
+ Do not worry about them: just follow the guide and you will learn everything
+ in time.
+ The text of this guide lets you know when new keywords and are introduced.
+ When mentioned for the first time, 
 \color red
 Ruby keywords and terms
 \color inherit
@@ -141,7 +135,7 @@ Petri net terms
  in green, and 
 \family typewriter
 \color blue
-YNelson
+YPetri / YNelson
 \family default
  keywords and terms
 \color inherit
@@ -155,8 +149,7 @@ YNelson
 YNelson
 \family default
 \color inherit
- is a domain model and a simulator of Nelson nets, a specific universal
- type of 
+ serves to specify and simulate Nelson nets, a derivative of 
 \emph on
 \color green
 functional
@@ -166,40 +159,56 @@ functional
 Petri nets
 \emph default
 \color inherit
- living in a 
+ that live in 
 \emph on
 \color green
 ZZ space
 \emph default
 \color inherit
 .
- 
+ (You don't need to worry about ZZ space yet.) 
+\family typewriter
+\color blue
+YPetri
+\family default
+\color inherit
+ serves to specify and simulate Petri nets.
+ Petri nets are one of the basic formalisms in systems simulation.
+ I designed 
+\family typewriter
+YPetri
+\family default
+ and 
 \family typewriter
 YNelson
 \family default
- is designed for the purpose of modelling and simulation of dynamical systems,
- especially biochemical systems.
- Modelling dynamical systems (including biochemical systems) is one of the
- typical applications of Petri nets.
- For a review of the various flavors of Petri nets used in modelling biochemical
- systems, see eg.
- 
+ because I needed to specify biochemical systems and I believed a Ruby DSL
+ would be ideal for that task.
+ Use of Petri nets for specifying biochemical systems is reviewed eg.
+ in 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "Bos2008mbs"
 
 \end_inset
 
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Koch2015pns"
+
+\end_inset
+
 .
  
 \family typewriter
-YNelson
+YPetri
 \family default
- introduces its own universal Petri net type, which is similar, but not
- identical with 
+ provides a universal Petri net abstraction similar, but not identical with
+ 
 \emph on
 \color green
-hybrid functional Petri nets (HFPN)
+hybrid functional Petri net (HFPN)
 \emph default
 \color inherit
  introduced by 
@@ -210,49 +219,83 @@ key "Matsuno2011brs"
 \end_inset
 
 .
- This universal Petri net is defined in 
+ 
 \family typewriter
 YPetri
 \family default
- gem, on which 
+ / 
 \family typewriter
 YNelson
 \family default
- is based, and it purports to provide a universal Petri net abstraction
- and a DSL to rule them all and in Ruby bind them.
+ serve equally well not just for biochemical systems, but for arbitrary
+ dynamical systems.
 \end_layout
 
 \begin_layout Standard
-
-\family typewriter
-YNelson
-\family default
- (and 
+Finally, please forgive me for taking your time with this guide.
+ If you want to seriously work with 
+\emph on
+complicated
+\emph default
+ Petri Nets, no tool can avoid taking you through the process of learning
+ the language and the tool's interface.
+ Visual Petri net modelling tools are nice for simple tasks, such as drawing
+ arcs between places and transitions, but you need text anyway to write
+ the mathematical functions that govern firing of transitions.
+ 
 \family typewriter
 YPetri
 \family default
-) is implemented as an 
+ / 
+\family typewriter
+YNelson
+\family default
+ are all textual without commiting the sin of introducing a new programming
+ language.
+ They are implemented as 
 \emph on
 \color red
-internal domain-specific language (DSL)
+internal domain-specific languages (DSL)
 \emph default
 \color inherit
- in 
-\emph on
+ using Ruby as a host language.
+ You can run them interactively from 
 \color red
-Ruby programming language
-\emph default
-\color inherit
-, which you can use in scripts, or access interactively from 
-\color red
-inferior Ruby interpreter (
+Ruby interpreter (
 \emph on
 irb
 \emph default
 )
 \color inherit
 .
- It is publicly available as 
+ In this way, you can freely use the host language to automate your interaction
+ with Petri nets.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+YPetri
+\family default
+ / 
+\family typewriter
+YNelson
+\family default
+ are publicly available as 
+\emph on
+\color blue
+
+\begin_inset CommandInset href
+LatexCommand href
+name "y_petri"
+target "https://rubygems.org/gems/y_petri"
+
+\end_inset
+
+
+\emph default
+\color inherit
+ and 
 \emph on
 \color blue
 
@@ -266,76 +309,13 @@ target "https://rubygems.org/gems/y_nelson"
 
 \emph default
 \color inherit
- (
+ gems (
 \emph on
 \color red
 gem
 \emph default
 \color inherit
  = Ruby library).
- 
-\family typewriter
-YNelson
-\family default
- belongs to a series of Ruby gems (
-\family typewriter
-\color blue
-
-\begin_inset CommandInset href
-LatexCommand href
-name "YPetri"
-target "https://rubygems.org/gems/y_petri"
-
-\end_inset
-
-
-\family default
-\color inherit
-, 
-\family typewriter
-YNelson
-\family default
-, 
-\family typewriter
-\color blue
-YChem
-\family default
-\color inherit
-, 
-\family typewriter
-\color blue
-YCell
-\family default
-\color inherit
-, 
-\family typewriter
-\color blue
-
-\begin_inset CommandInset href
-LatexCommand href
-name "Yzz"
-target "https://rubygems.org/gems/yzz"
-
-\end_inset
-
-
-\family default
-\color inherit
-, metrology library 
-\family typewriter
-\color blue
-
-\begin_inset CommandInset href
-LatexCommand href
-name "SY"
-target "https://rubygems.org/gems/sy"
-
-\end_inset
-
-
-\family default
-\color inherit
-...), whose design intent is to bring ergonomy into biochemical modelling.
  
 \family typewriter
 YNelson
@@ -348,68 +328,32 @@ YPetri
 \family typewriter
 Yzz
 \family default
- gems, its usage together with 
+ gems, which in turn depend on our 
+\family typewriter
+YSupport
+\family default
+ gem.
+ Splitting the more general concerns to multiple gem is a desirable feature
+ – separation of concerns is a maxim of good software engineering.
+ I also separated dealing with physical units in your models out into 
 \family typewriter
 SY
 \family default
- might be desirable when dealing with physical units.
- At the time of writing this text, 
-\family typewriter
-YNelson
-\family default
- was the only publicly available internal DSL for modelling dynamic systems
- in Ruby.
- DSLs designed for the purpose of modelling are known from other languages,
- but they are generally 
+ gem (
 \emph on
-\color red
-external
+\color blue
+
+\begin_inset CommandInset href
+LatexCommand href
+name "sy"
+target "https://rubygems.org/gems/sy"
+
+\end_inset
+
+
 \emph default
 \color inherit
-, not internal DSLs.
- They are sometimes denoted as domain-specific modeling languages (DSML),
- a term which also applies to 
-\family typewriter
-YNelson
-\family default
-.
-\end_layout
-
-\begin_layout Standard
-All in all, if you want to seriously work with 
-\emph on
-complicated
-\emph default
- Petri Nets, no tool can avoid taking you through the process of learning
- the language of the tool's interface.
- This language can be visual only partially.
- GUI Petri net modelling tools can provide visual commands for simple tasks,
- such as creating places and transitions, or drawing arcs between them,
- but a textual language is needed anyway for more complex tasks, such as
- writing mathematical functions that govern firing of transitions, or managing
- the Petri net in an automated manner.
- 
-\family typewriter
-YNelson
-\family default
- is all textual, but it does not introduce its own language.
- It relies on powerful and intuitive syntax of a widely adopted general-purpose
- computer language – Ruby.
- 
-\family typewriter
-YNelson
-\family default
- is open source and leverages on the freedom and respect for the user inherent
- to its host language, whose role in making 
-\family typewriter
-YNelson
-\family default
- good can hardly be overstated.
- Possible bugs or missing features will never get you as a 
-\family typewriter
-YNelson
-\family default
- user in a dead end situation.
+).
 \end_layout
 
 \begin_layout Part*
@@ -502,7 +446,11 @@ That's it.
 very
 \emph default
  difficult at first, but stick with it.
- It seems stupidly obvious, but, if you have a problem installing 
+ It seems stupidly obvious, but if you have a problem installing 
+\family typewriter
+YPetri
+\family default
+ and 
 \family typewriter
 YNelson
 \family default
@@ -540,7 +488,7 @@ Prerequisites
 \end_layout
 
 \begin_layout Standard
-Most importantly, you will need a working installation of Ruby 1.9 on your
+Firstly, you will need a working installation of Ruby 2.3 or later on your
  computer.
  Once this condition is met, basic 
 \family typewriter
@@ -559,6 +507,11 @@ gem install y_nelson
 \end_inset
 
  in the command prompt.
+ This will install most other dependencies, such as 
+\family typewriter
+YPetri
+\family default
+.
  However, 
 \family typewriter
 YNelson
@@ -631,16 +584,10 @@ require
 include
 \family default
 ' statements before each of the usage examples written below.
- Also, please notice that this guide itself is alpha stage, so the actual
- 
-\family typewriter
-YNelson
-\family default
- version you will be using may somewhat differ from this guide.
- Also, the nucleotide metabolism model in Example 3 is yet to be tuned to
- be realistic.
+ The nucleotide metabolism model in Example 3 is not realiscit (its kinetics
+ is not precise).
  If something in this guide does not work, please do not hesitate to notify
- us, we will appreciate your feedback.
+ me, I will appreciate your feedback.
 \end_layout
 
 \begin_layout Part*
@@ -653,7 +600,7 @@ This example is a gentle introduction to Petri net terminology,
 YNelson
 \family default
  DSL terminology, and Ruby syntax.
- The most basic capability, that 
+ The most basic capability that 
 \family typewriter
 YNelson
 \family default
@@ -2000,7 +1947,24 @@ Example II: Convenience
 \end_layout
 
 \begin_layout Standard
-So far, we have seen only one 
+So far, to avoid confusing you, I used fairly conservative syntax.
+ 
+\family typewriter
+YNelson
+\family default
+ can do better than that.
+ For convenience, many long keywords have short aliases.
+ Frequently used syntactic constructs usually have shorter way of expressing
+ the same.
+\end_layout
+
+\begin_layout Standard
+As you have seen, in 
+\family typewriter
+YNelson
+\family default
+ one often uses transition constructors.
+ Thus far, we have seen only one 
 \emph on
 constructor method
 \emph default
@@ -2049,14 +2013,18 @@ YNelson::Transition
 \end_layout
 
 \begin_layout Standard
-Use of whole words in the constructor method makes the 
+Using long keywords in the constructor method makes the 
 \family typewriter
 YNelson
 \family default
- DSL very explicit.
- But for the cases, where trading readability for brevity is desirable,
- these syntactic constructs can be shortened.
- Actually, we have already used this convenience in the earlier examples.
+ code easy to read.
+ But for the cases where trading readability for brevity is desirable, such
+ as when you are playing with YNelson inside 
+\emph on
+irb
+\emph default
+ session, you will appreciate convenience.
+ Actually, we already used syntactic shorthands in the earlier examples.
  We didn't type :
 \end_layout
 
@@ -2069,7 +2037,15 @@ A2B
 \begin_inset Quotes erd
 \end_inset
 
-, codomain: [A, B], stoichiometry: [-1, 1] )
+,
+\end_layout
+
+\begin_layout LyX-Code
+            codomain: [A, B],
+\end_layout
+
+\begin_layout LyX-Code
+            stoichiometry: [-1, 1] )
 \end_layout
 
 \begin_layout LyX-Code
@@ -2085,33 +2061,35 @@ A2B = Transition( stoichiometry: { A: -1, B: 1 } )
 \end_layout
 
 \begin_layout Standard
-Even shorter way to express the same would be:
+Just so you know, the above shorthand is not easy to program in Ruby.
+ When designing 
+\family typewriter
+YNelson
+\family default
+, I took a lot of pain for your convenience.
+ Even shorter way to express the same would be:
 \end_layout
 
 \begin_layout LyX-Code
-A2B = Transition s: { A: -1, B: 1 }
+A2B = Transition 
+\color blue
+s
+\color inherit
+: { A: -1, B: 1 }
 \end_layout
 
 \begin_layout Standard
-The above is a timeless transition.
- But we could think eg.
- about a more complicated transition, that would transfer tokens from 
-\family typewriter
-B
-\family default
- to 
+The above is a very simple timeless transition that just takes one token
+ from 
 \family typewriter
 A
 \family default
- with rate depending on the square root of the product of marking of 
+ and puts it into 
 \family typewriter
-C
-\family default
- and 
-\family typewriter
-D
+B
 \family default
 .
+ (Constructor convenience is even more powerful for complex transitions.)
  Start a new 
 \family typewriter
 irb
@@ -2128,27 +2106,30 @@ include YNelson
 \end_layout
 
 \begin_layout LyX-Code
-A = Place( default_marking: 5 )
+A = Place 
+\color blue
+default_marking
+\color inherit
+: 5
+\end_layout
+
+\begin_layout Standard
+Constantly typing 
+\family typewriter
+default_marking
+\family default
+ is tiresome.
+ Shorter way to say the same is by using the alias 
+\family typewriter
+\color blue
+m!
+\family default
+\color inherit
+ of the same:
 \end_layout
 
 \begin_layout LyX-Code
-B = Place m!: 5 # notice 
-\begin_inset Quotes eld
-\end_inset
-
-m!
-\begin_inset Quotes erd
-\end_inset
-
- alias for 
-\begin_inset Quotes eld
-\end_inset
-
-default marking
-\begin_inset Quotes erd
-\end_inset
-
-
+B = Place m!: 5
 \end_layout
 
 \begin_layout LyX-Code
@@ -2160,21 +2141,36 @@ D = Place m!: 1
 \end_layout
 
 \begin_layout Standard
-Let's check our work:
+Let's check the net's marking vector now:
 \end_layout
 
 \begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [5, 5, 1, 1]
+places.map &:marking      #=> [5, 5, 1, 1]
 \end_layout
 
 \begin_layout Standard
-Indeed, the net state has been set according to the default markings of
- the places.
- Now let's define the transition we want:
+If you typed everything correctly, you should see the above result.
+ Shorter way to ask for the same information is:
+\end_layout
+
+\begin_layout LyX-Code
+net.marking               #=> [5, 5, 1, 1]
+\end_layout
+
+\begin_layout Standard
+Even shorter way to say the same is:
+\end_layout
+
+\begin_layout LyX-Code
+net.
+\color blue
+m
+\color inherit
+                     #=> [5, 5, 1, 1]
+\end_layout
+
+\begin_layout Standard
+Now let's define the transition we want:
 \end_layout
 
 \begin_layout LyX-Code
@@ -2189,102 +2185,48 @@ B2A = Transition( stoichiometry: { B: -1, A: 1 },
                   rate: lambda { |x, y| ( x * y ) ** 0.5 } )
 \end_layout
 
-\begin_layout LyX-Code
-#=> B2A
-\end_layout
-
 \begin_layout Standard
 To prove that it works, let's fire it for 0.1 time units:
 \end_layout
 
 \begin_layout LyX-Code
-B2A.fire! 0.1
+B2A.fire! 0.1             #=> nil
 \end_layout
 
 \begin_layout LyX-Code
-#=> nil
-\end_layout
-
-\begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [5.1, 4.9, 1, 1]
+net.m                     #=> [5.1, 4.9, 1, 1]
 \end_layout
 
 \begin_layout Standard
-You can try to change marking of C and D to control the rate:
-\end_layout
-
-\begin_layout LyX-Code
-[A, B].each &:
-\color blue
-reset_marking
-\end_layout
-
-\begin_layout LyX-Code
-C.marking = 4
-\end_layout
-
-\begin_layout LyX-Code
-D.marking = 9
-\end_layout
-
-\begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [5, 5, 4, 9]
-\end_layout
-
-\begin_layout LyX-Code
-B2A.fire! 0.1
-\end_layout
-
-\begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [5.6, 4.4, 4, 9]
-\end_layout
-
-\begin_layout Standard
-We can see that the rate of 
+Can we express its constructor more concisely? The answer is yes.
+ 
 \family typewriter
 B2A
 \family default
- has risen 6 times as expected (4 * 9 is 36), so 
-\family typewriter
-B2A
-\family default
- works.
- The question is, could we have written 
-\family typewriter
-B2A
-\family default
- more concisely? For 
+ is a 
 \family typewriter
 TS
 \family default
- transitions (check 
+ transition (check 
 \family typewriter
 B2A.type
 \family default
- to make sure that it's a 
+ to make sure it is true), and for 
 \family typewriter
 TS
 \family default
- transition), 
+ transitions, 
 \family typewriter
 \color blue
 TS()
 \family default
 \color inherit
- constructor is available, allowing to express the same transition with
- a shorter syntactic construct:
+ convenience constructor is available.
+ With 
+\family typewriter
+TS()
+\family default
+ constructor, the definition of B2A would be much shorter:
 \end_layout
 
 \begin_layout LyX-Code
@@ -2292,31 +2234,22 @@ B2A = TS domain: [C, D], A: 1, B: -1 do |x, y| ( x * y ) ** 0.5 end
 \end_layout
 
 \begin_layout Standard
-Restart the 
-\family typewriter
-irb
-\family default
- session again and use this shorter construct to see that the resulting
- transition behaves like before.
- Note the 
+Note the 
 \family typewriter
 \color red
 do ...
  end
 \family default
 \color inherit
- part of the construct: Using lambda syntax, it defines the rate function
+ part in the above line: Using lambda syntax, it defines the rate function
  of the transition.
-\end_layout
-
-\begin_layout Standard
-One more convenience constructor I want to mention here is 
+ Another convenience constructor worth mentioning is 
 \family typewriter
 \color blue
 AT()
 \family default
 \color inherit
- constructor for assignment transition.
+ for assignment transition.
  Earlier, we defined:
 \end_layout
 
@@ -2325,11 +2258,11 @@ A_to_42 = Transition codomain: A, assignment: lambda { 42 }
 \end_layout
 
 \begin_layout Standard
-This can be conveniently rewritten using 
+Using 
 \family typewriter
 AT()
 \family default
- constructor as:
+ constructor, we can shorten this to:
 \end_layout
 
 \begin_layout LyX-Code
@@ -2337,13 +2270,42 @@ A_to_42 = AT A do 42 end
 \end_layout
 
 \begin_layout Standard
-In short, syntactic shorthands are less readable than full 
+In short, syntactic shorthands can save a lot of typing.
+ If you still miss some syntactic shorthand, feel free to define it on your
+ own.
+ For example, let us define a custom method named 
 \family typewriter
-Transition()
+Foo
 \family default
- statements, but can save a lot of space and typing.
- In any case, in Ruby, the user can easily defined new aliases and routines
- that make the frequent tasks easier to type.
+ that acts as a constructor of places with default marking.
+\end_layout
+
+\begin_layout LyX-Code
+
+\color red
+def
+\color inherit
+ Foo( m )
+\end_layout
+
+\begin_layout LyX-Code
+  Place( default_marking: m )
+\end_layout
+
+\begin_layout LyX-Code
+end
+\end_layout
+
+\begin_layout Standard
+After this, you can define places with default marking with even less typing:
+\end_layout
+
+\begin_layout LyX-Code
+X = Foo 42
+\end_layout
+
+\begin_layout LyX-Code
+Y = Foo 43
 \end_layout
 
 \begin_layout Part*
@@ -2379,34 +2341,28 @@ TimedSimulation
 YNelson::Place
 \family default
  instances is irrelevant.
- We just need to specify the initial state.
- One way to do this is by specifying 
-\family typewriter
+ We just need to specify the initial state eg.
+ by specifying the default marking of the places:
+\end_layout
+
+\begin_layout LyX-Code
+require 'y_nelson'
+\end_layout
+
+\begin_layout LyX-Code
+include YNelson
+\end_layout
+
+\begin_layout LyX-Code
+A = Place 
 \color blue
-:default_marking
-\family default
+m!:
 \color inherit
- named argument:
+ 0.5
 \end_layout
 
 \begin_layout LyX-Code
-A = Place( 
-\color blue
-default_marking:
-\color inherit
- 0.5 )
-\end_layout
-
-\begin_layout LyX-Code
-#=> A
-\end_layout
-
-\begin_layout LyX-Code
-B = Place( default_marking: 0.5 )
-\end_layout
-
-\begin_layout LyX-Code
-#=> B
+B = Place m!: 0.5
 \end_layout
 
 \begin_layout Standard
@@ -2418,11 +2374,11 @@ A
 \end_layout
 
 \begin_layout LyX-Code
-A_pump = Transition( stoichiometry: { A: -1 }, rate: proc { 0.005 } )
-\end_layout
-
-\begin_layout LyX-Code
-#=> A_pump
+A_pump = Transition s: { A: -1 }, rate: 
+\color red
+proc
+\color inherit
+ { 0.005 }
 \end_layout
 
 \begin_layout Standard
@@ -2440,18 +2396,14 @@ proc { 0.005 }
 A
 \family default
 .
- You can notice, that this closure expects no arguments and always outputs
+ You can notice that this closure expects no arguments and always outputs
  0.005 as its return value.
  It is the simplest possible way to write a constant function.
  For comparison,
 \end_layout
 
 \begin_layout LyX-Code
-B_decay = Transition( stoichiometry: { B: -1 }, rate: 0.05 )
-\end_layout
-
-\begin_layout LyX-Code
-#=> B_decay
+B_decay = Transition s: { B: -1 }, rate: 0.05
 \end_layout
 
 \begin_layout Standard
@@ -2473,25 +2425,23 @@ net
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Net: name: Top, 2 pp, 2 tt>
+#=> #<Net: name: Top, 2 places, 2 transitions>
 \end_layout
 
 \begin_layout Standard
-We can execute this Petri net as 
+We can execute this Petri net as a 
 \family typewriter
-TimedSimulation
+Simulation
 \family default
- simply by typing:
+ object simply by typing:
 \end_layout
 
 \begin_layout LyX-Code
 
 \color blue
 run!
-\end_layout
-
-\begin_layout LyX-Code
-#=> 60
+\color inherit
+                #=> 60
 \end_layout
 
 \begin_layout Standard
@@ -2501,7 +2451,7 @@ run!
 \family default
  creates and executes a 
 \family typewriter
-TimedSimulation
+Simulation
 \family default
  instance.
  The return value is the simulation instance itself (see the inspect string
@@ -2542,11 +2492,7 @@ YNelson::Place
 \end_layout
 
 \begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [0.5, 0.5]
+net.marking         #=> [0.5, 0.5]
 \end_layout
 
 \begin_layout Standard
@@ -2562,8 +2508,7 @@ settings
 \end_layout
 
 \begin_layout LyX-Code
-#=> {:method=>:pseudo_euler, :guarded=>false, :step=>0.1, :sampling=>5, :time=>0..6
-0}
+#=> {:method=>:basic, :guarded=>false, :step=>0.1, :sampling=>5, :time=>0..60}
 \end_layout
 
 \begin_layout Standard
@@ -2660,13 +2605,9 @@ gnuplot
 \begin_layout LyX-Code
 
 \color blue
-recording.plot
+recording.plot    
 \color inherit
  # plots a graph
-\end_layout
-
-\begin_layout LyX-Code
-#=> ""
 \end_layout
 
 \begin_layout Standard
@@ -2677,15 +2618,31 @@ Previous command plots the default feature set, which is marking of the
 \end_layout
 
 \begin_layout LyX-Code
-recording.gradient.plot
+recording.
+\color blue
+gradient
+\color inherit
+.plot
 \end_layout
 
 \begin_layout LyX-Code
-recording.flux.plot
+recording.
+\color blue
+flux
+\color inherit
+.plot
 \end_layout
 
 \begin_layout LyX-Code
-recording.delta( delta_time: 0.1 ).plot
+recording.
+\color blue
+delta
+\color inherit
+( 
+\color blue
+delta_time
+\color inherit
+: 0.1 ).plot
 \end_layout
 
 \begin_layout Standard
@@ -2697,8 +2654,10 @@ delta_time
  given delta time.
  As for 
 \family typewriter
+\color blue
 firing
 \family default
+\color inherit
 , a feature of 
 \family typewriter
 tS
@@ -2715,17 +2674,17 @@ Example IV: A real system.
 \end_layout
 
 \begin_layout Standard
-A highly simplified cell-biological pathway simulated with 
-\family typewriter
-YNelson::TimedSimulation
-\family default
-.
+A highly simplified cell-biological pathway.
  Let's first define some assumptions.
  Type in the following commands (output not shown):
 \end_layout
 
 \begin_layout LyX-Code
-require 'y_nelson' and include YNelson
+require 'y_nelson'
+\end_layout
+
+\begin_layout LyX-Code
+include YNelson
 \end_layout
 
 \begin_layout LyX-Code
@@ -3252,6 +3211,12 @@ Flux of the transitions can be plotted by:
 recording.flux.plot
 \end_layout
 
+\begin_layout Standard
+Please note that although this system qualitatively represents part of the
+ deoxynucleotide metabolism network, its behavior is not realistic, because
+ the available kinetic constants are not precise.
+\end_layout
+
 \begin_layout Part*
 Example V: Using SY.
 \end_layout
@@ -3270,7 +3235,7 @@ SY
 \color inherit
 .
  If you are experienced with biochemical modeling, then you surely know
- how big pain in the heel physical units are.
+ how big pain the physical units are.
  Also, in 
 \series bold
 Example III
@@ -3328,35 +3293,19 @@ Numeric
 \end_layout
 
 \begin_layout LyX-Code
-1.m
+1.m                    #=> #<±Magnitude: 1.m>
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<±Magnitude: 1.m>
+1.s                    #=> #<±Magnitude: 1.s>
 \end_layout
 
 \begin_layout LyX-Code
-1.s
+1.kg.m.s(-2)           #=> #<±Magnitude: 1.N>
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<±Magnitude: 1.s>
-\end_layout
-
-\begin_layout LyX-Code
-1.kg.m.s(-2)
-\end_layout
-
-\begin_layout LyX-Code
-#=> #<±Magnitude: 1.N>
-\end_layout
-
-\begin_layout LyX-Code
-1.cm + 1.mm
-\end_layout
-
-\begin_layout LyX-Code
-#=> #<±Magnitude: 0.011.m>
+1.cm + 1.mm            #=> #<±Magnitude: 0.011.m>
 \end_layout
 
 \begin_layout Standard
@@ -3369,19 +3318,11 @@ SY::Magnitude
 \end_layout
 
 \begin_layout LyX-Code
-1.m.quantity
+1.m.quantity           #=> #<Quantity:Length>
 \end_layout
 
 \begin_layout LyX-Code
-#=> #<Quantity:Length±>
-\end_layout
-
-\begin_layout LyX-Code
-1.cm.min⁻¹.quantity
-\end_layout
-
-\begin_layout LyX-Code
-#=> #<Quantity:Speed±>
+1.cm.min⁻¹.quantity    #=> #<Quantity:Speed>
 \end_layout
 
 \begin_layout Standard
@@ -3409,19 +3350,11 @@ to_f)
 \end_layout
 
 \begin_layout LyX-Code
-1.km.amount
+1.km.amount            #=> 1000.0
 \end_layout
 
 \begin_layout LyX-Code
-#=> 1000.0
-\end_layout
-
-\begin_layout LyX-Code
-1.cm.to_f
-\end_layout
-
-\begin_layout LyX-Code
-#=> 0.01
+1.cm.to_f              #=> 0.01
 \end_layout
 
 \begin_layout Subsection*
@@ -3443,7 +3376,15 @@ irb
 \end_layout
 
 \begin_layout LyX-Code
-require 'sy'; require 'y_nelson' and include YNelson
+require 'sy'
+\end_layout
+
+\begin_layout LyX-Code
+require 'y_nelson'
+\end_layout
+
+\begin_layout LyX-Code
+include YNelson
 \end_layout
 
 \begin_layout LyX-Code
@@ -3451,15 +3392,7 @@ A = Place m!: 3.mM
 \end_layout
 
 \begin_layout LyX-Code
-#=> A
-\end_layout
-
-\begin_layout LyX-Code
 B = Place m!: 4.mM
-\end_layout
-
-\begin_layout LyX-Code
-#=> B
 \end_layout
 
 \begin_layout LyX-Code
@@ -3467,114 +3400,68 @@ A2B = Transition s: { A: -1, B: 1 }, rate: 0.05.s⁻¹
 \end_layout
 
 \begin_layout LyX-Code
-#=> A2B
-\end_layout
-
-\begin_layout LyX-Code
 B_decay = Transition s: { B: -1 }, rate: 0.002.s⁻¹
 \end_layout
 
-\begin_layout LyX-Code
-#=> 
-\family typewriter
-B_decay
-\end_layout
-
 \begin_layout Standard
-Now we have created places and transitions, whose marking and rate closures
- are defined in physical units.
+We hereby specified marking and rate in physical units.
  Presently, 
 \family typewriter
-YNelson::TimedSimulation
+YNelson
 \family default
- will not accept such Petri net, so the only thing we can do is play the
- token game ourselves:
+ is not able to simulate such nets, but we can play token game with it:
 \end_layout
 
 \begin_layout LyX-Code
-fire_both_transitions = proc { |delta_t|
+net.m    #=> [#<±Magnitude: 0.003.M>, #<±Magnitude: 0.004.M>]
 \end_layout
 
 \begin_layout LyX-Code
-  A2B.fire! delta_t
+A2B.fire! 1.s
 \end_layout
 
 \begin_layout LyX-Code
-  B_decay.fire! delta_t
+B_decay.fire! 1.s
 \end_layout
 
 \begin_layout LyX-Code
-}
-\end_layout
-
-\begin_layout LyX-Code
-#=> #<Proc:0x9b48f1c@(irb):19>
+net.m    #=> [#<±Magnitude: 0.00285.M>, #<±Magnitude: 0.00414.M>]
 \end_layout
 
 \begin_layout Standard
-Here, we have defined a closure accepting one argument 
-\begin_inset Formula $\Delta$
-\end_inset
+Let us fire the 2 defined transitions for 100 seconds:
+\end_layout
 
-t, which it will use to 
+\begin_layout LyX-Code
+100.times do
+\end_layout
+
+\begin_layout LyX-Code
+  A2B.fire! 1.s
+\end_layout
+
+\begin_layout LyX-Code
+  B_decay.fire! 1.s
+\end_layout
+
+\begin_layout LyX-Code
+end
+\end_layout
+
+\begin_layout LyX-Code
+net.m    #=> [#<±Magnitude: 1.69e-05.M>, #<±Magnitude: 0.0058.M>]
+\end_layout
+
+\begin_layout Standard
+Finally, let us inspect the resulting marking of 
 \family typewriter
-fire!
-\family default
- both 
-\family typewriter
-A2B
+A
 \family default
  and 
 \family typewriter
-B_decay
+B
 \family default
-.
- By calling this closure repeatedly, we can simulate the network without
- use of 
-\family typewriter
-TimedSimulation
-\family default
-:
-\end_layout
-
-\begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [#<±Magnitude: 0.003.M>, #<±Magnitude: 0.004.M>]
-\end_layout
-
-\begin_layout LyX-Code
-fire_both_transitions.( 1.s )
-\end_layout
-
-\begin_layout LyX-Code
-#=> nil
-\end_layout
-
-\begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [#<±Magnitude: 0.00285.M>, #<±Magnitude: 0.00414.M>]
-\end_layout
-
-\begin_layout LyX-Code
-100.times do fire_both_transitions.( 1.s ) end
-\end_layout
-
-\begin_layout LyX-Code
-#=> 100
-\end_layout
-
-\begin_layout LyX-Code
-places.map &:marking
-\end_layout
-
-\begin_layout LyX-Code
-#=> [#<±Magnitude: 1.69e-05.M>, #<±Magnitude: 0.0058.M>]
+ expressed in micromolars:
 \end_layout
 
 \begin_layout LyX-Code
@@ -3582,19 +3469,11 @@ A.marking.
 \color blue
 in
 \color inherit
- :µM
+ :µM       #=> 16.873508277951963
 \end_layout
 
 \begin_layout LyX-Code
-#=> 16.873508277951963
-\end_layout
-
-\begin_layout LyX-Code
-B.marking.in :µM
-\end_layout
-
-\begin_layout LyX-Code
-#=> 5797.976678013365
+B.marking.in :µM       #=> 5797.976678013365
 \end_layout
 
 \begin_layout Part*
@@ -3602,21 +3481,24 @@ Example VI: Other simulation methods
 \end_layout
 
 \begin_layout Standard
-At this moment, the default simulation method is implicit Euler (or 
+At this moment, the default simulation method 
 \family typewriter
-pseudo_euler
+basic
 \family default
- – 
-\emph on
-pseudo
-\emph default
- because timeless transitions and assignment transtitions also fire at each
- step in time).
- From other simulation methods, Gillespie algorithm is available:
+ method.
+ This method is also called is implicit Euler, because when simulating timed
+ nets, it implies first-order Euler method.
+ For timed nets, YNelson provides two other methods: Runge-Kutta 4th order
+ method and Gillespie stochastic method.
+ Demonstrating Gillespie method:
 \end_layout
 
 \begin_layout LyX-Code
-require 'y_nelson' and include YNelson
+require 'y_nelson'
+\end_layout
+
+\begin_layout LyX-Code
+include YNelson
 \end_layout
 
 \begin_layout LyX-Code
@@ -3688,8 +3570,8 @@ plot_state
 \end_layout
 
 \begin_layout Standard
-The state recording should show the random walk of the system state over
- 50 time units.
+The state recording should show a random walk of the system state over the
+ period of 50 time units.
 \end_layout
 
 \begin_layout LyX-Code

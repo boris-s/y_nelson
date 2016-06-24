@@ -1,0 +1,1205 @@
+%% LyX 2.1.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=2.2cm,rmargin=2.2cm}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{textcomp}
+\usepackage[authoryear]{natbib}
+\usepackage[unicode=true]
+ {hyperref}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newenvironment{lyxcode}
+{\par\begin{list}{}{
+\setlength{\rightmargin}{\leftmargin}
+\setlength{\listparindent}{0pt}% needed for AMS classes
+\raggedright
+\setlength{\itemsep}{0pt}
+\setlength{\parsep}{0pt}
+\normalfont\ttfamily}%
+ \item[]}
+{\end{list}}
+
+\makeatother
+
+\begin{document}
+
+\title{Introduction to YNelson and YPetri (hands-on tutorial)}
+
+\maketitle
+
+\part*{Introduction}
+
+This document is a hands-on guide to \texttt{\textcolor{blue}{YPetri}},
+\texttt{\textcolor{blue}{YNelson}} and \textcolor{green}{\emph{Nelson
+nets}}, which in turn rely on \textcolor{red}{Ruby} language. It is
+not assumed you are familiar with Ruby, you can follow this guide
+even if you never heard about it (but you will have to install it).
+You more than likely never heard about Nelson nets. Nelson net is
+a novel concept of \textcolor{green}{\emph{Petri nets}} crossed with
+Ted Nelson's \textcolor{green}{\emph{ZZ structures}}. Do not worry
+about them: just follow the guide and you will learn everything in
+time. The text of this guide lets you know when new keywords and are
+introduced. When mentioned for the first time, \textcolor{red}{Ruby
+keywords and terms} are highlighted in red, \textcolor{green}{Petri
+net terms} in green, and \texttt{\textcolor{blue}{YPetri / YNelson}}\textcolor{blue}{{}
+keywords and terms} in blue throughout this document.
+
+\texttt{\textcolor{blue}{YNelson}} serves to specify and simulate
+Nelson nets, a derivative of \textcolor{green}{\emph{functional}}\textcolor{green}{{}
+}\textcolor{green}{\emph{Petri nets}} that live in \textcolor{green}{\emph{ZZ
+space}}. (You don't need to worry about ZZ space yet.) \texttt{\textcolor{blue}{YPetri}}
+serves to specify and simulate Petri nets. Petri nets are one of the
+basic formalisms in systems simulation. I designed \texttt{YPetri}
+and \texttt{YNelson} because I needed to specify biochemical systems
+and I believed a Ruby DSL would be ideal for that task. Use of Petri
+nets for specifying biochemical systems is reviewed eg. in \citet{Bos2008mbs}
+and \citet{Koch2015pns}. \texttt{YPetri} provides a universal Petri
+net abstraction similar, but not identical with \textcolor{green}{\emph{hybrid
+functional Petri net (HFPN)}} introduced by \citet{Matsuno2011brs}.
+\texttt{YPetri} / \texttt{YNelson} serve equally well not just for
+biochemical systems, but for arbitrary dynamical systems.
+
+Finally, please forgive me for taking your time with this guide. If
+you want to seriously work with \emph{complicated} Petri Nets, no
+tool can avoid taking you through the process of learning the language
+and the tool's interface. Visual Petri net modelling tools are nice
+for simple tasks, such as drawing arcs between places and transitions,
+but you need text anyway to write the mathematical functions that
+govern firing of transitions. \texttt{YPetri} / \texttt{YNelson} are
+all textual without commiting the sin of introducing a new programming
+language. They are implemented as \textcolor{red}{\emph{internal domain-specific
+languages (DSL)}} using Ruby as a host language. You can run them
+interactively from \textcolor{red}{Ruby interpreter (}\textcolor{red}{\emph{irb}}\textcolor{red}{)}.
+In this way, you can freely use the host language to automate your
+interaction with Petri nets.
+
+\texttt{YPetri} / \texttt{YNelson} are publicly available as \textcolor{blue}{\emph{\href{https://rubygems.org/gems/y_petri}{y\_{}petri}}}
+and \textcolor{blue}{\emph{\href{https://rubygems.org/gems/y_nelson}{y\_{}nelson gem}}}
+gems (\textcolor{red}{\emph{gem}} = Ruby library). \texttt{YNelson}
+depends on \texttt{YPetri} and \texttt{Yzz} gems, which in turn depend
+on our \texttt{YSupport} gem. Splitting the more general concerns
+to multiple gem is a desirable feature \textendash{} separation of
+concerns is a maxim of good software engineering. I also separated
+dealing with physical units in your models out into \texttt{SY} gem
+(\textcolor{blue}{\emph{\href{https://rubygems.org/gems/sy}{sy}}}).
+
+
+\part*{Using This Guide, or ``The Hard Way Is Easier''}
+
+The phrase above is borrowed from the textbook by Zed Shaw named ``Learn
+Ruby the Hard Way'' (highly recommended, \textcolor{magenta}{\emph{\href{http://ruby.learncodethehardway.org/}{hyperlink here}}}).
+Apart from being a great shark-jumper, Zed is a great teacher familiar
+with many programming languages, and I will borrow his teaching method
+here. Citing Zed, ``The title says it's the hard way... but actually
+it's not.'' It's only ``hard'' because of the way people \emph{used}
+to teach things. \texttt{YNelson} is a language. To learn it and see
+its usefulness, you will still need to do the incredibly simple things
+that all language learners do:
+\begin{enumerate}
+\item Go through each example.
+\item Type each sample code exactly.
+\item Make it run.
+\end{enumerate}
+\noindent That's it. This might feel \emph{very} difficult at first,
+but stick with it. It seems stupidly obvious, but if you have a problem
+installing \texttt{YPetri} and \texttt{YNelson}, running \emph{irb}
+and typing, you will have a problem learning. If you go through this
+document without actually doing the exercises, you might as well just
+not even read it. Do not skip and do not skim. By typing each example
+\emph{exactly}, you will be training your brain to focus on the details
+of what you are doing, as you are doing it. While you do these examples,
+typing each one in, you will be making mistakes. It's inevitable;
+humans do make mistakes. By doing so, you will train yourself to notice
+mistakes and other problems. Do not copy-paste. Type each code sample
+in, manually. The point is to train your hands, your brain, and your
+mind in how to read, write and see Ruby and \texttt{YNelson} code.
+If you skip, skim and copy-paste, you are cheating yourself out of
+the effectiveness of this guide.
+
+
+\part*{Prerequisites}
+
+Firstly, you will need a working installation of Ruby 2.3 or later
+on your computer. Once this condition is met, basic \texttt{YNelson}
+installation is as simple as typing ``\texttt{gem install y\_nelson}''
+in the command prompt. This will install most other dependencies,
+such as \texttt{YPetri}. However, \texttt{YNelson} currently uses
+dependencies (gnuplot gem, graphviz gem...), whose installation may
+pose challenges. Once\texttt{ YNelson} is installed, run \emph{irb}
+command interpreter, and type:
+\begin{lyxcode}
+\textcolor{red}{require}~'y\_nelson'~and\textcolor{red}{{}~include}~YNelson
+\end{lyxcode}
+This will augment your irb command session with interactive \texttt{YNelson}
+command interface (\texttt{YNelson} DSL CI). You may also choose to
+work only with \texttt{YPetri} alone, in which case the require line
+is:
+\begin{lyxcode}
+\textcolor{red}{require}~'y\_petri'~and\textcolor{red}{{}~include}~YPetri
+\end{lyxcode}
+You have to re-run \emph{irb} from the scratch, and re-type '\texttt{require}'
+and '\texttt{include}' statements before each of the usage examples
+written below. The nucleotide metabolism model in Example 3 is not
+realiscit (its kinetics is not precise). If something in this guide
+does not work, please do not hesitate to notify me, I will appreciate
+your feedback.
+
+
+\part*{Example I: Basics}
+
+This example is a gentle introduction to Petri net terminology, \texttt{YNelson}
+DSL terminology, and Ruby syntax. The most basic capability that \texttt{YNelson}
+offers, is that of user-driven \textcolor{green}{\emph{token game}}.
+We will thus create a small Petri net containing 2 \textcolor{green}{\emph{places}}
+and play token game with it.
+
+
+\subsection*{Places}
+
+Type:
+\begin{lyxcode}
+A~=~\textcolor{blue}{Place}(~marking:~2~)
+\end{lyxcode}
+Syntactically, this will call \textcolor{red}{\emph{method}} '\texttt{Place}'
+of \texttt{YNelson} DSL and assign its \textcolor{red}{\emph{return
+value}} to the \textcolor{red}{\emph{constant}} \texttt{A}. In this
+case, the method is called with a single \textcolor{red}{\emph{argument}},
+\texttt{marking}. The return value is an \textcolor{red}{\emph{object}},
+which is an \textcolor{red}{\emph{instance}} of \texttt{\textcolor{blue}{YNelson::Place}}
+\textcolor{red}{\emph{class}}. We say that \texttt{YNelson::Place}
+class \textcolor{red}{\emph{represents}} the concept of Petri net
+places in \texttt{YNelson} \emph{domain model}. ('\texttt{Place}'
+method is called a \textcolor{red}{\emph{constructor}} of \texttt{YNelson::Place},
+which is not important.) This newly created Petri net place has now
+been assigned to \texttt{A}. On the screen, you will see the output,
+which is simply the name of the place \textendash{} \texttt{A}. In
+the following text, screen output will always be written immediately
+under the code sample, preceded by sherocket (\texttt{\#=>)}:
+\begin{lyxcode}
+B~=~Place()
+
+\#=>~B
+\end{lyxcode}
+In the above, we have so far defined 2 Petri net places (named \texttt{A},
+\texttt{B}). You can check them by typing:
+\begin{lyxcode}
+\textcolor{blue}{places}()
+
+\#=>~{[}A,~B{]}
+
+A.\textcolor{blue}{name}()
+
+\#=>~:A
+\end{lyxcode}
+These have automatically become part of a default Petri net instance
+(of \texttt{YNelson::Net} class; object id may vary):
+\begin{lyxcode}
+\textcolor{blue}{net}()
+
+\#=>~\#<Net:~name:~Top,~2~places,~0~transitions>
+\end{lyxcode}
+Of course, you have full power of Ruby at your disposal. To eg. list
+only place names as strings, you can use standard Ruby methods:
+\begin{lyxcode}
+places.\textcolor{red}{map}(~\&:name~)
+
+\#=>~{[}:A,~:B{]}
+\end{lyxcode}
+Here, Ruby \texttt{map} method transforms the \textcolor{red}{\emph{array}}
+of places to the array of their names. The advantage of internal DSLs
+is, that one retains full power of the language, augmented with human-friendly,
+domain-specific commands. GUI systems generally sandbox the user inside
+their interface, with no way to overcome its limitations. But let
+us go on. You can notice that the \textcolor{green}{\emph{marking}}
+of \texttt{A}, \texttt{B} is one we gave them upon their creation:
+\begin{lyxcode}
+places.map(~\&:marking~)
+
+\#=>~{[}2,~5{]}
+\end{lyxcode}
+In classical Petri nets, marking is understood as the number of \textcolor{green}{\emph{tokens}}
+in each place, which is always integer. In this case, \texttt{A} contains
+2 tokens, while \texttt{B} contains 5 tokens. Tokens can represent
+anything: molecules, parts in the production line, trains in the railway
+network...
+
+
+\subsection*{Transitions}
+
+The behavior of a Petri net is defined by \textcolor{green}{\emph{transitions}}.
+Each transition defines a single operation: Adding / subtracting some
+amount of tokens to / from some places. Transition operation can often
+be expressed by \emph{stoichiometry} \textendash{} pairs of places
+with a corresponding number of tokens to add / subtract when the transition
+\textcolor{green}{\emph{fires}}. For example, let us define:
+\begin{lyxcode}
+A2B~=~\textcolor{blue}{Transition}(~stoichiometry:~\{~A:~-1,~B:~1~\}~)
+
+\#=>~A2B
+\end{lyxcode}
+Stoichiometry of this transition is given by the \textcolor{red}{\emph{hash}}
+\texttt{\{ A: -1, B: 1 \}}. This hash is available from \texttt{A2B}
+via '\texttt{\textcolor{blue}{s}}' method:
+\begin{lyxcode}
+A2B.\textcolor{blue}{s}()
+
+\#=>~\{:A=>-1,~:B=>1\}
+\end{lyxcode}
+\textcolor{red}{\emph{Keys}} of this hash are place names, \textcolor{red}{\emph{values}}
+are \textcolor{green}{\emph{stoichiometry coefficients}}. ('Stoichiometry'
+is a word known from the domain of chemistry, but '\emph{stoicheion}'
+means simply 'element' in Greek, so there is no problem with using
+it in the domain of general Petri nets.) To see the stoichiometry
+coefficients of \texttt{A2B} as an array, type:
+\begin{lyxcode}
+A2B.\textcolor{blue}{stoichiometry}()
+
+\#=>~{[}-1,~1{]}
+\end{lyxcode}
+Simply, \texttt{A2B} subtracts 1 token from \texttt{A}, and adds 1
+token to \texttt{B}. This can represent conversion of \texttt{A} to
+\texttt{B}. In classical Petri nets, the arrows connecting places
+and transitions are called \textcolor{green}{\emph{arcs}}. (The term
+was borrowed from graph theory.) For example, at this moment, our
+Petri net would contain one arc going from \texttt{A} to \texttt{A2B},
+and one arc going from \texttt{A2B} to \texttt{B}. In \texttt{YNelson}
+domain model, 'arcs' are not first-class citizens. The word is understood
+simply as a synonym for transitions' connectivity \textendash{} the
+list of places connected to each transition:
+\begin{lyxcode}
+A2B.\textcolor{blue}{arcs}()
+
+\#=>~{[}A,~B{]}
+\end{lyxcode}
+The transition \texttt{A2B} is \textcolor{blue}{\emph{timeless}}:
+\begin{lyxcode}
+A2B.\textcolor{blue}{timeless?}()
+
+\#=>~true
+\end{lyxcode}
+'Timeless' means that the transition's firing is not defined in time
+\textendash{} it can fire anytime, as long as it is \textcolor{green}{\emph{enabled}}.
+Classical Petri nets are timeless. In classical Petri nets, a transition
+is enabled whenever its \textcolor{blue}{\emph{downstream arcs}} allow
+it to happen. Downstream arcs, or \textcolor{blue}{\emph{codomain}}
+of a transition (these two are synonyms) are those places, whose marking
+can be directly affected by the transition's firing. In this case,
+both \texttt{A} and \texttt{B} is affected:
+\begin{lyxcode}
+A2B.\textcolor{blue}{downstream\_arcs}()
+
+{[}A,~B{]}
+
+A2B.\textcolor{blue}{codomain}()
+
+{[}A,~B{]}
+\end{lyxcode}
+Since \texttt{A2B} subtracts tokens from \texttt{A}, it will be enabled
+so long, as there are any tokens left in \texttt{A}.
+\begin{lyxcode}
+A2B.\textcolor{blue}{enabled?}()
+
+\#=>~true
+\end{lyxcode}
+
+\subsection*{Token game}
+
+After \texttt{A2B} fires, the marking will change:
+\begin{lyxcode}
+A2B.\textcolor{blue}{fire!}()
+
+\#=>~nil
+
+places.map(~\&:marking~)
+
+\#=>~{[}1,~6{]}
+
+A2B.fire!()
+
+\#=>~nil
+
+places.map(~\&:marking~)
+
+\#=>~{[}0,~7{]}
+\end{lyxcode}
+At this point, there are no tokens left in \texttt{A} and \texttt{A2B}
+becomes \textcolor{green}{\emph{disabled}}:
+\begin{lyxcode}
+A2B.enabled?
+
+\#=>~false
+\end{lyxcode}
+Attempt to fire a disabled transition \textcolor{red}{\emph{raises}}
+an \textcolor{red}{\emph{error}} (in Ruby, errors are friendly objects,
+who, like damsels in distress, are meant to be rescued with a bonus
+outcome):
+\begin{lyxcode}
+A2B.fire!
+
+\#=>~YPetri::GuardError:~When~trying~call~\#fire~method,~adding~action~node~no.~0~to~A,~marking~change~being~-1,~YPetri::GuardError~occurred:~Marking~-1:Fixnum~of~A~should~not~be~negative!
+\end{lyxcode}
+
+\subsection*{Functional transitions and non-integer marking}
+
+So far, all the examples were compatible with classical Petri nets.
+But \texttt{YNelson} goes beyond \textendash{} it represents \emph{functional
+Petri nets}, similar to \emph{Hybrid Functional Petri Net (HFPN)}
+proposed by \citet{Matsuno2011brs}, which I already mentioned in
+the introductory part of this document. \texttt{YNelson} domain model
+is similar, but not identical to HFPN. On the side of similarities,
+\texttt{YNelson} allows non-integer marking of places:
+\begin{lyxcode}
+C~=~Place(~\textcolor{blue}{marking}:~7.77~)
+
+\#=>~C
+\end{lyxcode}
+Here, you can notice that marking of places can be specified already
+upon initialization using '\texttt{:marking}' \textcolor{red}{\emph{named
+argument}}. Let us now define a \textcolor{blue}{\emph{timed}} transition,
+representing logarithmic decay of \texttt{C} with a rate constant
+of 0.05:
+\begin{lyxcode}
+C\_decay~=~Transition(~stoichiometry:~\{~C:~-1~\},~\textcolor{blue}{rate}:~0.05~)
+
+\#=>~C\_decay
+
+C\_decay.\textcolor{blue}{timed?}
+
+\#=>~true
+\end{lyxcode}
+Here, in the \texttt{transition} constructor method, apart from '\texttt{stoichiometry:}'
+named argument, another named argument, '\texttt{rate:}', is introduced.
+Under '\texttt{rate:}', it is possible to specify the transition's
+\textcolor{green}{\emph{function}}, which governs its rate. Specifying
+a function in Ruby requires special syntax (called Ruby \textcolor{red}{\emph{closures}}),
+based on lambda calculus. Ruby closures are easy to learn. But for
+the moment, in \texttt{C\_decay} transition, we are taking use of
+the convenience, that allows us to pass a numeric value under '\texttt{rate:}'
+named argument, and have \texttt{YNelson} create default mass action
+equation, using the supplied number as its rate constant. For \texttt{C\_decay}
+stoichiometry, \texttt{\{ C: -1 \}}, default mass action will be logarithmic
+decay with rate constant 0.05. Naturally, when firing timed transitions,
+the time interval ($\Delta$time) must be specified, for which the
+transition should be active:
+\begin{lyxcode}
+C\_decay.fire!(~1~)
+
+\#=>~nil
+
+C.marking
+
+\#=>~7.3815
+
+C\_decay.fire!~1
+
+\#=>~nil
+
+C.marking
+
+\#=>~7.012425
+
+C\_decay.fire!(~0.1~)
+
+\#=>~nil
+
+C.marking
+
+\#=>~6.977362875000001
+
+100.\textcolor{red}{times}~do~C\_decay.fire!~1~end
+
+\#=>~100
+
+C.marking
+
+\#=>~0.04130968078231133
+\end{lyxcode}
+The penultimate statement was a call of Ruby '\texttt{times}' method
+with the integer \texttt{100} as the receiver, which results in 100
+time repetition of the statement inside \texttt{\textcolor{red}{do
+... end }}\textcolor{red}{\emph{block}}. Instead of \texttt{do ... end},
+it is possible to write a block using curly braces \texttt{\textcolor{red}{\{
+... \}}}:
+\begin{lyxcode}
+100.times~\{~C\_decay.fire!~1~\}
+
+\#=>~100
+\end{lyxcode}
+This will cause another 100 time units of \texttt{C\_decay} firing.
+This brings \texttt{C} marking down to almost zero:
+\begin{lyxcode}
+C.marking
+
+\#=>~0.00024457517215434527
+\end{lyxcode}
+
+\subsection*{Four transition types}
+
+Thus far, we have demonstrated transitions with stoichiometry, which
+were either \emph{timed} or not timed (\emph{timeless}). Timed transitions
+are denoted by capital ``\texttt{T}'', timeless transitions by small
+``\texttt{t}''. Similarly, stoichiometric transitions are denoted
+by capital ``\texttt{S}'', while transitions without stoichiometry
+(\emph{non-stoichiometric} transitions) by small ``\texttt{s}''.
+Together, this gives 4 basic types of transitions: \texttt{TS}, \texttt{tS},
+\texttt{Ts}, and \texttt{ts}.
+
+The user can ask the type of a transition by calling the \texttt{\textcolor{blue}{type}}
+method:
+\begin{lyxcode}
+A2B.type
+
+\#=>~:tS
+\end{lyxcode}
+Or investigate the type with inquirer methods:
+\begin{lyxcode}
+A2B.\textcolor{blue}{t?}
+
+\#=>~true
+
+A2B.\textcolor{blue}{T?}
+
+\#=>~false
+
+A2B.\textcolor{blue}{s?}
+
+\#=>~false
+
+A2B.\textcolor{blue}{S?}
+
+\#=>~true
+
+A2B.\textcolor{blue}{TS?}
+
+\#=>~false
+
+A2B.\textcolor{blue}{tS?}
+
+\#=>~true
+
+A2B.\textcolor{blue}{Ts?}
+
+\#=>~false
+
+A2B.\textcolor{blue}{ts?}
+
+\#=>~false
+\end{lyxcode}
+
+\subsection*{Assignment transitions}
+
+In \texttt{YNelson}, there is one more transition type: an assignment
+transition, denoted by ``\texttt{A}''. Assignment transitions do
+not add or subtract tokens from their target, but completely replace
+the codomain marking with their output. (Again, in \texttt{YNelson}
+transitions, \emph{domain} and \emph{codomain} mean respectively upstream
+and downstream places.) Transitions other than \texttt{A} transitions
+can be collectively called non-assignment transitions, denoted by
+small ``\texttt{a}''. Note that assignment action is already achievable
+with plain \texttt{ts} transitions (by subtracting away the previous
+codomain marking), so \texttt{A} transitions are not strictly needed
+\textendash{} their separate existence is just a syntactic convenience.
+
+One way to construct assignment transitions is by setting \texttt{:assignment}
+named argument to \emph{true}:
+\begin{lyxcode}
+A\_to\_42~=~Transition~codomain:~A,~assignment:~lambda~\{~42~\}
+
+\#=>~A\_to\_42
+\end{lyxcode}
+Firing this transition results in marking of \texttt{A} being set
+to 42:
+\begin{lyxcode}
+A\_to\_42.fire!
+
+\#=>~nil
+
+A.marking
+
+\#=>~42
+\end{lyxcode}
+Assignment transitions are of special type \texttt{A}:
+\begin{lyxcode}
+A\_to\_42.type
+
+\#=>~:A
+
+A\_to\_42.A?
+
+\#=>~true
+
+A\_to\_42.a?
+
+\#=>~false
+\end{lyxcode}
+
+\part*{Example II: Convenience}
+
+So far, to avoid confusing you, I used fairly conservative syntax.
+\texttt{YNelson} can do better than that. For convenience, many long
+keywords have short aliases. Frequently used syntactic constructs
+usually have shorter way of expressing the same.
+
+As you have seen, in \texttt{YNelson} one often uses transition constructors.
+Thus far, we have seen only one \emph{constructor method} for transitions:
+\texttt{Transition()}. \texttt{Transition()} method accepts several
+different named arguments (\texttt{:domain}, \texttt{:codomain}, \texttt{:stoichiometry}
+\texttt{:assignment}, \texttt{:rate}, \texttt{:action}, \texttt{:name}...)
+and depending on their values, returns a \texttt{YNelson::Transition}
+class object of required type and properties.
+
+Using long keywords in the constructor method makes the \texttt{YNelson}
+code easy to read. But for the cases where trading readability for
+brevity is desirable, such as when you are playing with YNelson inside
+\emph{irb} session, you will appreciate convenience. Actually, we
+already used syntactic shorthands in the earlier examples. We didn't
+type :
+\begin{lyxcode}
+Transition(~name:~``A2B'',
+
+~~~~~~~~~~~~codomain:~{[}A,~B{]},
+
+~~~~~~~~~~~~stoichiometry:~{[}-1,~1{]}~)
+
+A2B~=~transition(~:A2B~)
+\end{lyxcode}
+Instead, we just typed
+\begin{lyxcode}
+A2B~=~Transition(~stoichiometry:~\{~A:~-1,~B:~1~\}~)
+\end{lyxcode}
+Just so you know, the above shorthand is not easy to program in Ruby.
+When designing \texttt{YNelson}, I took a lot of pain for your convenience.
+Even shorter way to express the same would be:
+\begin{lyxcode}
+A2B~=~Transition~\textcolor{blue}{s}:~\{~A:~-1,~B:~1~\}
+\end{lyxcode}
+The above is a very simple timeless transition that just takes one
+token from \texttt{A} and puts it into \texttt{B}. (Constructor convenience
+is even more powerful for complex transitions.) Start a new \texttt{irb}
+session and type:
+\begin{lyxcode}
+require~'y\_nelson'
+
+include~YNelson
+
+A~=~Place~\textcolor{blue}{default\_marking}:~5
+\end{lyxcode}
+Constantly typing \texttt{default\_marking} is tiresome. Shorter way
+to say the same is by using the alias \texttt{\textcolor{blue}{m!}}
+of the same:
+\begin{lyxcode}
+B~=~Place~m!:~5
+
+C~=~Place~m!:~1
+
+D~=~Place~m!:~1
+\end{lyxcode}
+Let's check the net's marking vector now:
+\begin{lyxcode}
+places.map~\&:marking~~~~~~\#=>~{[}5,~5,~1,~1{]}
+\end{lyxcode}
+If you typed everything correctly, you should see the above result.
+Shorter way to ask for the same information is:
+\begin{lyxcode}
+net.marking~~~~~~~~~~~~~~~\#=>~{[}5,~5,~1,~1{]}
+\end{lyxcode}
+Even shorter way to say the same is:
+\begin{lyxcode}
+net.\textcolor{blue}{m}~~~~~~~~~~~~~~~~~~~~~\#=>~{[}5,~5,~1,~1{]}
+\end{lyxcode}
+Now let's define the transition we want:
+\begin{lyxcode}
+B2A~=~Transition(~stoichiometry:~\{~B:~-1,~A:~1~\},
+
+~~~~~~~~~~~~~~~~~~domain:~{[}C,~D{]},
+
+~~~~~~~~~~~~~~~~~~rate:~lambda~\{~|x,~y|~(~x~{*}~y~)~{*}{*}~0.5~\}~)
+\end{lyxcode}
+To prove that it works, let's fire it for 0.1 time units:
+\begin{lyxcode}
+B2A.fire!~0.1~~~~~~~~~~~~~\#=>~nil
+
+net.m~~~~~~~~~~~~~~~~~~~~~\#=>~{[}5.1,~4.9,~1,~1{]}
+\end{lyxcode}
+Can we express its constructor more concisely? The answer is yes.
+\texttt{B2A} is a \texttt{TS} transition (check \texttt{B2A.type}
+to make sure it is true), and for \texttt{TS} transitions, \texttt{\textcolor{blue}{TS()}}
+convenience constructor is available. With \texttt{TS()} constructor,
+the definition of B2A would be much shorter:
+\begin{lyxcode}
+B2A~=~TS~domain:~{[}C,~D{]},~A:~1,~B:~-1~do~|x,~y|~(~x~{*}~y~)~{*}{*}~0.5~end
+\end{lyxcode}
+Note the \texttt{\textcolor{red}{do ... end}} part in the above line:
+Using lambda syntax, it defines the rate function of the transition.
+Another convenience constructor worth mentioning is \texttt{\textcolor{blue}{AT()}}
+for assignment transition. Earlier, we defined:
+\begin{lyxcode}
+A\_to\_42~=~Transition~codomain:~A,~assignment:~lambda~\{~42~\}
+\end{lyxcode}
+Using \texttt{AT()} constructor, we can shorten this to:
+\begin{lyxcode}
+A\_to\_42~=~AT~A~do~42~end
+\end{lyxcode}
+In short, syntactic shorthands can save a lot of typing. If you still
+miss some syntactic shorthand, feel free to define it on your own.
+For example, let us define a custom method named \texttt{Foo} that
+acts as a constructor of places with default marking.
+\begin{lyxcode}
+\textcolor{red}{def}~Foo(~m~)
+
+~~Place(~default\_marking:~m~)
+
+end
+\end{lyxcode}
+After this, you can define places with default marking with even less
+typing:
+\begin{lyxcode}
+X~=~Foo~42
+
+Y~=~Foo~43
+\end{lyxcode}
+
+\part*{Example III: YNelson::Simulation}
+
+So far, we have been defining Petri nets and playing the token game
+using \texttt{\#fire!} method, let us now simulate a Petri net inside
+\texttt{YNelson}\texttt{\textcolor{blue}{::Simulation}}. Restart your
+irb session as described in the \textbf{Prerequisites} chapter. We
+will now define 2 places. Since we are going to use \texttt{TimedSimulation},
+the marking owned by \texttt{YNelson::Place} instances is irrelevant.
+We just need to specify the initial state eg. by specifying the default
+marking of the places:
+\begin{lyxcode}
+require~'y\_nelson'
+
+include~YNelson
+
+A~=~Place~\textcolor{blue}{m!:}~0.5
+
+B~=~Place~m!:~0.5
+\end{lyxcode}
+Now let us define a transition corresponding to pumping \texttt{A}
+out of the system at a constant rate 0.005 per time unit.
+\begin{lyxcode}
+A\_pump~=~Transition~s:~\{~A:~-1~\},~rate:~\textcolor{red}{proc}~\{~0.005~\}
+\end{lyxcode}
+Here, \texttt{proc \{ 0.005 \}} is a closure, that defines the rate
+function. Closure \texttt{proc \{ 0.005 \}} ensures fixed rate 0.005
+per time unit regardless of the marking of \texttt{A}. You can notice
+that this closure expects no arguments and always outputs 0.005 as
+its return value. It is the simplest possible way to write a constant
+function. For comparison,
+\begin{lyxcode}
+B\_decay~=~Transition~s:~\{~B:~-1~\},~rate:~0.05
+\end{lyxcode}
+will behind the scenes automatically create a slightly more complicated
+mass action closure, which is logarithmic decay of \texttt{B} in this
+case. (You should remember this from \textbf{Example I}.) Now we have
+created a net of 2 places and 2 transitions:
+\begin{lyxcode}
+net
+
+\#=>~\#<Net:~name:~Top,~2~places,~2~transitions>
+\end{lyxcode}
+We can execute this Petri net as a \texttt{Simulation} object simply
+by typing:
+\begin{lyxcode}
+\textcolor{blue}{run!}~~~~~~~~~~~~~~~~\#=>~60
+\end{lyxcode}
+At this point, \texttt{run!} creates and executes a \texttt{Simulation}
+instance. The return value is the simulation instance itself (see
+the inspect string above), which by now has already finished execution
+and holds the simulation results. This simulation instance is accessible
+via \texttt{simulation} method.
+\begin{lyxcode}
+\textcolor{blue}{simulation}
+
+\#=>~\#<Simulation:~time:~60,~pp:~2,~tt:~2,~oid:~75530290>
+\end{lyxcode}
+The simulation does not affect the net. The simulation instance works
+with its own ``mental image'' of the net, therefore the marking
+owned by \texttt{YNelson::Place} instances does not change:
+\begin{lyxcode}
+net.marking~~~~~~~~~\#=>~{[}0.5,~0.5{]}
+\end{lyxcode}
+In a general case, it would be necessary to specify the simulation
+settings (step size, sampling rate, simulation time etc.) before running
+the simulation. Since we have not specified any, default settings
+were used:
+\begin{lyxcode}
+simulation.\textcolor{blue}{settings}
+
+\#=>~\{:method=>:basic,~:guarded=>false,~:step=>0.1,~:sampling=>5,~:time=>0..60\}
+\end{lyxcode}
+We can see sampling done by the simulation by typing:
+\begin{lyxcode}
+\textcolor{blue}{print\_recording}
+
+\#=>~:A~~~~~~:B
+
+~~~~-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-{}-
+
+~~~~0.5000~~0.5000
+
+~~~~0.4750~~0.3892
+
+~~~~0.4500~~0.3029
+
+~~~~0.4250~~0.2357
+
+~~~~0.4000~~0.1835
+
+~~~~0.3750~~0.1428
+
+~~~~0.3500~~0.1111
+
+~~~~0.3250~~0.0865
+
+~~~~0.3000~~0.0673
+
+~~~~0.2750~~0.0524
+
+~~~~0.2500~~0.0408
+
+~~~~0.2250~~0.0317
+
+~~~~0.2000~~0.0247
+
+~~~~nil
+\end{lyxcode}
+Indeed, \texttt{A} is decreasing at a constant rate, while \texttt{B}
+undergoes logarithmic decay. In a graphical desktop, we can plot a
+graph (requires \emph{gnuplot} gem):
+\begin{lyxcode}
+\textcolor{blue}{recording.plot~~~~}~\#~plots~a~graph
+\end{lyxcode}
+Previous command plots the default feature set, which is marking of
+the places. We can investigate also features of the recording (gradient
+or delta of places, firing or flux of the transitions...):
+\begin{lyxcode}
+recording.\textcolor{blue}{gradient}.plot
+
+recording.\textcolor{blue}{flux}.plot
+
+recording.\textcolor{blue}{delta}(~\textcolor{blue}{delta\_time}:~0.1~).plot
+\end{lyxcode}
+The last feature set \textendash{} delta \textendash{} requires \texttt{delta\_time}
+named argument to extrapolate the changes (deltas) of the places in
+the given delta time. As for \texttt{\textcolor{blue}{firing}}, a
+feature of \texttt{tS} transitions, the plot would show nothing here,
+as there ar no \texttt{tS} transitions here.
+
+
+\part*{Example IV: A real system.}
+
+A highly simplified cell-biological pathway. Let's first define some
+assumptions. Type in the following commands (output not shown):
+\begin{lyxcode}
+require~'y\_nelson'
+
+include~YNelson
+
+
+
+Pieces\_per\_microM~=~100\_000
+
+\textcolor{blue}{set\_step}~10
+
+\textcolor{blue}{set\_sampling}~30
+
+\textcolor{blue}{set\_target\_time}~30~{*}~60
+\end{lyxcode}
+Let's define places corresponding to chemical species first (note
+that \texttt{:}\texttt{\textcolor{blue}{m!}} is a synonym for \texttt{:default\_marking)}
+\begin{lyxcode}
+AMP~=~Place~\textcolor{blue}{m!}:~8695.0
+
+ADP~=~Place~m!:~6521.0
+
+ATP~=~Place~m!:~3152.0
+
+DeoxyCytidine~=~Place~m!:~5.0
+
+DeoxyCTP~=~Place~m!:~20.0
+
+DeoxyGMP~=~Place~m!:~20.0
+
+UMP\_UDP\_pool~=~Place~m!:~2737.0
+
+DeoxyUMP\_DeoxyUDP\_pool~=~Place~m!:~10.0
+
+DeoxyTMP~=~Place~m!:~50.0
+
+DeoxyTDP\_DeoxyTTP\_pool~=~Place~m!:~100.0
+
+Thymidine~=~Place~m!:~10.0
+\end{lyxcode}
+All the places above have their marking in micromolars. The enzyme
+places below will have their marking in molecules per cell:
+\begin{lyxcode}
+TK1~=~Place~m!:~100\_000~/~Pieces\_per\_microM
+
+TYMS~=~Place~m!:~100\_000~/~Pieces\_per\_microM
+
+RNR~=~Place~m!:~100\_000~/~Pieces\_per\_microM
+
+TMPK~=~Place~m!:~100\_000~/~Pieces\_per\_microM
+\end{lyxcode}
+Enzyme molecular weights:
+\begin{lyxcode}
+TK1\_kDa~=~24.8
+
+TYMS\_kDa~=~66.0
+
+RNR\_kDa~=~140.0
+
+TMPK\_kDa~=~50.0
+\end{lyxcode}
+Enzyme specific activities (in \emph{micromolar} / \emph{minute} /
+\emph{mg} ):
+\begin{lyxcode}
+TK1\_a~=~5.40
+
+TYMS\_a~=~3.80
+
+RNR\_a~=~1.00
+
+TMPK\_a~=~0.83
+\end{lyxcode}
+Some species are kept fixed (as simulation-level clamps):
+\begin{lyxcode}
+\textcolor{blue}{clamp}~AMP:~8695.0,~ADP:~6521.0,~ATP:~3152.0
+
+clamp~DeoxyCytidine:~0.5,~DeoxyCTP:~1.0,~DeoxyGMP:~1.0
+
+clamp~Thymidine:~0.5
+
+clamp~UMP\_UDP\_pool:~2737.0
+\end{lyxcode}
+Before defining transitions, let's define some functions first:
+\begin{lyxcode}
+Vmax\_per\_min\_per\_enz\_molecule~=
+
+~~lambda~\{~|spec\_act\_microM\_per\_min\_per\_mg,~kDa|
+
+~~~~~~~~~~~~~spec\_act\_microM\_per\_min\_per\_mg~{*}~kDa~\}
+
+Vmax\_per\_min~=
+
+~~lambda~\{~|spec\_act,~kDa,~enz\_molecules\_per\_cell|
+
+~~~~~~~~~~~Vmax\_per\_min\_per\_enz\_molecule.(~spec\_act,~kDa~)~{*}
+
+~~~~~~~~~~~~~enz\_molecules\_per\_cell~\}
+
+Vmax\_per\_s~=
+
+~~lambda~\{~|spec\_act,~kDa,~enz\_mol\_per\_cell|
+
+~~~~~~~~~~~Vmax\_per\_min.(~spec\_act,~kDa,~enz\_mol\_per\_cell~)~/~60~\}
+
+Km\_reduced~=
+
+~~lambda~\{~|km,~ki\_hash=\{\}|
+
+~~~~~~~~~~~ki\_hash.map~\{~|c,~ki|~c~/~ki~\}.reduce(~1,~:+~)~{*}~km~\}
+
+Occupancy~=
+
+~~lambda~\{~|c,~km,~compet\_inh\_w\_Ki\_hash=\{\}|
+
+~~~~~~~~~~~c~/~(~c~+~Km\_reduced.(~km,~compet\_inh\_w\_Ki\_hash~)~)~\}
+
+MM\_with\_inh\_microM\_per\_second~=
+
+~~lambda~\{~|c,~spec\_act,~kDa,~enz\_mol\_per\_cell,~km,~ki\_hash=\{\}|
+
+~~~~~~~~~~~~Vmax\_per\_s.(~spec\_act,~kDa,~enz\_mol\_per\_cell~)~{*}
+
+~~~~~~~~~~~~~~Occupancy.(~c,~km,~ki\_hash~)~\}
+
+MMi~=~MM\_with\_inh\_microM\_per\_second
+\end{lyxcode}
+Michaelis constants:
+\begin{lyxcode}
+TK1\_Thymidine\_Km~=~5.0
+
+TYMS\_DeoxyUMP\_Km~=~2.0
+
+RNR\_UDP\_Km~=~1.0
+
+DNA\_creation\_speed~=~3\_000\_000\_000~/~(~12~{*}~3600~)
+
+TMPK\_DeoxyTMP\_Km~=~12.0
+\end{lyxcode}
+And finally, let us define the transitions:
+\begin{lyxcode}
+Transition~name:~:TK1\_Thymidine\_DeoxyTMP,
+
+~~~~~~~~~~~\textcolor{blue}{domain:}~{[}~Thymidine,~TK1,~DeoxyTDP\_DeoxyTTP\_pool,~DeoxyCTP,
+
+~~~~~~~~~~~~~~~~~~~~~DeoxyCytidine,~AMP,~ADP,~ATP~{]},
+
+~~~~~~~~~~~stoichiometry:~\{~Thymidine:~-1,~DeoxyTMP:~1~\},
+
+~~~~~~~~~~~rate:~proc~\{~|c,~e,~pool1,~ci2,~ci3,~master1,~master2,~master3|
+
+~~~~~~~~~~~~~~~~~~~~~~~~ci1~=~pool1~{*}~master3~/~(~master2~+~master3~)
+
+~~~~~~~~~~~~~~~~~~~~~~~~MMi.(~c,~TK1\_a,~TK1\_kDa,~e,~TK1\_Thymidine\_Km,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ci1~=>~13.5,~ci2~=>~0.8,~ci3~=>~40.0~)~\}
+
+
+
+Transition~name:~:TYMS\_DeoxyUMP\_DeoxyTMP,
+
+~~~~~~~~~~~domain:~{[}~DeoxyUMP\_DeoxyUDP\_pool,~TYMS,~AMP,~ADP,~ATP~{]},
+
+~~~~~~~~~~~stoichiometry:~\{~DeoxyUMP\_DeoxyUDP\_pool:~-1,~DeoxyTMP:~1~\},
+
+~~~~~~~~~~~rate:~proc~\{~|pool,~e,~mono,~di,~tri|
+
+~~~~~~~~~~~~~~~~~~~~~~~~c~=~pool~{*}~di~/~(~mono~+~di~)
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~MMi.(~c,~TYMS\_a,~TYMS\_kDa,~e,~TYMS\_DeoxyUMP\_Km~)~\}
+
+
+
+Transition~name:~:RNR\_UDP\_DeoxyUDP,
+
+~~~~~~~~~~~domain:~{[}~UMP\_UDP\_pool,~RNR,~DeoxyUMP\_DeoxyUDP\_pool,~AMP,~ADP,~ATP~{]},
+
+~~~~~~~~~~~stoichiometry:~\{~UMP\_UDP\_pool:~-1,~DeoxyUMP\_DeoxyUDP\_pool:~1~\},
+
+~~~~~~~~~~~rate:~proc~\{~|pool,~e,~mono,~di,~tri|
+
+~~~~~~~~~~~~~~~~~~~~~~~~c~=~pool~{*}~di~/~(~mono~+~di~)
+
+~~~~~~~~~~~~~~~~~~~~~~~~MMi.(~c,~RNR\_a,~RNR\_kDa,~e,~RNR\_UDP\_Km~)~\}
+
+
+
+Transition~name:~:DNA\_polymerase\_consumption\_of\_DeoxyTTP,
+
+~~~~~~~~~~~stoichiometry:~\{~DeoxyTDP\_DeoxyTTP\_pool:~-1~\},
+
+~~~~~~~~~~~rate:~proc~\{~DNA\_creation\_speed~/~4~\}
+
+
+
+Transition~name:~:TMPK\_DeoxyTMP\_DeoxyTDP,
+
+~~~~~~~~~~~domain:~{[}~DeoxyTMP,~TMPK,~DeoxyTDP\_DeoxyTTP\_pool,~DeoxyGMP,~AMP,~ADP,~ATP~{]},
+
+~~~~~~~~~~~stoichiometry:~\{~DeoxyTMP:~-1,~TMPK:~0,~DeoxyTDP\_DeoxyTTP\_pool:~1~\},
+
+~~~~~~~~~~~rate:~proc~\{~|c,~e,~pool,~ci4,~mono,~di,~tri|
+
+~~~~~~~~~~~~~~~~~~~~~~~~ci1~=~di
+
+~~~~~~~~~~~~~~~~~~~~~~~~ci2~=~pool~{*}~di~/~(~di~+~tri~)
+
+~~~~~~~~~~~~~~~~~~~~~~~~ci3~=~pool~{*}~tri~/~(~di~+~tri~)
+
+~~~~~~~~~~~~~~~~~~~~~~~~MMi.(~c,~TMPK\_a,~TMPK\_kDa,~e,~TMPK\_DeoxyTMP\_Km,
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ci1~=>~250.0,~ci2~=>~30.0,~ci3~=>~750,~ci4~=>~117~)~\}
+
+
+
+Transition~name:~:PhosphataseI,
+
+~~~~~~~~~~~stoichiometry:~\{~DeoxyTMP:~-1,~Thymidine:~1~\},
+
+~~~~~~~~~~~rate:~0.04
+
+
+
+Transition~name:~:PhosphataseII,
+
+~~~~~~~~~~~stoichiometry:~\{~DeoxyTDP\_DeoxyTTP\_pool:~-1,~DeoxyTMP:~1~\},
+
+~~~~~~~~~~~rate:~0.01
+\end{lyxcode}
+The created net can be visualized by:
+\begin{lyxcode}
+net.visualize
+\end{lyxcode}
+The simulation should work.
+\begin{lyxcode}
+run!
+\end{lyxcode}
+State recording can be plotted by:
+\begin{lyxcode}
+recording.plot
+\end{lyxcode}
+Flux of the transitions can be plotted by:
+\begin{lyxcode}
+recording.flux.plot
+\end{lyxcode}
+Please note that although this system qualitatively represents part
+of the deoxynucleotide metabolism network, its behavior is not realistic,
+because the available kinetic constants are not precise.
+
+
+\part*{Example V: Using SY.}
+
+Here, we'll take a look at using \texttt{YNelson} with \texttt{\textcolor{blue}{SY}}\textcolor{blue}{{}
+metrology library}. If you are experienced with biochemical modeling,
+then you surely know how big pain the physical units are. Also, in
+\textbf{Example III}, you might have noticed how much attention has
+been spent on units (in the assumptions, variable names, constant
+names...) You could have noticed messy unit conversion formulas. The
+aim of \texttt{SY} is to take care of all this, to relieve the modeler
+from the task of unit conversion, to clean up the model code, and
+let the modeler concentrate on the real issue.
+
+
+\subsection*{\texttt{SY} metrology library}
+
+\texttt{SY} is publicly available as a Ruby gem '\texttt{sy}'. After
+installing it (\texttt{gem install sy}), type:
+\begin{lyxcode}
+require~'sy'
+\end{lyxcode}
+Afterwards, your \texttt{\textcolor{red}{Numeric}} objects (that is,
+numbers) should respond to methods representing physical units:
+\begin{lyxcode}
+1.m~~~~~~~~~~~~~~~~~~~~\#=>~\#<\textpm Magnitude:~1.m>
+
+1.s~~~~~~~~~~~~~~~~~~~~\#=>~\#<\textpm Magnitude:~1.s>
+
+1.kg.m.s(-2)~~~~~~~~~~~\#=>~\#<\textpm Magnitude:~1.N>
+
+1.cm~+~1.mm~~~~~~~~~~~~\#=>~\#<\textpm Magnitude:~0.011.m>
+\end{lyxcode}
+The core of the trick is that instead of naked numbers, numbers become
+magnitudes (\texttt{SY::Magnitude}) of specified physical quantities:
+\begin{lyxcode}
+1.m.quantity~~~~~~~~~~~\#=>~\#<Quantity:Length>
+
+1.cm.min\textsuperscript{-}\textonesuperior .quantity~~~~\#=>~\#<Quantity:Speed>
+\end{lyxcode}
+(You can type \texttt{1.cm.min(-1)} if you find it difficult to type
+Unicode superscript characters \textquotedbl{}\texttt{\textsuperscript{-}\textonesuperior }\textquotedbl{}.)
+Magnitudes can be converted back to numbers with \texttt{\textcolor{blue}{amount}}
+(alias \texttt{\textcolor{blue}{to\_f)}} method:
+\begin{lyxcode}
+1.km.amount~~~~~~~~~~~~\#=>~1000.0
+
+1.cm.to\_f~~~~~~~~~~~~~~\#=>~0.01
+\end{lyxcode}
+
+\subsection*{Collaboration between \texttt{SY} and \texttt{YNelson}}
+
+In a fresh \texttt{irb} session, enter:
+\begin{lyxcode}
+require~'sy'
+
+require~'y\_nelson'
+
+include~YNelson
+
+A~=~Place~m!:~3.mM
+
+B~=~Place~m!:~4.mM
+
+A2B~=~Transition~s:~\{~A:~-1,~B:~1~\},~rate:~0.05.s\textsuperscript{-}\textonesuperior{}
+
+B\_decay~=~Transition~s:~\{~B:~-1~\},~rate:~0.002.s\textsuperscript{-}\textonesuperior{}
+\end{lyxcode}
+We hereby specified marking and rate in physical units. Presently,
+\texttt{YNelson} is not able to simulate such nets, but we can play
+token game with it:
+\begin{lyxcode}
+net.m~~~~\#=>~{[}\#<\textpm Magnitude:~0.003.M>,~\#<\textpm Magnitude:~0.004.M>{]}
+
+A2B.fire!~1.s
+
+B\_decay.fire!~1.s
+
+net.m~~~~\#=>~{[}\#<\textpm Magnitude:~0.00285.M>,~\#<\textpm Magnitude:~0.00414.M>{]}
+\end{lyxcode}
+Let us fire the 2 defined transitions for 100 seconds:
+\begin{lyxcode}
+100.times~do
+
+~~A2B.fire!~1.s
+
+~~B\_decay.fire!~1.s
+
+end
+
+net.m~~~~\#=>~{[}\#<\textpm Magnitude:~1.69e-05.M>,~\#<\textpm Magnitude:~0.0058.M>{]}
+\end{lyxcode}
+Finally, let us inspect the resulting marking of \texttt{A} and \texttt{B}
+expressed in micromolars:
+\begin{lyxcode}
+A.marking.\textcolor{blue}{in}~:\textmu M~~~~~~~\#=>~16.873508277951963
+
+B.marking.in~:\textmu M~~~~~~~\#=>~5797.976678013365
+\end{lyxcode}
+
+\part*{Example VI: Other simulation methods}
+
+At this moment, the default simulation method \texttt{basic} method.
+This method is also called is implicit Euler, because when simulating
+timed nets, it implies first-order Euler method. For timed nets, YNelson
+provides two other methods: Runge-Kutta 4th order method and Gillespie
+stochastic method. Demonstrating Gillespie method:
+\begin{lyxcode}
+require~'y\_nelson'
+
+include~YNelson
+
+
+
+A~=~Place~m!:~10
+
+B~=~Place~m!:~10
+
+AB~=~Place~m!:~0
+
+AB\_association~=~TS~A:~-1,~B:~-1,~AB:~1,~rate:~0.1
+
+AB\_dissociation~=~TS~AB:~-1,~A:~1,~B:~1,~rate:~0.1
+
+A2B~=~TS~A:~-1,~B:~1,~rate:~0.05
+
+B2A~=~TS~A:~1,~B:~-1,~rate:~0.07
+
+
+
+set\_step~1
+
+set\_target\_time~50
+
+set\_sampling~1
+
+set\_simulation\_method~:gillespie
+
+
+
+run!
+
+print\_recording
+
+plot\_state
+\end{lyxcode}
+The state recording should show a random walk of the system state
+over the period of 50 time units.
+\begin{lyxcode}
+
+
+\bibliographystyle{plainnat}
+\bibliography{/home/boris/b/8oav/ptn/ptn}
+\end{lyxcode}
+
+\end{document}

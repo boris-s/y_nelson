@@ -1,5 +1,5 @@
-#LyX 2.0 created this file. For more info see http://www.lyx.org/
-\lyxformat 413
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
 \begin_document
 \begin_header
 \textclass article
@@ -12,13 +12,13 @@
 \font_roman default
 \font_sans default
 \font_typewriter default
+\font_math auto
 \font_default_family default
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
 \font_sf_scale 100
 \font_tt_scale 100
-
 \graphics default
 \default_output_format default
 \output_sync 0
@@ -29,15 +29,24 @@
 \use_hyperref false
 \papersize default
 \use_geometry true
-\use_amsmath 1
-\use_esint 1
-\use_mhchem 1
-\use_mathdots 1
-\cite_engine natbib_authoryear
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
 \suppress_date false
+\justification true
 \use_refstyle 0
 \index Index
 \shortcut idx
@@ -119,7 +128,7 @@ key "Dattolo2009fdz"
 \end_inset
 
 .
- In accordance with this, 
+ 
 \family typewriter
 YNelson
 \family default
@@ -129,15 +138,14 @@ YNelson
 YPetri
 \family default
 \color inherit
- gem, providing the the domain model of Petri nets, and 
+ gem that provides Petri nets and 
 \family typewriter
 \color blue
 Yzz
 \family default
 \color inherit
- gem, providing the domain model of ZZ structures.
- At the moment, the focus is on the Petri net part.
- Up to minor conveniences, 
+ gem that provides ZZ structures.
+ 
 \family typewriter
 YNelson
 \family default
@@ -145,15 +153,29 @@ YNelson
 \family typewriter
 YPetri
 \family default
-, so this document in fact describes mostly 
+, so this document is (except for 
+\family typewriter
+Yzz
+\family default
+ features) applicable also to 
 \family typewriter
 YPetri
 \family default
- objects.
+.
 \end_layout
 
 \begin_layout Standard
-For the beginners, there is tutorial available for 
+You should also take a look at the tutorial, 
+\begin_inset Quotes eld
+\end_inset
+
+Introduction_to_YNelson_and_YPetri
+\begin_inset Quotes erd
+\end_inset
+
+.
+ However, the tutorial is a hands-on guide, while this document describes
+ the abstraction of 
 \family typewriter
 YPetri
 \family default
@@ -161,39 +183,14 @@ YPetri
 \family typewriter
 YNelson
 \family default
-, and the classes are more or less fully documented, the internal workings
- and the design intent might not be immediately obvious.
- The purpose of is document is to make the reader faster achieve their understan
-ding.
-\end_layout
-
-\begin_layout Standard
-
-\family typewriter
-YNelson
-\family default
- requires Ruby 2.1, and can be installed from the command line by 
+.
+ The described gems need Ruby 2.3 or newer and can be installed by typing
+ 
 \family typewriter
 gem install y_nelson
 \family default
-.
- The main dependencies, 
-\family typewriter
-Yzz
-\family default
- and 
-\family typewriter
-YPetri
-\family default
-, should install automatically, but can be installed manually by 
-\family typewriter
-gem install y_petri
-\family default
- and 
-\family typewriter
-gem install yzz
-\family default
-.
+ in your command prompt.
+ (The dependencies will install automatically.)
 \end_layout
 
 \begin_layout Part*
@@ -214,8 +211,8 @@ wiring diagrams
 
  – production lines, railway networks, electronic circuits, computer architectur
 es, parallel execution diagrams, or chemical systems.
- In fact, appliction to chemical systems was among the first, as Petri designed
- Petri nets already with the specific goal of modeling chemical reactions.
+ In fact, Petri himself has designed Petri nets with chemical systems in
+ mind.
 \end_layout
 
 \begin_layout Standard
@@ -271,15 +268,15 @@ State
 \end_layout
 
 \begin_layout Standard
-Petri nets were originally designed as 
+Classical Petri nets are 
 \emph on
 \color green
 timeless
 \emph default
 \color inherit
 .
- In such Petri nets, firing of a transition is a discrete event, whose exact
- timing is not specified.
+ In timeless Petri nets, firing of a transition is a discrete event, whose
+ exact timing is not specified.
  Instead, conditions are specified, under which the transition is allowed
  or prohibited to fire (
 \emph on
@@ -3833,7 +3830,7 @@ Agent
 \begin_layout LyX-Code
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "/home/boris/b/1num/num,/home/boris/b/2prp/prp,/home/boris/b/5ced/ced"
+bibfiles "/home/boris/b/8oav/hos/hos"
 options "plainnat"
 
 \end_inset
