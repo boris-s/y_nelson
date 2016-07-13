@@ -137,7 +137,9 @@ class YNelson::Agent
     }
 
     γ.output png: "zz.png"        # Generate output image
-    YSupport::KDE.show_file_with_kioclient File.expand_path( '.', "zz.png" )
+
+    # The last line only works on KDE systems.
+    show_file_with_kioclient File.expand_path( '.', "zz.png" )
 
     # main        = γ.add_nodes( "main", shape: "box" )
     # parse       = γ.add_nodes( "parse", fillcolor: "yellow", style: "rounded,filled", shape: "diamond" )
@@ -315,4 +317,13 @@ class YNelson::Agent
       .define_singleton_method name.to_sym do ::YTed::SHEETS[name] end
     return ::YTed::SHEETS[name]
   end
+
+  private
+
+  # Open a file with kioclient (using KDE file-viewer associations).
+  # 
+  def show_file_with_kioclient( fɴ_with_path )
+    # TODO: This is a system-dependent method.
+    system "sleep 0.2; kioclient exec 'file:%s'" % fɴ_with_path
+  end  
 end

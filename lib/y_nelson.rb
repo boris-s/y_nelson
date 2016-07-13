@@ -2,7 +2,6 @@
 
 require 'yzz'
 require 'y_petri'
-require 'y_support/kde'
 
 require 'graphviz'
 

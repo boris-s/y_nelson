@@ -1,4 +1,4 @@
 module YNelson
-  VERSION = "2.3.7"
+  VERSION = "2.3.8"
   DEBUG = false
 end

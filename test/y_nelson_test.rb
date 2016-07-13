@@ -100,7 +100,7 @@ end
 #     @c4 = ϝ { |a0, b0, c0| a0 + b0 + c0 }
 #     new_zz_row @c4
 #   end
-
+# 
 #   it "should have #make_transitions" do
 #     tt = make_transitions
 #     assert_equal 1, tt.size
